@@ -1,0 +1,154 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8">
+            <header class="header">
+                <h1>Vertical Surveillance System</h1>
+            </header>
+        </div>
+        <div class="col-sm-4">
+            <div class="header-controls">
+                <mat-form-field appearance="fill">
+                    <mat-label>Select Vertical</mat-label>
+                    <mat-select>
+                        <mat-option value="vertical1">Vertical 1</mat-option>
+                        <mat-option value="vertical2">Vertical 2</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                &nbsp;
+                <button mat-raised-button color="primary">Register Tenant</button>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-sm-7">
+                <!-- Main Content -->
+                <div class="main-content">
+                    <!-- Video Feed -->
+                    <div class="video-feed">
+                        <img src="assets/dashboard-image.jpeg" alt="Video Feed" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <h2>Employee Information</h2>
+                <!-- Employee Info and Check-In Log -->
+                <div class="info-section">
+                    <mat-card class="employee-info-card">
+                        <div class="employee-info">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="infocontent">
+                                        <mat-label><strong>Name:</strong></mat-label>
+                                     
+                                        <h2 class="paddStyle">{{ employee.name }}</h2>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="infocontent">
+                                            <mat-label><strong>EmployeeId:</strong></mat-label>
+                                           
+                                            <p class="paddStyle">{{ employee.id }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="infocontent">
+                                            <mat-label><strong>Access:</strong></mat-label>
+                                            <p class="paddStyle">
+                                                <span [class.status]="true" [class.allowed]="employee.access === 'Allowed'">
+                                                    {{ employee.access }}
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="infocontent">
+                                            <mat-label><strong>Floor:</strong></mat-label>
+                                            <p class="paddStyle">
+                                                {{ employee.floor }}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <img [src]="employee.photoUrl" alt="Employee Photo" class="employee-photo" />
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="infocontent">
+                                        <mat-label><strong>Company:</strong></mat-label>
+                                        <p class="paddStyle">
+                                            {{ employee.company }}
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="infocontent">
+                                        <mat-label><strong>Valid Till:</strong></mat-label>
+                                        <p class="paddStyle">
+                                            {{ employee.validTill }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+
+
+                    <mat-card class="check-in-log-card">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-sm-9">
+                              <div class="card-header">
+                                <h2 class="mainHeading">Check In Logs</h2>
+                              </div>
+                            </div>
+                            <div class="col-sm-3">
+                              <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
+                                <mat-icon>more_vert</mat-icon>
+                              </button>
+                              <div *ngIf="showExportInfo" class="export-info">
+                                <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      
+                        <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tblStyle">
+                          <!-- ID Column -->
+                          <ng-container matColumnDef="id">
+                            <mat-header-cell *matHeaderCellDef class="txtStyle"> ID </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="txtStyle">{{ element.id }}</mat-cell>
+                          </ng-container>
+                      
+                          <!-- Access Column -->
+                          <ng-container matColumnDef="access">
+                            <mat-header-cell *matHeaderCellDef class="txtStyle"> Access </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="txtStyle">
+                              <span class="status" [ngClass]="element.access ? 'allowed' : 'denied'">
+                                {{ element.access ? 'Allowed' : 'Denied' }}
+                              </span>
+                            </mat-cell>
+                          </ng-container>
+                      
+                          <!-- Check-In Time Column -->
+                          <ng-container matColumnDef="checkInTime">
+                            <mat-header-cell *matHeaderCellDef class="txtStyle"> Check-In Time </mat-header-cell>
+                            <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.checkInTime }} </mat-cell>
+                          </ng-container>
+                      
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                        </mat-table>
+                      
+                        <div class="paginator-container">
+                          <mat-paginator [pageSizeOptions]="[5, 10, dataSource.data.length]" aria-label="Select page of periodic elements">
+                          </mat-paginator>
+                        </div>
+                      </mat-card>
+                      
+                      
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

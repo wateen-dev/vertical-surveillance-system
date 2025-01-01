@@ -1,0 +1,72 @@
+<mat-toolbar class="top-nav d-flex justify-content-between align-items-center flex-wrap" color="primary">
+    <div class="d-flex align-items-center flex-grow-1">
+        <div class="menuBtnStyling">
+            <button mat-icon-button (click)="toggleSidenav()" aria-label="Toggle Sidenav">
+                <mat-icon>{{ isSidenavOpened ? 'menu_open' : 'menu' }}</mat-icon>
+            </button>
+        </div>
+        <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()"><b>Surveillance</b> System</h2>
+    </div>
+    <div class="right-icons d-flex align-items-center">
+        <mat-icon class="username-icon" aria-label="User" (click)="toggleInfo()">account_circle</mat-icon>
+        <span class="username mx-2" (click)="toggleInfo()">{{ this.employee?.employeename }}</span>
+        <mat-icon class="logout-icon" (click)="logout()" aria-label="Logout">logout</mat-icon>
+    </div>
+    <div class="info-slider" [class.open]="isInfoOpen">
+        <div class="info-content">
+            <button class="close-button" (click)="toggleInfo()" aria-label="Close Info">
+                <mat-icon>close</mat-icon> <!-- Use Material Icon for close -->
+            </button>
+            <h3 class="info-heading">Employee Information</h3>
+        
+            <div class="info-item">
+                <mat-label><b>Name: </b></mat-label>
+                <span >{{this.employee?.employeename}}</span>
+            </div>
+    
+            <div class="info-item">
+                <mat-label><b>Email: </b></mat-label>
+                <span>{{this.employee?.email}}</span>
+            </div>
+    
+            <div class="info-item">
+                <mat-label><b>Employee Number: </b></mat-label>
+                <span>{{this.employee?.employeeno}}</span>
+            </div>
+    
+            <div class="info-item">
+                <mat-label><b>Department: </b></mat-label>
+                <span>{{this.employee?.department}}</span>
+            </div>
+            <div class="info-item">
+                <mat-label><b>Category: </b></mat-label>
+                <span>{{this.employee?.category}}</span>
+            </div>
+            <!-- Add more info as needed -->
+        </div>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpened"  class="sidenav-scroll">
+        <ng-container *ngFor="let item of sidenavItems; let i = index">
+            <button mat-button (click)="toggleSubmenu(i)" class="ul-submenu">
+                <mat-icon class="left-icon">{{ item.icon }}</mat-icon>
+                {{ item.title }}
+                <mat-icon class="right-icon">{{ openSubmenuIndex === i ? 'remove' : 'add' }}</mat-icon>
+            </button>
+            <ul *ngIf="openSubmenuIndex === i" class="submenu">
+                <li *ngFor="let subItem of item.submenu">
+                    <a mat-button [routerLink]="subItem.link" routerLinkActive="active"
+                        [routerLinkActiveOptions]="{ exact: true }" (click)="navigateAndCloseSidenav(subItem.link)">
+                        <mat-icon class="sub-icon">{{ subItem.icon }}</mat-icon>
+                        {{ subItem.title }}
+                    </a>
+                </li>
+            </ul>
+        </ng-container>
+    </mat-sidenav>
+    <mat-sidenav-content class="footerStyling">
+        <router-outlet></router-outlet>
+    </mat-sidenav-content>
+</mat-sidenav-container>

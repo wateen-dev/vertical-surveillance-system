@@ -1,0 +1,20 @@
+<div class="mainStyle">
+    <div class="row">
+        <div class="col-sm-9">
+          <div class="card-header">
+            <h2 class="mainHeading">Visitor Analytics</h2>
+            <p class="paraStyle">Progress this Month</p>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <div *ngIf="showExportInfo" class="export-info">
+            <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
+          </div>
+        </div>
+      </div>
+    <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+        style="width: 100%;height:330px;display: block;"></highcharts-chart>
+</div>

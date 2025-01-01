@@ -1,0 +1,206 @@
+<form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Create Customer</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card class="registration-card">
+                        <div class="spinner-overlay" *ngIf="isLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        <mat-card-content class="mat-card-styling">
+                            <div class="row">
+
+                                <!-- Customer Name Textbox -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Customer Name</mat-label>
+                                        <input matInput type="text" name="name" ngModel
+                                            [ngModel]="customerFormState.name" required>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['name']?.invalid && (customerForm.controls['name']?.touched || customerForm.controls['name']?.dirty)">
+                                            Customer Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- NTN Number Textbox -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>NTN Number</mat-label>
+                                        <input matInput type="text" name="ntn" ngModel [ngModel]="customerFormState.ntn"
+                                            pattern="^[0-9]*$" required>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['ntn']?.invalid && (customerForm.controls['ntn']?.touched || customerForm.controls['ntn']?.dirty)">
+                                            Valid NTN Number is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- POC Name -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>POC Name</mat-label>
+                                        <input matInput type="text" name="poc_name" ngModel
+                                            [ngModel]="customerFormState.poc_name" required>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['poc_name']?.invalid && (customerForm.controls['poc_name']?.touched || customerForm.controls['poc_name']?.dirty)">
+                                            POC Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- POC Email with Validation -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>POC Email</mat-label>
+                                        <input matInput type="email" name="poc_email" ngModel
+                                            [ngModel]="customerFormState.poc_email" email required>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['poc_email']?.invalid && (customerForm.controls['poc_email']?.touched || customerForm.controls['poc_email']?.dirty)">
+                                            Enter a valid email address.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- POC Number -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>POC Number</mat-label>
+                                        <input matInput type="text" name="poc_number" ngModel
+                                            [ngModel]="customerFormState.poc_number" required pattern="^[0-9]{10,15}$">
+                                        <mat-error
+                                            *ngIf="customerForm.controls['poc_number']?.invalid && (customerForm.controls['poc_number']?.touched || customerForm.controls['poc_number']?.dirty)">
+                                            Please enter a valid phone number (10-15 digits, no symbols).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- CNIC -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>CNIC</mat-label>
+                                        <input matInput type="text" name="cnic" [(ngModel)]="customerFormState.cnic"
+                                            (ngModelChange)="formatCnic()" required pattern="^[0-9]{5}-[0-9]{7}-[0-9]$">
+                                        <mat-error
+                                            *ngIf="customerForm.controls['cnic']?.invalid && (customerForm.controls['cnic']?.touched || customerForm.controls['cnic']?.dirty)">
+                                            Enter a valid 13-digit CNIC.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+
+                                <!-- Region Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Region</mat-label>
+                                        <mat-select name="region" ngModel [(ngModel)]="customerFormState.region"
+                                            required>
+                                            <mat-option *ngFor="let region of regions"
+                                                [value]="{ value: region.value, viewValue: region.viewValue }">
+                                                {{ region.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['region']?.invalid && (customerForm.controls['region']?.touched || customerForm.controls['region']?.dirty)">
+                                            Region selection is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Key Account Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Key Account</mat-label>
+                                        <mat-select name="key_account" ngModel [ngModel]="customerFormState.key_account"
+                                            required>
+                                            <mat-option value="yes">Yes</mat-option>
+                                            <mat-option value="no">No</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['key_account']?.invalid && (customerForm.controls['key_account']?.touched || customerForm.controls['key_account']?.dirty)">
+                                            Key Account selection is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Industry Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Industry</mat-label>
+                                        <mat-select name="industry" ngModel [ngModel]="customerFormState.industry"
+                                            required>
+                                            <mat-option *ngFor="let industry of industries" [value]="{ value: industry.value, viewValue: industry.viewValue }">
+                                                {{ industry.viewValue }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['industry']?.invalid && (customerForm.controls['industry']?.touched || customerForm.controls['industry']?.dirty)">
+                                            Industry selection is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Default KAM -->
+                                <div class="col-md-12 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Default KAM</mat-label>
+                                        <mat-select name="default_kam" [(ngModel)]="customerFormState.default_kam"
+                                            required>
+
+                                            <!-- Example options for KAM selection -->
+                                            <mat-option *ngFor="let kam of kamOptions" [value]="{ value: kam.value, viewValue: kam.viewValue }">
+                                                {{ kam.viewValue }}
+                                            </mat-option>
+
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['default_kam']?.invalid && (customerForm.controls['default_kam']?.touched || customerForm.controls['default_kam']?.dirty)">
+                                            Default KAM is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+
+                                <!-- Billing Address -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Billing Address</mat-label>
+                                        <textarea matInput name="billing_address" ngModel
+                                            [ngModel]="customerFormState.billing_address" required></textarea>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['billing_address']?.invalid && (customerForm.controls['billing_address']?.touched || customerForm.controls['billing_address']?.dirty)">
+                                            Billing Address is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Description Textarea -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Description</mat-label>
+                                        <textarea matInput name="description" ngModel
+                                            [ngModel]="customerFormState.description" required></textarea>
+                                        <mat-error
+                                            *ngIf="customerForm.controls['description']?.invalid && (customerForm.controls['description']?.touched || customerForm.controls['description']?.dirty)">
+                                            Description is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="customerForm.invalid"
+                                class="registration-button">Send For Approval</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

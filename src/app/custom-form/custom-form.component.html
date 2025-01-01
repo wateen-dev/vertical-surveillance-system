@@ -1,0 +1,93 @@
+<!-- custom-form.component.html -->
+<form #dynamicForm="ngForm" (ngSubmit)="onSubmit(dynamicForm)">
+    <mat-expansion-panel expanded="true">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h2 class="sideNavHeading mb-0">{{ formName }}</h2>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+  
+      <mat-card class="registration-card">
+        <mat-card-content class="mat-card-styling">
+          <div class="row">
+            <div *ngFor="let field of fields" [ngClass]="field.colSize" class="form-group">
+              <mat-form-field [appearance]="field.appearance ?? 'fill'" class="w-100">
+                  <mat-label>{{ field.label }}</mat-label>
+          
+                  <ng-container [ngSwitch]="field.type">
+                      <input
+                          *ngSwitchCase="'text'"
+                          matInput
+                          [type]="field.type"
+                          [name]="field.name"
+                          [ngModel]="formData[field.name]"
+                          (ngModelChange)="updateFormData(field.name, $event)"
+                          [required]="field.required ?? false"
+                          [pattern]="field.pattern ?? ''"
+                          [placeholder]="field.placeholder ?? ''"
+                      />
+                      <input
+                          *ngSwitchCase="'email'"
+                          matInput
+                          type="email"
+                          [name]="field.name"
+                          [ngModel]="formData[field.name]"
+                          (ngModelChange)="updateFormData(field.name, $event)"
+                          [required]="field.required ?? false"
+                          [pattern]="field.pattern ?? ''"
+                          [placeholder]="field.placeholder ?? ''"
+                      />
+                      <input
+                          *ngSwitchCase="'number'"
+                          matInput
+                          type="number"
+                          [name]="field.name"
+                          [ngModel]="formData[field.name]"
+                          (ngModelChange)="updateFormData(field.name, $event)"
+                          [required]="field.required ?? false"
+                          [pattern]="field.pattern ?? ''"
+                      />
+                      <mat-select
+                          *ngSwitchCase="'select'"
+                          [name]="field.name"
+                          [ngModel]="formData[field.name]"
+                          (ngModelChange)="updateFormData(field.name, $event)"
+                          [required]="field.required ?? false"
+                      >
+                          <mat-option *ngFor="let option of field.options" [value]="option.value">
+                              {{ option.viewValue }}
+                          </mat-option>
+                      </mat-select>
+          
+                      <textarea
+                          *ngSwitchCase="'textarea'"
+                          matInput
+                          [name]="field.name"
+                          [(ngModel)]="formData[field.name]"
+                          [required]="field.required ?? false"
+                          [pattern]="field.pattern ?? ''"
+                      ></textarea>
+                  </ng-container>
+          
+                  <mat-error *ngIf="dynamicForm.controls[field.name]?.invalid && (dynamicForm.controls[field.name]?.touched || dynamicForm.controls[field.name]?.dirty)">
+                      {{ field.errorMessage || 'This field is required.' }}
+                  </mat-error>
+              </mat-form-field>
+          </div>
+          
+          </div>
+        </mat-card-content>
+        
+        <mat-card-actions>
+          <div class="row">
+            <div class="col-sm-12">
+              <button mat-raised-button color="primary" type="submit" [disabled]="dynamicForm.invalid">
+                Submit
+              </button>
+            </div>
+          </div>
+        </mat-card-actions>
+      </mat-card>
+    </mat-expansion-panel>
+  </form>
+  

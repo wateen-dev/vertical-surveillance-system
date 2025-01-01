@@ -1,0 +1,312 @@
+.sidenav-header {
+    display: flex;
+    /* Use flexbox for horizontal alignment */
+    align-items: center;
+    /* Center items vertically */
+    top:0px;
+    /* Add padding */
+    background-color: #1976d2;
+    /* Change to blue background */
+    border-bottom: 1px solid #e0e0e0;
+    /* Subtle border */
+}
+
+.sidenav-icon {
+    font-size: 1em;
+    /* Increase the icon size */
+    color: white;
+}
+
+.sidenav-header {
+    transition: transform 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.sidenav-header:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge icon on hover */
+}
+
+.sideNavHeading {
+    font-size: 1em;
+    /* Increase font size for the heading */
+    color: white;
+    /* Remove default margin */
+    font-weight: 400;
+    top: 0px;
+    /* Make the text slightly bolder */
+    white-space: nowrap;
+    /* Prevent text wrapping */
+    transition: transform 0.3s;
+}
+
+.sideNavHeading {
+    font-family: 'Century Gothic', sans-serif ;
+    text-align: center;
+    padding-left: 10px;
+    color: #ffffff;
+    cursor: pointer;
+    /* Primary color for heading */
+}
+
+.sidenav-container {
+    height: 100%;
+}
+.sidenav-container {
+    height: 100vh; /* Ensures the container takes the full viewport height */
+}
+
+.sidenav-scroll {
+    margin-top: 64px;
+    height: 100%; /* Full height of the container */
+    overflow-y: auto; /* Enables vertical scrolling */
+    max-height: 100vh; /* Prevents content from overflowing the viewport */
+}
+/* Smooth scrolling for specific elements */
+.sidenav-scroll {
+    scroll-behavior: smooth; /* Enables smooth scrolling inside sidenav */
+}
+
+mat-sidenav {
+    width: 300px;
+    /* White background */
+    color:#1976d2;
+    /* Dark text color for readability */
+    padding: 10px 0;
+    /* Padding for top and bottom */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow for depth */
+}
+/* Media query for mobile devices */
+@media (max-width: 768px) {
+    mat-sidenav {
+        width: 98%; /* Full width on mobile */
+    }
+
+    mat-sidenav.active {
+        transform: translateX(0); /* Show the sidenav when active */
+    }
+}
+@media (max-width: 768px) {
+    .sideNavHeading {
+        font-size: 14px; /* Adjust font size for smaller screens */
+    }
+    
+    .username {
+        display: none; /* Optionally hide username on small screens */
+    }
+}
+
+
+mat-sidenav-content {
+    padding: 0px;
+    background-color: #f5f5f5;
+    /* Light background for content */
+}
+
+.ul-submenu {
+    font-family: 'Century Gothic', sans-serif ;
+    padding: 20px 25px !important;
+    padding-bottom: 30px !important;
+    color:#1976d2 !important
+}
+
+button {
+    width: 100%;
+    text-align: left;
+    position: relative;
+    display: block;
+    /* Padding for buttons */
+    color:#1976d2;
+    /* Dark text for buttons */
+    font-weight: 500;
+    /* Slightly bolder text */
+    border: none;
+    /* Remove borders */
+    background: transparent;
+    /* Transparent background */
+    transition: background 0.3s, color 0.3s;
+    /* Smooth transition */
+}
+
+button:hover {
+    background-color: #1976d2;
+    /* Light gray background on hover */
+    color: white !important;
+    /* Change text color to blue on hover */
+}
+
+ul.submenu {
+    list-style-type: none;
+    padding-left: 15px;
+    /* Indent submenu */
+    margin: 0;
+    /* Remove default margin */
+}
+
+ul.submenu li {
+    padding: 5px 0;
+    /* Spacing between items */
+}
+
+ul.submenu li a {
+    text-decoration: none;
+    /* Remove underline */
+    color: #033f63;
+    /* Blue color for links */
+    padding: 10px 20px;
+    /* Padding for submenu items */
+    display: block;
+    /* Ensure the whole area is clickable */
+    transition: background 0.3s, color 0.3s;
+    /* Smooth transition */
+}
+
+ul.submenu li a:hover {
+    background-color: #1976d2;
+    /* Light gray background on hover */
+    color: white;
+    /* Dark text on hover */
+}
+
+.right-icon {
+    float: right;
+    /* Move icon to the right */
+    margin-left: 8px;
+    /* Spacing between icon and text */
+}
+
+.logout-container {
+    margin-top: auto;
+    /* Pushes the logout button to the bottom */
+    padding-top: 8px;
+    padding-bottom: 10px;
+    padding-left: 15px;
+
+}
+
+.logout-container:hover {
+    background-color: #1976d2;
+    /* Light gray background on hover */
+    color: white;
+    /* Change text color to blue on hover */
+    border-radius: 6px;
+}
+
+.sideNavStyling {
+    background-color: white;
+    height: 100%;
+}
+mat-toolbar {
+    position: fixed; /* Keep the toolbar fixed at the top */
+    top: 0; /* Align to the top */
+    width: 100%; /* Full width */
+    z-index: 1000; /* Ensure it stays above other content */
+    background-color:#1976d2;
+}
+
+.sidenav-container {
+    padding-top:64px;
+    /* height: calc(100vh - 64px); */
+    height: 100vh; /* Ensures the container takes the full viewport height */
+}
+.top-nav {
+    display: flex;
+    align-items: center; /* Center items vertically */
+}
+
+.spacer {
+    flex: 1; /* Take up all available space */
+}
+
+.right-icons {
+    display: flex;
+    align-items: center; /* Center icons vertically */
+}
+
+.username-icon, .logout-icon {
+    margin-left: 50px; /* Space between icons and text */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}
+
+.username {
+    font-family: 'Century Gothic', sans-serif ;
+    margin-left: 5px; /* Space between username and user icon */
+    color: white; /* Username color */
+}
+
+.logout-icon:hover {
+    color: #f44336; /* Different color for logout icon */
+}
+.menuBtnStyling{
+    background-color: white;
+    border-radius: 30px;
+}
+/* styles.css or your component's CSS file */
+.active {
+    background-color: rgba(25, 118, 210, 0.3);
+    /* Use a strong color for visibility */
+    color: white;
+    /* Text color when active */
+    margin-right: 2px;
+}
+
+.info-slider {
+    position: absolute;
+    top: calc(100% + 8px); /* Position below the icon, add some margin */
+    right: 10px; /* Align to the right */
+    min-width: 300px;
+    max-width: 600px; /* Width of your slider */
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-20px); /* Start hidden above */
+    transition: transform 0.4s cubic-bezier(0.25, 1.0, 0.5, 1.0), 
+                opacity 0.4s ease; /* Adjusted timing and transition effect */
+    opacity: 0;
+    pointer-events: none; /* Prevent interaction when hidden */
+    z-index: 10; /* Ensure it appears above other elements */
+}
+
+.info-slider.open {
+    transform: translateY(0); /* Slide down into view */
+    opacity: 1;
+    pointer-events: auto; /* Allow interaction when visible */
+}
+
+.info-content {
+    color:#1976d2;
+    padding: 10px;
+}
+.close-button {
+    width: 30px;
+    height: 30px;
+    position: absolute; /* Correct positioning */
+    top: 10px; /* Position at the top */
+    right: 0; /* Position to the right */
+    background: none; /* Remove default background */
+    border: none; /* Remove default border */
+    cursor: pointer; /* Change cursor to pointer */
+}
+
+.close-button mat-icon {
+    font-size: 20px; /* Adjust size of the close icon */
+}
+.info-content, .info-item mat-label{
+    font-family: 'Century Gothic', sans-serif ;
+    font-size: 14px;
+}
+.info-heading{
+    font-family: 'Century Gothic', sans-serif ;
+    font-size: 20px;
+}
+.footerStyling
+{
+    padding-bottom: 20px;
+    /* background: linear-gradient(to right, 
+    #5f656c, 
+    #9db6d1, 
+    #a67aad, 
+    #5a5959, 
+    #7b7b7b
+  ); */
+}

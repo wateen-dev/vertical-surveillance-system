@@ -1,0 +1,113 @@
+<form #registrationForm="ngForm" (ngSubmit)="onSubmit(registrationForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Registration Form</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card class="registration-card">
+                        <div class="spinner-overlay" *ngIf="isLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        <mat-card-header class="card-header">
+                            <mat-card-title class="lblHeading">
+                                <div class="sidenav-header d-flex align-items-center">
+                                    <!-- <h2 class="sideNavHeading mb-0">Registration Form</h2> -->
+                                </div>
+                            </mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <div class="row">
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>First Name</mat-label>
+                                        <input matInput type="text" name="firstName" ngModel required>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['firstName']?.errors?.['required'] && registrationForm.controls['firstName']?.touched">
+                                            First Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Last Name</mat-label>
+                                        <input matInput type="text" name="lastName" ngModel required>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['lastName']?.errors?.['required'] && registrationForm.controls['lastName']?.touched">
+                                            Last Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Email</mat-label>
+                                        <input matInput type="email" name="email" ngModel required>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['email']?.errors?.['required'] && registrationForm.controls['email']?.touched">
+                                            Email is required.
+                                        </mat-error>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['email']?.errors?.['email'] && registrationForm.controls['email']?.touched">
+                                            Please enter a valid email address.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Username</mat-label>
+                                        <input matInput type="text" name="username" ngModel required>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['username']?.errors?.['required'] && registrationForm.controls['username']?.touched">
+                                            Username is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Gender</mat-label>
+                                        <mat-select name="gender" ngModel required>
+                                            <mat-option value="male">Male</mat-option>
+                                            <mat-option value="female">Female</mat-option>
+                                            <mat-option value="other">Other</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['gender']?.errors?.['required'] && registrationForm.controls['gender']?.touched">
+                                            Gender is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Country</mat-label>
+                                        <mat-select name="country" ngModel required>
+                                            <mat-option value="us">United States</mat-option>
+                                            <mat-option value="ca">Canada</mat-option>
+                                            <mat-option value="uk">United Kingdom</mat-option>
+                                            <mat-option value="au">Australia</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="registrationForm.controls['country']?.errors?.['required'] && registrationForm.controls['country']?.touched">
+                                            Country is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit"
+                                [disabled]="registrationForm.invalid" class="registration-button">Register</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,14 @@
+.mainStyle {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    /* margin-top: -200px; */
+}
+
+.paraStyle {
+    font-family: 'Century Gothic', sans-serif;
+}
+
+.mainHeading {
+    font-family: 'Century Gothic', sans-serif;
+}

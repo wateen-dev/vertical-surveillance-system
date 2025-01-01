@@ -1,0 +1,71 @@
+<div class="lov-container container">
+  <!-- Search Dropdown for LOVs -->
+  <mat-form-field appearance="fill" class="w-100 mt-5">
+    <mat-label>Select LOV for Search</mat-label>
+    <mat-select [(ngModel)]="selectedLov" (selectionChange)="onSearchChange()">
+      <!-- Add "All" option -->
+      <mat-option [value]="null">All</mat-option>
+      <mat-option *ngFor="let lov of lovCategories" [value]="lov">
+        {{ lov.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <!-- Form for Adding or Updating LOV -->
+  <form #lovForm="ngForm" (ngSubmit)="onSubmit()">
+    <!-- Form Dropdown for LOV Selection -->
+    <mat-form-field appearance="fill" class="w-100">
+      <mat-label>Select LOV</mat-label>
+      <mat-select [(ngModel)]="formLovSelection" name="formLovSelection" (selectionChange)="onLovSelectionChange($event)">
+        <mat-option *ngFor="let lov of lovCategories" [value]="lov">
+          {{ lov.name }}
+        </mat-option>
+        <mat-option value="Other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- LOV Name Input Field (Shown Only if "Other" is Selected) -->
+    <div *ngIf="showLovNameInput">
+      <mat-form-field appearance="fill">
+        <mat-label>LOV Name</mat-label>
+        <input matInput name="lovName" [(ngModel)]="lovData.name" required />
+      </mat-form-field>
+    </div>
+
+    <!-- LOV Value Input Field -->
+    <mat-form-field appearance="fill">
+      <mat-label>LOV Value</mat-label>
+      <input matInput name="lovValue" [(ngModel)]="lovData.value" required />
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <button mat-raised-button color="primary" type="submit">
+      {{ isEditMode ? 'Update' : 'Add' }}
+    </button>
+  </form>
+
+  <!-- Table to Display LOV Data -->
+  <table mat-table [dataSource]="filteredLovList" class="mat-elevation-z8">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let lov">{{ lov.name }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef> Value </th>
+      <td mat-cell *matCellDef="let lov">{{ lov.value }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef> Actions </th>
+      <td mat-cell *matCellDef="let lov">
+        <button mat-button (click)="onEdit(lov)">
+          <span class="fa fa-pencil"></span>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

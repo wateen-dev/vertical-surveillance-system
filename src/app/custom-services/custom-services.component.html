@@ -1,0 +1,93 @@
+<form #registrationForm="ngForm" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="registration-container">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="sideNavHeading mb-0">Custom Services</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <mat-card class="registration-card">
+            <div class="spinner-overlay" *ngIf="isLoading">
+              <div class="spinner"></div>
+            </div>
+            <mat-card-header class="card-header">
+              <mat-card-title class="lblHeading">
+                <div class="sidenav-header d-flex align-items-center">
+                </div>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <div class="row">
+                <div class="container mt-4">
+                  <div class="row">
+                    <div class="col-12 col-md-4 mb-3">
+                      <div class="card text-center hover-card" (click)="onCardClick('Employee Management System')">
+                        <div class="card-body">
+                          <i class="fas fa-users fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                          <h5 class="card-title">Employee Management System</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <a [href]="dynamicHref" target="_blank" (click)="onCardClick('Performance Management System')"
+                        class="text-decoration-none">
+                        <div class="card text-center hover-card">
+                          <div class="card-body">
+                            <i class="fas fa-tasks fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                            <h5 class="card-title">Performance Management System</h5>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <div class="card text-center hover-card"
+                        (click)="onCardClick('Wateen Recruitment Portal')">
+                        <div class="card-body">
+                          <i class="fas fa-clipboard-check fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                          <h5 class="card-title">Wateen Recruitment Portal</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <div class="card text-center hover-card" (click)="onCardClick('Expense Management System')">
+                        <div class="card-body">
+                          <i class="fas fa-wallet fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                          <h5 class="card-title">Expense Management System</h5>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <a [href]="dynamicHref" target="_blank" (click)="onCardClick('Service Desk')"
+                        class="text-decoration-none">
+                      <div class="card text-center hover-card">
+                        <div class="card-body">
+                          <i class="fas fa-boxes fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                          <h5 class="card-title">Service Desk</h5>
+                        </div>
+                      </div>
+                      </a>
+                    </div>
+                    <div class="col-12 col-md-4 mb-3">
+                      <a [href]="dynamicHref" target="_blank" (click)="onCardClick('Sales Trax')"
+                      class="text-decoration-none">
+                      <div class="card text-center hover-card">
+                        <div class="card-body">
+                          <i class="fas fa-shopping-cart fa-3x mb-3"></i> <!-- Font Awesome Icon -->
+                          <h5 class="card-title">Sales Trax</h5>
+                        </div>
+                      </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</form>

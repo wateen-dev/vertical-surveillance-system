@@ -1,0 +1,137 @@
+
+#loginPadding{
+    padding-top:14px;
+}
+/* styles.css or component-specific CSS file */
+.login-container {
+    display: flex;
+    justify-content:center;
+    align-items:center;
+    height: 80vh; /* Full viewport height */
+    background-color: white; /* Light background color */
+  }
+  
+  .login-card {
+    width: 800px; /* Set card width */
+    padding: 20px; /* Inner padding */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6); /* Shadow effect */
+    border-radius: 8px; /* Rounded corners */
+  }
+  
+  .lblHeading {
+    font-size: 24px; /* Heading size */
+    text-align: center; /* Centered heading */
+  }
+  
+  .spHeading {
+    font-weight: bold; /* Bold subheading */
+    color: #1976d2; /* Primary color */
+  }
+  .card-header {
+    display: flex;              /* Use flexbox to align items */
+    justify-content: center;    /* Center horizontally */
+    align-items: center;        /* Center vertically */
+    text-align: center;         /* Center text */
+  }
+  /* styles.css or component-specific CSS file */
+.login-button {
+    width: 100%;                   /* Full width */
+    padding: 20px 25px;           /* Increase padding for a better look */
+    font-size: 16px;              /* Larger font size */
+    border-radius: 8px;           /* Rounded corners */
+    transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  }
+  
+  .login-button:hover {
+    background-color: #0056b3;    /* Darker shade on hover */
+    transform: scale(1.05);       /* Slightly increase size on hover */
+  }
+  
+  .login-button:disabled {
+    background-color: #e0e0e0;    /* Light gray for disabled state */
+    color: #9e9e9e;                /* Darker gray text for disabled state */
+  }
+
+  .sidenav-header {
+    display: flex;
+    /* Use flexbox for horizontal alignment */
+    align-items: center;
+    /* Center items vertically */
+    top:0px;
+    /* Add padding */
+    background-color: white;
+    /* Subtle border */
+}
+
+.sidenav-icon {
+    font-size: 1em;
+    /* Increase the icon size */
+    color:#1976d2;
+}
+.sidenav-icon {
+  transition: transform 0.3s;
+  /* Smooth transition for hover effect */
+}
+.sidenav-icon:hover{
+  transform: scale(1.3);
+}
+
+.sidenav-header {
+    transition: transform 0.3s;
+    /* Smooth transition for hover effect */
+}
+
+.sidenav-header:hover {
+    transform: scale(1.1);
+    /* Slightly enlarge icon on hover */
+}
+
+.sideNavHeading {
+  font-family: 'Century Gothic', sans-serif ;
+    /* Increase font size for the heading */
+    color:#1976d2;
+    /* Remove default margin */
+    font-weight: 200;
+    top: 0px;
+    /* Make the text slightly bolder */
+    white-space: nowrap;
+    text-underline-position: unset;
+    /* Prevent text wrapping */
+    transition: transform 0.3s;
+}
+
+.sideNavHeading {
+    text-align: center;
+    padding-left: 10px;
+    color:#1976d2;
+    /* Primary color for heading */
+}  
+
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Ensure it overlays above other content */
+}
+
+.spinner {
+  border: 8px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+  

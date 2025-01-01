@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { CreateOpportunityComponent } from './create-opportunity.component';
+
+describe('CreateOpportunityComponent', () => {
+  let component: CreateOpportunityComponent;
+  let fixture: ComponentFixture<CreateOpportunityComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [CreateOpportunityComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(CreateOpportunityComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

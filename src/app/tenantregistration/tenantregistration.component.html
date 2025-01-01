@@ -1,0 +1,159 @@
+<form #appForm="ngForm" (ngSubmit)="onSubmit(appForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Tenant Registration Form</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card class="registration-card">
+                        <div class="spinner-overlay" *ngIf="isLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        <mat-card-content class="mat-card-styling">
+                            <div class="row">
+                                <h2 class="sideNavHeading mb-0">Company Details</h2>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Company Name</mat-label>
+                                            <input matInput name="companyName" ngModel required minlength="3"
+                                                maxlength="50">
+                                            <mat-error
+                                                *ngIf="appForm.controls['companyName']?.invalid && (appForm.controls['companyName']?.touched || appForm.controls['companyName']?.dirty)">
+                                                Company Name is required and should be between 3 to 50 characters.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Floor -->
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Floor</mat-label>
+                                            <input matInput name="floor" ngModel required minlength="1" maxlength="50">
+                                            <mat-error
+                                                *ngIf="appForm.controls['floor']?.invalid && (appForm.controls['floor']?.touched || appForm.controls['floor']?.dirty)">
+                                                Floor is required and should be between 1 to 10 characters.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Staff Count -->
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Staff Count</mat-label>
+                                            <input matInput type="number" name="staffCount" ngModel required min="1"
+                                                max="1000">
+                                            <mat-error
+                                                *ngIf="appForm.controls['staffCount']?.invalid && (appForm.controls['staffCount']?.touched || appForm.controls['staffCount']?.dirty)">
+                                                Staff Count is required and should be between 1 and 1000.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <!-- Attachments -->
+                                <div class="row justify-content-center colStyle">
+                                    <div class="col-md-12 form-group">
+                                        <label for="attachments sideNavHeading mb-0" class="form-label cssStyle">Attachments</label>
+                                        <div class="input-group">
+                                            <input 
+                                                type="file" 
+                                                id="attachments" 
+                                                name="attachments" 
+                                                class="form-control" 
+                                                ngModel 
+                                                required
+                                                (change)="onFileSelect($event)">
+                                        </div>
+                                        <div class="invalid-feedback d-block" *ngIf="appForm.controls['attachments']?.invalid && 
+                                                                                    (appForm.controls['attachments']?.touched || 
+                                                                                     appForm.controls['attachments']?.dirty)">
+                                            Attachments are required.
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h2 class="sideNavHeading mb-0">Personal Details</h2>
+                                <!-- Owner Name -->
+                                <div class="row justify-content-center">
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Owner Name</mat-label>
+                                            <input matInput name="ownerName" ngModel required minlength="3"
+                                                maxlength="50">
+                                            <mat-error
+                                                *ngIf="appForm.controls['ownerName']?.invalid && (appForm.controls['ownerName']?.touched || appForm.controls['ownerName']?.dirty)">
+                                                Owner Name is required and should be between 3 to 50 characters.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Contact Number -->
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Contact Number</mat-label>
+                                            <input matInput type="number" name="contactNumber" ngModel minlength="10"
+                                                maxlength="15" required pattern="^[0-9]{10}$">
+                                            <mat-error
+                                                *ngIf="appForm.controls['contactNumber']?.invalid && (appForm.controls['contactNumber']?.touched || appForm.controls['contactNumber']?.dirty)">
+                                                Please enter a valid phone number (10-15 digits, no symbols).
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+
+                                    <!-- Email Address -->
+                                    <div class="col-md-4 form-group">
+                                        <mat-form-field appearance="fill" class="w-100">
+                                            <mat-label>Email Address</mat-label>
+                                            <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                                            <mat-error
+                                                *ngIf="appForm.controls['email']?.invalid && (appForm.controls['email']?.touched || appForm.controls['email']?.dirty)">
+                                                Valid Email Address is required.
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <!-- CNIC -->
+                                <!-- <div class="row justify-content-center"> -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>CNIC</mat-label>
+                                        <input matInput name="cnic" [(ngModel)]="customerFormState.CNIC"
+                                            (ngModelChange)="formatCnic()" required pattern="^\d{5}-\d{7}-\d{1}$">
+                                        <mat-error
+                                            *ngIf="appForm.controls['cnic']?.invalid && (appForm.controls['cnic']?.touched || appForm.controls['cnic']?.dirty)">
+                                            Valid CNIC is required (e.g., 12345-1234567-1).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+
+                                <!-- Permanent Address -->
+                                <div class="col-md-12 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Permanent Address</mat-label>
+                                        <textarea matInput name="permanentAddress" ngModel required
+                                            minlength="5"></textarea>
+                                        <mat-error
+                                            *ngIf="appForm.controls['permanentAddress']?.invalid && (appForm.controls['permanentAddress']?.touched || appForm.controls['permanentAddress']?.dirty)">
+                                            Permanent Address is required and should be at least 5 characters long.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- </div> -->
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="appForm.invalid"
+                                class="registration-button">Create Tenant</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

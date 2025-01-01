@@ -1,0 +1,95 @@
+<form #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Visitor Registration Form</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card class="registration-card">
+                        <div class="spinner-overlay" *ngIf="isLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        <mat-card-content class="mat-card-styling">
+                            <div class="row">
+                                <h2 class="sideNavHeading mb-0 rowStyle">Personal Details</h2>
+                                <!-- Employee Name -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Visitor Name</mat-label>
+                                        <input matInput type="text" name="visitorName" ngModel required>
+                                        <mat-error *ngIf="employeeForm.controls['visitorName']?.invalid && (employeeForm.controls['visitorName']?.touched || employeeForm.controls['visitorName']?.dirty)">
+                                            Visitor Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Company Name</mat-label>
+                                        <input matInput type="text" name="companyName" ngModel required>
+                                        <mat-error *ngIf="employeeForm.controls['companyName']?.invalid && (employeeForm.controls['companyName']?.touched || employeeForm.controls['companyName']?.dirty)">
+                                            Company Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Tenant Name</mat-label>
+                                        <mat-select name="app" ngModel required>
+                                            <mat-option *ngFor="let tenant of tenantNames" [value]="{ tenant_id: tenant.app_id, tenant_name: tenant.app_name }">
+                                                {{ tenant.app_name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
+                                            App Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- Contact Number -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Contact Number</mat-label>
+                                        <input matInput type="text" name="contactNumber" ngModel pattern="^[0-9]{11}$" required>
+                                        <mat-error *ngIf="employeeForm.controls['contactNumber']?.invalid && (employeeForm.controls['contactNumber']?.touched || employeeForm.controls['contactNumber']?.dirty)">
+                                            Contact Number must be 11 digits.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- Official Email Address -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Official Email Address</mat-label>
+                                        <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                                        <mat-error *ngIf="employeeForm.controls['email']?.invalid && (employeeForm.controls['email']?.touched || employeeForm.controls['email']?.dirty)">
+                                            Please enter a valid email address.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <!-- CNIC -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>CNIC</mat-label>
+                                        <input matInput type="text" name="cnic" [(ngModel)]="customerFormState.CNIC"
+                                        (ngModelChange)="formatCnic()"  pattern="^\d{5}-\d{7}-\d{1}$" required>
+                                        <mat-error *ngIf="employeeForm.controls['cnic']?.invalid && (employeeForm.controls['cnic']?.touched || employeeForm.controls['cnic']?.dirty)">
+                                            Please enter a valid CNIC (e.g., 12345-1234567-1).
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="employeeForm.invalid" class="registration-button">
+                                Create Visitor
+                            </button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

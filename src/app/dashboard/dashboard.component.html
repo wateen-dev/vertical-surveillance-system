@@ -1,0 +1,31 @@
+<form #registrationForm="ngForm" class="mt-5">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <app-statistics-chart></app-statistics-chart>
+                <div class="row">
+                    <div class="col-md-6">
+                        <app-employee-attendance></app-employee-attendance>
+                    </div>
+                    <div class="col-md-6">
+                        <app-clearance></app-clearance>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <app-footfall-analytics></app-footfall-analytics>
+            </div>
+        </div>
+        <div class="row rowStyle">
+            <div class="col-sm-5">
+                <app-tenant-grid></app-tenant-grid>
+            </div>
+            <div class="col-md-4">
+                <app-visitor-analytics></app-visitor-analytics>
+            </div>
+            <div class="col-md-3">
+                <app-available-occupancy></app-available-occupancy>
+            </div>
+        </div>
+    </div>
+</form>

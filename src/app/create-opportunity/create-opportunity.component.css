@@ -1,0 +1,44 @@
+.button-group {
+    display: flex; /* Align buttons in a row */
+    justify-content: space-between; /* Evenly space buttons */
+    gap: 10px; /* Space between buttons */
+}
+
+button {
+    flex: 1; /* Make buttons take equal width */
+    text-align: center; /* Center text */
+    transition: background-color 0.3s, color 0.3s, transform 0.3s; /* Smooth transition for background and text color */
+    border: none; /* Remove default button border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 12px; /* Padding for better appearance */
+    font-size: 16px; /* Consistent font size */
+}
+
+/* Active Tab */
+.active-tab {
+    background-color: #5A67D8; /* Soft blue for active button */
+    color: white; /* White text for contrast */
+}
+
+/* Enabled Button */
+.enabled-button {
+    background-color: #38A169; /* Green for enabled button */
+    color: white; /* White text for contrast */
+}
+
+/* Disabled Button */
+.disabled-button {
+    background-color: #E2E8F0; /* Light gray for disabled button */
+    color: rgba(0, 0, 0, 0.5); /* Dark gray text for disabled button */
+    cursor: not-allowed; /* Change cursor for disabled buttons */
+}
+
+/* Hover Effects */
+button:not(.disabled-button):hover {
+    transform: translateY(-2px); /* Slight lift on hover */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+button:not(.disabled-button):hover.active-tab {
+    background-color: #4C51BF; /* Darker shade on hover for active button */
+}

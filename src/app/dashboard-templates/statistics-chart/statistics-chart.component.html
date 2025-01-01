@@ -1,0 +1,23 @@
+<div class="analyticsStyle">
+<h2 class="mainHeading">Analytics</h2>
+<p class="mainStyle"><span class="analyticspara">(+2.3%)</span> than last week</p>
+
+<div class="container-fluid horizontal-statistics">
+  <div class="statisticsStyle" *ngFor="let stat of statistics">
+    <div class="statsStyle">
+      <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+      <span class="stat-label">{{ stat.label }}</span>
+    </div>
+    <span class="stat-value">{{ stat.value }}</span>
+    <div class="progress-bar">
+      <div class="progress-fill"
+           [style.width]="getProgressWidth(stat.value)"
+           [style.backgroundColor]="getColor(stat.value)" 
+           matTooltip="{{ stat.value }}">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+

@@ -1,0 +1,35 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: 'Century Gothic', sans-serif; /* Fallback to sans-serif */ }
+
+/* Global Scrollbar Styles */
+
+/* WebKit-based browsers (Chrome, Safari) */
+::-webkit-scrollbar {
+    width: 6px; /* Width of the scrollbar */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Track color */
+    border-radius: 10px; /* Track border radius */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1976d2; /* Scrollbar color */
+    border-radius: 10px; /* Scrollbar border radius */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #155a8a; /* Scrollbar hover color */
+}
+
+/* Firefox */
+.scrollable-container {
+    scrollbar-width: thin; /* Thin scrollbar */
+    scrollbar-color: #1976d2 #f1f1f1; /* Scrollbar color and track color */
+}
+
+
+
+  

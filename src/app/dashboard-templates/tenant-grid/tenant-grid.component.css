@@ -1,0 +1,76 @@
+.mat-card {
+  margin: 16px;
+}
+.mainHeading{
+  font-family: 'Century Gothic', sans-serif;
+}
+.company-logo {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+mat-table {
+  width: 100%;
+}
+
+.card-header {
+  font-family: ce;
+  padding-top: 20px;
+  padding-left: 20px;
+  border-radius: 20px;
+  font-family: 'Century Gothic', sans-serif;
+}
+
+.mat-elevation-z8,
+.mat-mdc-elevation-specific.mat-elevation-z8 {
+  box-shadow: none;
+}
+
+.paraStyle{
+  font-size: 12px;
+  margin-top: -20px;
+}
+.dots-button{
+  padding-top: 14px;
+  float: right;
+}
+.btnExportStyle{
+  background-color:#1976d2;
+  padding:18px;
+}
+.btnExportStyle:hover{
+  border: 1px solid #1976d2;
+  background-color: white;
+}
+.paginator-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+mat-paginator {
+  flex: 1; /* Ensures the paginator stretches across */
+}
+
+.mat-paginator-page-size,
+.mat-paginator-range-label,
+.mat-paginator-navigation-container {
+  display: inline-flex;
+  align-items: center;
+}
+.export-info{
+  float: right;
+}
+.txtStyle{
+  font-family: 'Century Gothic', sans-serif;
+}
+/* @media (max-width: 768px) {
+  .export-info {
+      padding-top:60px;
+      padding-left: 60px;
+  }
+} */
+ .mticon{
+  margin-top: -5px;
+ }

@@ -1,0 +1,99 @@
+.horizontal-statistics {
+  display: flex;
+  flex-wrap: nowrap;
+  /* Ensures content wraps to the next line on smaller screens */
+  gap: 20px;
+  align-items: center;
+  justify-content: space-between;
+  /* Distributes space evenly */
+}
+
+.analyticsStyle {
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+h2,
+.mainStyle {
+  font-family: 'Century Gothic', sans-serif;
+}
+
+.mainStyle {
+  margin-top: -15px;
+}
+
+.analyticspara {
+  color: #01b574;
+}
+
+.stat-icon {
+  color: #106cd8;
+  border: 1px solid #106cd8 !important;
+  border-radius: 3px;
+}
+
+.statisticsStyle {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  width: 100%;
+  /* Makes sure it adapts */
+  margin-bottom: 20px;
+}
+
+.statsStyle {
+  font-family: 'Century Gothic', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.progress-bar {
+  width: 100%;
+  /* Full width for responsiveness */
+  height: 4px;
+  background-color: #f0f0f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  border-radius: 2px;
+}
+
+.stat-value {
+  font-size: 20px;
+  font-weight: normal;
+  color: #106cd8;
+  text-align: right !important;
+  padding-bottom: 14px;
+  font-family: 'Century Gothic', sans-serif;
+}
+
+@media (max-width: 768px) {
+  .horizontal-statistics {
+    flex-direction: column;
+    /* Items stack vertically */
+  }
+
+  .statisticsStyle {
+    width: 100%;
+    /* Takes full width on smaller screens */
+  }
+
+  .progress-bar {
+    margin-top: 10px;
+  }
+}
+ 
+@media (max-width: 1000px) {
+  .horizontal-statistics {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;  
+  }
+} 

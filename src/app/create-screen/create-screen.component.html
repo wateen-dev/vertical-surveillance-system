@@ -1,0 +1,141 @@
+<form #appForm="ngForm" (ngSubmit)="onSubmit(appForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Create Screen</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <mat-card class="registration-card">
+                        <div class="spinner-overlay" *ngIf="isLoading">
+                            <div class="spinner"></div>
+                        </div>
+                        <mat-card-content class="mat-card-styling">
+                            <div class="row">
+                                <!-- App Name Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>App Name</mat-label>
+                                        <mat-select name="app" ngModel required>
+                                            <mat-option *ngFor="let app of appNames" [value]="{ app_id: app.app_id, app_name: app.app_name }">
+                                                {{ app.app_name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="appForm.controls['app']?.invalid && (appForm.controls['app']?.touched || appForm.controls['app']?.dirty)">
+                                            App Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                    
+                                </div>
+    
+                                <!-- Module Name Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Module Name</mat-label>
+                                        <mat-select name="module" ngModel (selectionChange)="onModuleChange($event.value)" required>
+                                            <mat-option *ngFor="let module of moduleNames"
+                                                [value]="{ module_id: module.module_id, module_name: module.module_name}">
+                                                {{ module.module_name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="appForm.controls['module']?.invalid && (appForm.controls['module']?.touched || appForm.controls['module']?.dirty)">
+                                            Module Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class="col-md-4 form-group" *ngIf="showOtherField">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Specify Other Module</mat-label>
+                                        <input matInput name="otherModule" ngModel required>
+                                        <mat-error *ngIf="appForm.controls['otherModule']?.invalid && 
+                                                           (appForm.controls['otherModule']?.touched || appForm.controls['otherModule']?.dirty)">
+                                            Other Module Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- Icon Dropdown -->
+                                <div class="col-md-4 form-group" *ngIf="showOtherField">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Module Icon</mat-label>
+                                        <mat-select name="module_icon" ngModel required>
+                                            <mat-option *ngFor="let icon of icons" [value]="icon.value">{{ icon.viewValue }}</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="appForm.controls['module_icon']?.invalid && (appForm.controls['module_icon']?.touched || appForm.controls['module_icon']?.dirty)">
+                                            Icon selection is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+    
+                                <!-- Sub Menu Name Textbox -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Sub Menu Name</mat-label>
+                                        <input matInput type="text" name="subMenuName" ngModel required>
+                                        <mat-error
+                                            *ngIf="appForm.controls['subMenuName']?.invalid && (appForm.controls['subMenuName']?.touched || appForm.controls['subMenuName']?.dirty)">
+                                            Sub Menu Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+    
+                                <!-- Icon Dropdown -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Sub Menu Icon</mat-label>
+                                        <mat-select name="subMenu_icon" ngModel required>
+                                            <mat-option *ngFor="let icon of icons" [value]="icon.value">{{ icon.viewValue }}</mat-option>
+                                        </mat-select>
+                                        <mat-error
+                                            *ngIf="appForm.controls['subMenu_icon']?.invalid && (appForm.controls['subMenu_icon']?.touched || appForm.controls['subMenu_icon']?.dirty)">
+                                            Icon selection is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+    
+                                <!-- Route Link Textbox -->
+                                <div class="col-md-4 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Route Link</mat-label>
+                                        <input matInput type="text" name="routeLink" ngModel required>
+                                        <mat-error
+                                            *ngIf="appForm.controls['routeLink']?.invalid && (appForm.controls['routeLink']?.touched || appForm.controls['routeLink']?.dirty)">
+                                            Route Link is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+    
+                                <!-- Is Active Checkbox -->
+                                <div class="col-md-4 form-group">
+                                    <div class="custom-checkbox">
+                                        <mat-checkbox name="isActive" ngModel>Is Active</mat-checkbox>
+                                    </div>
+                                </div>
+    
+                                <!-- Code Description Textarea -->
+                                <div class="col-md-12 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Code Description</mat-label>
+                                        <textarea matInput name="code_desc" ngModel required></textarea>
+                                        <mat-error
+                                            *ngIf="appForm.controls['code_desc']?.invalid && (appForm.controls['code_desc']?.touched || appForm.controls['code_desc']?.dirty)">
+                                            Code Description is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button mat-raised-button color="primary" type="submit" [disabled]="appForm.invalid"
+                                class="registration-button">Create Screen</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

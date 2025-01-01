@@ -1,0 +1,9 @@
+<ng-container *ngIf="!isLoginRoute()">
+    <app-sidenav>
+      <router-outlet></router-outlet>
+    </app-sidenav>
+  </ng-container>
+  
+  <ng-container *ngIf="isLoginRoute()">
+    <router-outlet></router-outlet>
+  </ng-container>

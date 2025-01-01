@@ -1,0 +1,58 @@
+/* Container styling for margin and spacing */
+
+.container {
+    padding: 30px 15px;
+  }
+  
+  /* Card styling */
+  .card {
+    border: 2px solid transparent; /* Transparent border to enable hover effect */
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    padding: 10px;
+    background-color: #ffffff;
+  }
+  
+  /* Hover effects on card */
+  .hover-card:hover {
+    border-color: #007bff; /* Blue border on hover */
+    box-shadow: 0 4px 20px rgba(0, 123, 255, 0.2); /* Shadow on hover */
+    transform: translateY(-5px); /* Slight lift effect */
+  }
+  
+  /* Icon styling */
+  .card-body i {
+    color: #007bff; /* Blue icon color */
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .card-body i:hover {
+    color: #0056b3; /* Darker blue on hover */
+  }
+  
+  /* Title styling */
+  .card-body h5 {
+    font-weight: bold;
+    font-size: 16px;
+    color: #333333;
+    margin-top: 15px;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  /* Hover effect on the title */
+  .card-body:hover h5 {
+    color: #007bff; /* Change text color on hover */
+  }
+  
+  /* Responsive design adjustments */
+  @media (max-width: 767px) {
+    .card-body i {
+      font-size: 48px;
+    }
+  
+    .card-body h5 {
+      font-size: 16px;
+    }
+  }
+  

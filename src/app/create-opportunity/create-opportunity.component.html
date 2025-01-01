@@ -1,0 +1,234 @@
+<form #opportunityForm="ngForm" (ngSubmit)="onSubmit(opportunityForm)" class="container mt-5">
+    <div class="row justify-content-center">
+        <mat-expansion-panel expanded="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2 class="sideNavHeading mb-0">Create Opportunity</h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+        <div class="col-md-12">
+            <mat-tab-group [(selectedIndex)]="activeTabIndex" (selectedTabChange)="onTabChange($event)">
+                <mat-tab *ngFor="let tab of tabs; let i = index" 
+                         [label]="tab.label" 
+                         [disabled]="tabDisabled[i]" 
+                         [ngClass]="{'submitted-tab': activeTabIndex === i}">
+                    <ng-container *ngTemplateOutlet="tabContent"></ng-container>
+                </mat-tab>
+            </mat-tab-group>
+            
+
+            <!-- Form Fields Template -->
+            <ng-template #tabContent>
+                <mat-card class="registration-card">
+                    <mat-card-content class="mat-card-styling">
+                        <div class="row">
+                            <!-- Opportunity Name -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Opportunity Name</mat-label>
+                                    <input matInput type="text" name="opportunity_name" [ngModel]="formStoreData.opportunity_name" required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['opportunity_name']?.invalid && opportunityForm.controls['opportunity_name']?.touched">
+                                        Opportunity Name is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Stage Percentage -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Stage Percentage</mat-label>
+                                    <input matInput type="number" name="stage_percentage" ngModel min="0" max="100"
+                                        required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['stage_percentage']?.invalid && opportunityForm.controls['stage_percentage']?.touched">
+                                        Enter a valid percentage between 0 and 100.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Customer Name with Plus Icon -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Customer Name</mat-label>
+                                    <mat-select name="customer_name" ngModel required>
+                                        <mat-option *ngFor="let customer of customers" [value]="customer.value">
+                                            {{ customer.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <button mat-icon-button matSuffix (click)="openCustomerModal($event)">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['customer_name']?.invalid && opportunityForm.controls['customer_name']?.touched">
+                                        Customer Name is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+
+                            <!-- Products Dropdown -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Products</mat-label>
+                                    <mat-select name="products" ngModel required>
+                                        <mat-option *ngFor="let product of products" [value]="product.value">
+                                            {{ product.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['products']?.invalid && opportunityForm.controls['products']?.touched">
+                                        Product selection is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Sales KAM -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Sales KAM</mat-label>
+                                    <mat-select name="sales_kam" ngModel required>
+                                        <mat-option *ngFor="let kam of salesKAMs" [value]="kam.value">
+                                            {{ kam.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['sales_kam']?.invalid && opportunityForm.controls['sales_kam']?.touched">
+                                        Sales KAM selection is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Win Chance -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Win Chance</mat-label>
+                                    <mat-select name="win_chance" ngModel required>
+                                        <mat-option *ngFor="let chance of winChances" [value]="chance.value">
+                                            {{ chance.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['win_chance']?.invalid && opportunityForm.controls['win_chance']?.touched">
+                                        Win Chance selection is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- OTC, MRC, No of Links, Contract Months -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>OTC</mat-label>
+                                    <input matInput type="number" name="otc" ngModel required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['otc']?.invalid && opportunityForm.controls['otc']?.touched">
+                                        OTC is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>MRC</mat-label>
+                                    <input matInput type="number" name="mrc" ngModel required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['mrc']?.invalid && opportunityForm.controls['mrc']?.touched">
+                                        MRC is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>No of Links</mat-label>
+                                    <input matInput type="number" name="no_of_links" ngModel required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['no_of_links']?.invalid && opportunityForm.controls['no_of_links']?.touched">
+                                        No of Links is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Contract Months</mat-label>
+                                    <input matInput type="number" name="contract_months" ngModel required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['contract_months']?.invalid && opportunityForm.controls['contract_months']?.touched">
+                                        Contract Months is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- TCV (Auto-Calculated) -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>TCV</mat-label>
+                                    <input matInput type="number" name="tcv" ngModel readonly
+                                        [value]="calculateTCV(opportunityForm)" required>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['tcv']?.invalid && opportunityForm.controls['tcv']?.touched">
+                                        TCV is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Currency Dropdown -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Currency</mat-label>
+                                    <mat-select name="currency" ngModel required>
+                                        <mat-option *ngFor="let currency of currencies" [value]="currency.value">
+                                            {{ currency.viewValue }}
+                                        </mat-option>
+                                    </mat-select>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['currency']?.invalid && opportunityForm.controls['currency']?.touched">
+                                        Currency selection is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Closing Date -->
+                            <div class="col-md-4 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Closing Date</mat-label>
+                                    <input matInput [matDatepicker]="picker" name="closing_date" ngModel required>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-datepicker #picker></mat-datepicker>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['closing_date']?.invalid && opportunityForm.controls['closing_date']?.touched">
+                                        Closing Date is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                            <!-- Description -->
+                            <div class="col-md-12 form-group">
+                                <mat-form-field appearance="fill" class="w-100">
+                                    <mat-label>Description</mat-label>
+                                    <textarea matInput name="description" ngModel required></textarea>
+                                    <mat-error
+                                        *ngIf="opportunityForm.controls['description']?.invalid && opportunityForm.controls['description']?.touched">
+                                        Description is required.
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </ng-template>
+
+            <!-- Submit Button Outside Tabs -->
+            <mat-card-actions>
+                <button mat-raised-button color="primary" type="submit" [disabled]="opportunityForm.invalid"
+                    class="registration-button">
+                    Save
+                </button>
+
+            </mat-card-actions>
+        </div>
+        </mat-expansion-panel>
+    </div>
+</form>
