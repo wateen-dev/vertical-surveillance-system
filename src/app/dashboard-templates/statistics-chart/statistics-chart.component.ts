@@ -1,21 +1,32 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { StatisticsService } from '../../dashboard/services/statisticsService';
+
+
 @Component({
   selector: 'app-statistics-chart',
   templateUrl: './statistics-chart.component.html',
-  styleUrl: './statistics-chart.component.css'
+  styleUrls: ['./statistics-chart.component.css'],
 })
-export class StatisticsChartComponent {
-  statistics = [
-    { label: 'Visitor', value: 30, icon: 'person' },
-    { label: 'Tenant', value: 50, icon: 'person' },
-    { label: 'Employees', value: 70, icon: 'person' },
-    { label: 'Executives', value: 90, icon: 'person' }
-  ];
+export class StatisticsChartComponent implements OnInit {
+  statistics: any[] = [];
+  maxValue: number = 0;
 
-  maxValue: number;
+  constructor(private statisticsService: StatisticsService) {}
 
-  constructor() {
-    this.maxValue = Math.max(...this.statistics.map(stat => stat.value));
+  ngOnInit(): void {
+    this.loadStatistics();
+  }
+
+  loadStatistics(): void {
+    this.statisticsService.getStatistics().subscribe((data) => {
+      this.statistics = [
+        { label: 'Visitor', value: data.visitor, icon: 'person' },
+        { label: 'Tenant', value: data.tenant, icon: 'person' },
+        { label: 'Employees', value: data.employee, icon: 'person' },
+      ];
+
+      this.maxValue = Math.max(...this.statistics.map((stat) => stat.value));
+    });
   }
 
   getProgressWidth(value: number): string {

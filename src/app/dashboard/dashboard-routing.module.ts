@@ -4,7 +4,7 @@ import { DashboardComponent } from './dashboard.component';
 import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
-  { path: '', component: DashboardComponent, canActivate: [AuthGuard]} // Define the path for the Home component
+  { path: '', component: DashboardComponent} // Define the path for the Home component
 ];
 
 @NgModule({

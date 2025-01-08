@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -55,6 +56,10 @@ const routes: Routes = [
     loadChildren: () => import('./userregistration/userregistration.module').then(m => m.UserregistrationModule)
   },
   {
+    path: 'receptionistmanagement', 
+    loadChildren: () => import('./receptionist-management/receptionist-management.module').then(m=>m.ReceptionistManagementModule)
+  },
+  {
     path: 'visitor-registration', 
     loadChildren: () => import('./visitorregistration/visitorregistration.module').then(m => m.VisitorregistrationModule)
   },
@@ -63,7 +68,8 @@ const routes: Routes = [
     loadChildren: () => import('./verticalsurveillances-system/verticalsurveillances-system.module').then(m => m.VerticalsurveillancesSystemModule)
   },
   // You can add other routes here
-  { path: '', redirectTo: '/home', pathMatch: 'full' } // Optional redirect
+  { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
+  { path: 'reset-password/:id', component: ResetPasswordComponent },
 ];
 
 @NgModule({

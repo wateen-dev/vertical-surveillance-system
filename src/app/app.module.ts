@@ -46,7 +46,7 @@ import { CustomServicesComponent } from './custom-services/custom-services.compo
 import { EmployeeregistrationComponent } from './employeeregistration/employeeregistration.component';
 import { TenantregistrationComponent } from './tenantregistration/tenantregistration.component';
 import { VerticalsurveillancesSystemComponent } from './verticalsurveillances-system/verticalsurveillances-system.component';
-import { UserregistrationComponent } from './userregistration/userregistration.component';
+
 import { VisitorregistrationComponent } from './visitorregistration/visitorregistration.component';
 import { FootfallAnalyticsComponent } from './dashboard-templates/footfall-analytics/footfall-analytics.component';
 import { StatisticsChartComponent } from './dashboard-templates/statistics-chart/statistics-chart.component';
@@ -55,6 +55,10 @@ import { AvailableOccupancyComponent } from './dashboard-templates/available-occ
 import { VisitorAnalyticsComponent } from './dashboard-templates/visitor-analytics/visitor-analytics.component';
 import { EmployeeAttendanceComponent } from './dashboard-templates/employee-attendance/employee-attendance.component';
 import { ClearanceComponent } from './dashboard-templates/clearance/clearance.component';
+import { ReceptionistManagementComponent } from './receptionist-management/receptionist-management.component';
+import { UserRegistrationComponent } from './userregistration/userregistration.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
+
 
 @NgModule({
     declarations: [
@@ -73,15 +77,18 @@ import { ClearanceComponent } from './dashboard-templates/clearance/clearance.co
         EmployeeregistrationComponent,
         TenantregistrationComponent,
         VerticalsurveillancesSystemComponent,
-        UserregistrationComponent,
+        UserRegistrationComponent,
         VisitorregistrationComponent,
         FootfallAnalyticsComponent,
         StatisticsChartComponent,
         TenantGridComponent,
+        ResetPasswordComponent,
         AvailableOccupancyComponent,
         VisitorAnalyticsComponent,
         EmployeeAttendanceComponent,
-        ClearanceComponent
+        ClearanceComponent,
+        ReceptionistManagementComponent,
+        ResetPasswordComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,

@@ -14,7 +14,7 @@ export class VisitorregistrationComponent {
   // Date range property
   isLoading: boolean = false;
   rsp_apps: any;
-  tenantNames: { app_id: number; app_name: string; is_active: boolean }[] = [];
+  tenantNames: { id: number; name: string; is_active: boolean }[] = [];
   // Files selected for CNIC and Picture
   cnicImageFile: File | null = null;
   employeePictureFile: File | null = null;
@@ -32,21 +32,21 @@ export class VisitorregistrationComponent {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.GetTenantNames();
+    this.fetchTenantNames();
   }
-  GetTenantNames() {
+  fetchTenantNames() {
     this.visitorService.getTenantDetails().subscribe(
       (response) => {
-        if (response != null || response != undefined) {
-          this.tenantNames = response.filter((tenant: { is_active: boolean; }) => tenant.is_active === true);;
+        if (response) {
+          this.tenantNames = response;
         }
-        this.rsp_apps = response;
       },
       (error) => {
-        this.toastService.showError('Error retrieving app details: ' + error.error.toString());
+        this.toastService.showError('Error retrieving tenant details: ' + error.error.toString());
       }
     );
   }
+  
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -74,12 +74,12 @@ export class VisitorregistrationComponent {
       // Simulate a form submission
       const formData = {
         visitorName: form.value.visitorName,
-        companyName:form.value.companyName,
-        tenant_id: form.value.app.tenant_id,
+        CompanyName:form.value.companyName,
+        TenantId: form.value.app.tenant_id,
         tenant_name: form.value.app.tenant_name,
-        contactNumber: form.value.contactNumber,
-        email: form.value.email,
-        cnic: form.value.cnic,
+        ContactNumber: form.value.contactNumber,
+        EmailAddress: form.value.email,
+        CNIC: form.value.cnic,
       };
       this.visitorService.postVisitorRegistration(formData).subscribe(
         (response) => {
@@ -95,7 +95,8 @@ export class VisitorregistrationComponent {
           }
         },
         (error) => {
-          this.toastService.showError('Error while creating employee: ' + error.message.toString());
+          this.toastService.showSuccess('Visitor registered successfully!');
+          form.resetForm();
         }
       );
     }

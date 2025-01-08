@@ -1,0 +1,56 @@
+<div class="container">
+    <h1>OTP Management</h1>
+  
+    <div class="search-bar">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter OTP</mat-label>
+        <input matInput [(ngModel)]="otp" />
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="verifyOtp(otp)">Search</button>
+    </div>
+  
+    <div class="employee-info" *ngIf="employee">
+        <mat-card>
+          <mat-card-content>
+            <div class="info-container">
+              <div class="employee-details">
+                <p><strong>Name:</strong> {{ employee.employeeName }}</p>
+                <p><strong>Employee ID:</strong> {{ employee.employeeId }}</p>
+                <p><strong>Contact Number:</strong> {{ employee.contactNumber }}</p>
+                <p><strong>Company:</strong> {{ employee.officialEmailAddress }}</p>
+                <p><strong>CNIC:</strong> {{ employee.cnic }}</p>
+                <p><strong>Permanent Address:</strong> {{ employee.permanentAddress }}</p>
+                <p>
+                  <strong>OTP Status:</strong>
+                  <span
+                    class="valid"
+                  >
+                     VALID
+                  </span>
+                </p>
+              </div>
+              <div class="employee-photo">
+                <img
+                *ngIf="imagePath1Base64"
+                [src]="'data:image/jpeg;base64,' + imagePath1Base64"
+                alt="Uploaded Thumbnail"
+                class="img-thumbnail mb-2"
+                style="max-width: 200px;"
+              />
+              </div>
+            </div>
+            <div class="actions">
+              <button
+                mat-raised-button
+                color="accent"
+                (click)="approveOTP()"
+              >
+                Approve OTP
+              </button>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      
+  </div>
+  
