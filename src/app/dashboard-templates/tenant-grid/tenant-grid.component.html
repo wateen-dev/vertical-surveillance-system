@@ -5,7 +5,7 @@
       <div class="col-sm-9">
         <div class="card-header">
           <h2 class="mainHeading">Tenant</h2>
-          <p class="paraStyle">Over this Month</p>
+          <p class="paraStyle"></p>
         </div>
       </div>
       <div class="col-sm-3">
@@ -29,7 +29,7 @@
 
     <!-- Company Name -->
     <ng-container matColumnDef="company">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Companies </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Tenant </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle">
         <mat-icon class="mticon">{{ element.logo }}</mat-icon>
         &nbsp;&nbsp;<span>{{ element.company }}</span>
@@ -38,13 +38,13 @@
 
     <!-- Tenant Number -->
     <ng-container matColumnDef="tenant">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Tenant </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Employees </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.tenant }} </mat-cell>
     </ng-container>
 
     <!-- Floor Number -->
     <ng-container matColumnDef="floor">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Floors </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Floor </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.floor }} </mat-cell>
     </ng-container>
 

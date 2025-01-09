@@ -93,6 +93,7 @@ export class TenantregistrationComponent {
           }
         },
         (error) => {
+          this.isLoading = false;
           this.toastService.showSuccess('Tenant registered successfully!');
           form.resetForm();
         }

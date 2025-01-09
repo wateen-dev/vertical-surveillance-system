@@ -1,54 +1,20 @@
-<mat-card class="custom-card">
-    <!-- 3 Dots Icon Button at the Top -->
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="card-header">
-                    <h2 class="mainHeading">Occupancy</h2>
-                    <p class="paraStyle">Progress this Month</p>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <div *ngIf="showExportInfo" class="export-info">
-                    <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
-                </div>
-            </div>
+<div class="mainStyle">
+    <div class="row">
+        <div class="col-sm-9">
+          <div class="card-header">
+            <h2 class="mainHeading">Building Utilization</h2>
+            <p class="paraStyle"></p>
+          </div>
         </div>
-    </div>
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tblStyle">
-        <!-- Company Logo -->
-        <!-- Tenant Number -->
-           <!-- Floor Number -->
-        <ng-container matColumnDef="floor">
-            <mat-header-cell *matHeaderCellDef class="txtStyle"> Floor </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.floor }} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="completion">
-            <mat-header-cell *matHeaderCellDef class="txtStyle"> Completion </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="txtStyle">
-                <!-- <span class="progress-label progressStyling" style="position: relative;top:-10px">{{ element.completion }}</span> -->
-                <div class="progress-bar small">
-                    <div 
-                        class="progress-fill" 
-                        [style.width]="getProgressWidth(getNumericCompletion(element.completion))" 
-                        [style.backgroundColor]="getColor(element.completion)" matTooltip="{{ element.completion }}">
-                       
-                    </div>
-                </div>
-            </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-    <!-- Pagination -->
-    <div class="paginator-container">
-        <mat-paginator [pageSizeOptions]="[4, 8, dataSource.data.length]">
-        </mat-paginator>
-    </div>
-    <!-- Overlay Click to Close Export Section -->
-</mat-card>
+        <div class="col-sm-3">
+          <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <div *ngIf="showExportInfo" class="export-info">
+            <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
+          </div>
+        </div>
+      </div>
+    <highcharts-chart [Highcharts]="Highcharts" [options]="chartOptions"
+        style="width: 100%;height:330px;display: block;"></highcharts-chart>
+</div>

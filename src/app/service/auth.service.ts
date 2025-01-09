@@ -13,12 +13,15 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string):Observable<any> {
+  // login(username: string, password: string):Observable<any> {
     
-    const formData = new FormData();
-    formData.append('Username', username);
-    formData.append('Password', password);
-    return this.http.post(this.apiUrl+"Auth/ADLogin", formData);
+  //   const formData = new FormData();
+  //   formData.append('Username', username);
+  //   formData.append('Password', password);
+  //   return this.http.post(this.apiUrl+"Auth/ADLogin", formData);
+  // }
+  login(loginData: UserLoginModel): Observable<any> {
+    return this.http.post<any>(this.local_apiUrl+"User/login", loginData);
   }
   
   }

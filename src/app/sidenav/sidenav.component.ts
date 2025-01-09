@@ -22,7 +22,8 @@ export class SidenavComponent implements OnInit {
   employeeContent: any;
   employeeName: string = "";
   isInfoOpen = false;
-  employee: Employee | undefined;
+  // employee: Employee | undefined;
+  employee: any | undefined;
 
   constructor(private router: Router,private dataService: DataService,private screenService:ScreenService,private sidenavService: SidenavService,private toastService: ToastService) {
     this.setActiveSubmenu(this.router.url);
@@ -31,7 +32,8 @@ export class SidenavComponent implements OnInit {
     this.employeeContent = this.dataService.getContent();
     if(this.employeeContent != null){
       this.employee =  {
-        ...this.employeeContent.content
+        // ...this.employeeContent.content
+        ...this.employeeContent
       };
      // this.employeeName = this.employeeContent.employeename;
       this.GetScreenDetails();

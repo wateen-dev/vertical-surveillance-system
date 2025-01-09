@@ -11,12 +11,10 @@ export class VisitorAnalyticsComponent {
   Highcharts = Highcharts;
   showExportInfo = false;
   dataSource = [
-    { name: 'Male', y: 230, color: '#4CAF50' },
-    { name: 'Female', y: 122, color: '#2196F3' },
-    { name: 'Anomalies', y: 15, color: '#FFC107' },
-    { name: 'Access Denied', y: 190, color: '#F44336' },
-    { name: 'Alarms', y: 32, color: '#9C27B0' },
-    { name: 'Guests', y: 28, color: '#00BCD4' },
+    { name: 'Fire Alarm', y: 230, color: '#4CAF50' },
+    { name: 'SOP Violation', y: 122, color: '#2196F3' },
+    { name: 'Weapons', y: 15, color: 'red' },
+   
   ];
 
   chartOptions: Highcharts.Options = {
@@ -30,7 +28,7 @@ export class VisitorAnalyticsComponent {
     },
     plotOptions: {
       pie: {
-        innerSize: '80%',
+      
         dataLabels: {
           enabled: false,
         },
@@ -40,7 +38,7 @@ export class VisitorAnalyticsComponent {
     series: [
       {
         type: 'pie',
-        name: 'Visitor Categories',
+        name: 'Value',
         data: this.dataSource.map((item) => ({
           name: item.name,
           y: item.y,

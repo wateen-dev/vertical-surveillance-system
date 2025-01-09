@@ -35,7 +35,7 @@ export class EmployeeregistrationComponent {
     endDate: undefined
   };
   ngOnInit(): void {
-    this.isLoading = true;
+   
     this.fetchTenantNames();
   }
   fetchTenantNames() {
@@ -126,20 +126,23 @@ export class EmployeeregistrationComponent {
         (response) => {
           if (response) {
             setTimeout(() => {
-              this.isLoading = false;
+             
             }, 2000);
             this.toastService.showSuccess('Employee registered successfully!');
             form.resetForm(); // Reset the form after success
-            this.isLoading = false;
+          
             this.cnicImageFile = null;
             this.employeePictureFile = null;
+            this.isLoading = false;
           }
         },
         (error) => {
+          this.isLoading = false;
           this.toastService.showSuccess('Employee registered successfully!');
           form.resetForm();
           this.cnicImageFile = null;
           this.employeePictureFile = null;
+          
         }
       );
     }

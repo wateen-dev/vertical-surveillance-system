@@ -21,7 +21,7 @@ export class StatisticsChartComponent implements OnInit {
     this.statisticsService.getStatistics().subscribe((data) => {
       this.statistics = [
         { label: 'Visitor', value: data.visitor, icon: 'person' },
-        { label: 'Tenant', value: data.tenant, icon: 'person' },
+        { label: 'Executive', value: data.tenant, icon: 'person' },
         { label: 'Employees', value: data.employee, icon: 'person' },
       ];
 
@@ -37,5 +37,8 @@ export class StatisticsChartComponent implements OnInit {
     if (value === this.maxValue) return '#4CAF50'; // Green for highest value
     else if (value >= this.maxValue / 2) return '#FF9800'; // Orange for mid-range
     else return '#2196F3'; // Blue for lowest values
+  }
+  getIcon(): string {
+    return 'person'; // Common user icon for all cards
   }
 }

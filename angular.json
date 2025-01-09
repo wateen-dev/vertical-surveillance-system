@@ -44,7 +44,9 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/highcharts/highcharts.js",
+  "node_modules/highcharts/modules/solid-gauge.js"
             ],
             "server": "src/main.server.ts",
             "prerender": true,
@@ -116,7 +118,9 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js",
+              "node_modules/highcharts/highcharts.js",
+  "node_modules/highcharts/modules/solid-gauge.js"
             ]
           }
         }

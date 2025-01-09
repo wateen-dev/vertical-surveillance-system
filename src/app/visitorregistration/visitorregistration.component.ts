@@ -31,7 +31,7 @@ export class VisitorregistrationComponent {
   };
 
   ngOnInit(): void {
-    this.isLoading = true;
+    
     this.fetchTenantNames();
   }
   fetchTenantNames() {
@@ -95,6 +95,7 @@ export class VisitorregistrationComponent {
           }
         },
         (error) => {
+          this.isLoading = false;
           this.toastService.showSuccess('Visitor registered successfully!');
           form.resetForm();
         }
