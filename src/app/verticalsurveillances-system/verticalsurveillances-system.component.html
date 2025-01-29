@@ -1,102 +1,202 @@
 <div class="container-fluid">
     <!-- Header Section -->
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-4">
             <header class="header">
-                <h1>Vertical Surveillance System</h1>
+                <h1>Attendance Details</h1>
             </header>
         </div>
         <div class="col-sm-4">
-            <div class="header-controls">
-                <mat-form-field appearance="fill">
-                    <mat-label>Select Vertical</mat-label>
-                    <mat-select>
-                        <mat-option value="vertical1">Vertical 1</mat-option>
-                        <mat-option value="vertical2">Vertical 2</mat-option>
-                        <mat-option value="vertical3">Vertical 3</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <button mat-raised-button color="primary" class="ml-2">Register Tenant</button>
-            </div>
-        </div>
-    </div>
+         
+              <span id="lastSynced" class="text-muted me-2">Last synced: {{ lastSyncedTime }}</span>
+              <button class="btn btn-light btn-sm" (click)="refreshComponent()">
+                <i class="fa fa-refresh"></i>
+              </button>
+           
+      </div>
+<div class="col-md-6">
 
-    <!-- Main Content Section -->
-    <div class="row mt-4">
-        <!-- Video Feed Section -->
-        <div class="col-sm-7">
-            <section class="main-content">
-                <div class="video-feed">
-                    <img src="assets/dashboard-image.jpeg" alt="Video Feed" />
-                </div>
-            </section>
-        </div>
+  <div class="header-controls d-flex align-items-center mb-3">
+    <mat-form-field appearance="fill" class="mr-2">
+      <mat-label>Select Tenant</mat-label>
+      <mat-select [(value)]="selectedCompany" (selectionChange)="filterTable()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="The Vertical">The Vertical</mat-option>
+        <mat-option value="Wateen">Wateen</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Dropdown for Category -->
+    <mat-form-field appearance="fill" class="mr-2">
+      <mat-label>Select Category</mat-label>
+      <mat-select [(value)]="selectedCategory" (selectionChange)="filterTable()">
+        <mat-option value="">All</mat-option>
+        <mat-option value="tenant">Tenant</mat-option>
+        <mat-option value="employee">Employee</mat-option>
+        <mat-option value="visitor">Visitor</mat-option>
+      </mat-select>
+    </mat-form-field>
+  
+    <!-- Search Bar -->
+    <mat-form-field appearance="fill" class="search-bar">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="searchQuery" (ngModelChange)="filterTable()" />
+    </mat-form-field>
+  
+    <!-- Present Checkbox -->
+    <mat-checkbox [(ngModel)]="isPresent" [checked]="false" (click)="filterTable()" >Present</mat-checkbox>
+  </div>
+  <div class="col-sm-12">
+    <section class="check-in-logs mt-4">
+      <div class="table-container mt-3">
+        <mat-table [dataSource]="ds" class="mat-elevation-z8 custom-table">
+          <ng-container matColumnDef="id">
+            <mat-header-cell *matHeaderCellDef> Id </mat-header-cell>
+            <mat-cell *matCellDef="let record"> {{ record.id }} </mat-cell>
+          </ng-container>
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let record"> {{ record.name }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="company">
+            <mat-header-cell *matHeaderCellDef> Tenant </mat-header-cell>
+            <mat-cell *matCellDef="let record"> {{ record.company }} </mat-cell>
+          </ng-container>
+          <!-- Category Column -->
+          <ng-container matColumnDef="category">
+            <mat-header-cell *matHeaderCellDef> Category </mat-header-cell>
+            <mat-cell *matCellDef="let record"> {{ record.category }} </mat-cell>
+          </ng-container>
+      
+          <!-- Phone Column -->
+          <ng-container matColumnDef="phone">
+            <mat-header-cell *matHeaderCellDef> Contact # </mat-header-cell>
+            <mat-cell *matCellDef="let record"> {{ record.phone }} </mat-cell>
+          </ng-container>
+      
+          <!-- Header and Row Definitions -->
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row 
+            *matRowDef="let row; columns: displayedColumns;" 
+            (click)="onRowClick(row)" 
+            class="clickable-row">
+          </mat-row>
+        </mat-table>
+      </div>
+    </section>
+  </div>
+</div>
+  <!-- Employee Information Section -->
+  <div class="col-sm-6">
+    <section class="employee-info-section">
+      <h2>Employee Information</h2>
+      <mat-card class="employee-info-card" *ngIf="selectedEmployee">
+          <div class="row p-3">
+              <!-- Left Side for Fields -->
+              <div class="col-md-8">
+                  <div class="field-row">
+                      <strong>Employee ID:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.id }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>Name:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.name }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>CNIC:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.cnic }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>Phone:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.phone }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>Address:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.address }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>Email:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.email }}</span>
+                  </div>
+                  <div class="field-row">
+                      <strong>Tenant:</strong>
+                      <span class="paddStyle">{{ selectedEmployee.company }}</span>
+                  </div>
+                  <div class="field-row align-center">
+                      <strong>Access:</strong>
+                      <span class="badge-container">
+                          <span
+                              class="badge"
+                              [ngClass]="{ 'badge-success': accessStatus === 'Allowed', 'badge-danger': accessStatus === 'Revoked' }">
+                              {{ accessStatus }}
+                          </span>
+                      </span>
+                      <div class="access-buttons">
+                          <button
+                              *ngIf="accessStatus === 'Revoked'"
+                              class="btn btn-sm btn-primary  ml-3"
+                              (click)="allowAccess()">
+                              Allow Access
+                          </button>
+                          <button
+                              *ngIf="accessStatus === 'Allowed'"
+                              class="btn btn-sm  btn-secondary ml-3"
+                              (click)="revokeAccess()">
+                              Revoke Access
+                          </button>
+                      </div>
+                  </div>
+              </div>
+  
+              <!-- Right Side for Photo -->
+              <div class="col-md-4 position-relative">
+                  <img 
+                      [src]="'data:image/jpeg;base64,' + imagePath1Base64"
+                      alt="Employee Photo" 
+                      class="employee-photo mt-5" />
+              </div>
+          </div>
+      </mat-card>
+  </section>
+  
 
-        <!-- Employee Information Section -->
-        <div class="col-sm-5">
-            <section class="employee-info-section">
-                <h2>Employee Information</h2>
-                <mat-card class="employee-info-card">
-                    <div class="row">
-                        <!-- Employee Details -->
-                        <div class="col-sm-8">
-                            <div class="infocontent">
-                                <mat-label><strong>Name:</strong></mat-label>
-                                <p class="paddStyle">{{ employee.name }}</p>
-                            </div>
-                        </div>
-                        <div class="col-sm-8">
-                            <div class="infocontent">
-                                <mat-label><strong>Employee ID:</strong></mat-label>
-                                <p>{{ employee.id }}</p>
-                            </div>
-                        </div>
-                            <div class="infocontent">
-                                <mat-label><strong>Floor:</strong></mat-label>
-                                <p>{{ employee.floor }}</p>
-                            </div>
-                            <div class="infocontent">
-                                <mat-label><strong>Company:</strong></mat-label>
-                                <p>{{ employee.company }}</p>
-                            </div>
-                        
-                        <!-- Employee Photo -->
-                        <div class="col-sm-4">
-                            <img [src]="employee.photoUrl" alt="Employee Photo" class="employee-photo" />
-                        </div>
-                    </div>
-                </mat-card>
-            </section>
+  
+    
 
-            <!-- Check-In Logs Section -->
-            <section class="check-in-logs mt-4">
-                <h2>Check-In Logs</h2>
-                <div class="table-container mt-3">
-                  <mat-table [dataSource]="dataSource.data" class="mat-elevation-z8">
-                    <!-- Date Column -->
-                    <ng-container matColumnDef="employeeId">
-                      <mat-header-cell *matHeaderCellDef> Employee Id </mat-header-cell>
-                      <mat-cell *matCellDef="let log"> {{ log.employeeId }} </mat-cell>
-                    </ng-container>
-              
-                    <!-- Check-In Time Column -->
-                    <ng-container matColumnDef="access">
-                      <mat-header-cell *matHeaderCellDef> Access </mat-header-cell>
-                      <mat-cell *matCellDef="let log"> {{ log.access }} </mat-cell>
-                    </ng-container>
-              
-                    <!-- Check-Out Time Column -->
-                    <ng-container matColumnDef="checkInTime">
-                      <mat-header-cell *matHeaderCellDef> Check-In Time </mat-header-cell>
-                      <mat-cell *matCellDef="let log"> {{ log.checkInTime }} </mat-cell>
-                    </ng-container>
-              
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="onRowClick(row)"></mat-row>
-                  </mat-table>
-                </div>
-              </section>
-              
+    <!-- Check-In Logs Section -->
+    <section class="check-in-logs mt-4">
+      <div style="display: flex; align-items: center;">
+        <h2 style="margin: 0;">Check-In Logs</h2>
+        <button class="btn btn-light btn-sm" (click)="refreshLogs()" style="margin-left: 10px;">
+          <i class="fa fa-refresh"></i>
+        </button>
+      </div>
+      
+        <div class="table-container mt-3">
+            <mat-table [dataSource]="filteredLogs" class="mat-elevation-z8">
+                <ng-container matColumnDef="date">
+                    <mat-header-cell *matHeaderCellDef> Date </mat-header-cell>
+                    <mat-cell *matCellDef="let log"> {{ log.date | date:'yyyy-MM-dd' }} </mat-cell>
+                </ng-container>
+                <!-- <ng-container matColumnDef="access">
+                    <mat-header-cell *matHeaderCellDef> Access </mat-header-cell>
+                    <mat-cell style="color: green;" *matCellDef="let log"> Allow </mat-cell>
+                </ng-container> -->
+                <ng-container matColumnDef="checkInTime">
+                    <mat-header-cell *matHeaderCellDef> Check-In Time </mat-header-cell>
+                    <mat-cell *matCellDef="let log"> {{ log.checkInTime }} </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="checkOutTime">
+                    <mat-header-cell *matHeaderCellDef> Check-Out Time </mat-header-cell>
+                    <mat-cell *matCellDef="let log"> {{ log.checkOutTime }} </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="logColumns"></mat-header-row>
+                <mat-row *matRowDef="let log; columns: logColumns;"></mat-row>
+            </mat-table>
         </div>
-    </div>
+    </section>
+</div>
+  
+</div>
 </div>

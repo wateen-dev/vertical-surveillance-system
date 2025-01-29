@@ -1,591 +1,168 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeRegistrationService } from '../employeeregistration/service/employeeregistrationservice';
 import { MatPaginator } from '@angular/material/paginator';
+import { ToastService } from '../service/toast.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environment/environment';
+import { ActivatedRoute } from '@angular/router';
+
 
 @Component({
-  selector: 'app-verticalsurveillances-system',
+  selector: 'app-vertical-surveillances-system',
   templateUrl: './verticalsurveillances-system.component.html',
-  styleUrl: './verticalsurveillances-system.component.css'
+  styleUrls: ['./verticalsurveillances-system.component.css'],
 })
-export class VerticalsurveillancesSystemComponent  {
-  title = 'Vertical Surveillance System';
-
-  // Dropdown data
-  names: string[] = [];
-  selectedName: string = '';
-  showExportInfo = false;
-  // Table data source
-  displayedColumns: string[] = ['employeeId', 'access', 'checkInTime'];
+export class VerticalsurveillancesSystemComponent {
+  // Dropdown and Search Data
+  selectedCategory = '';
+  selectedCompany = ''; // Empty for no filter
+  searchQuery = '';
+  displayedColumns: string[] = ['id','name', 'company','category', 'phone'];
   dataSource = new MatTableDataSource<any>();
-
-  // Employee Information
-  employee = {
-    name: '',
-    id: 0,
-    access: '',
-    company: '',
-    floor: '',
-    validTill: '',
-    photoUrl: '',
-  };
-  
-  // Complete data fetched from the Excel sheet
-  allData = [
-    {'date': '2024-12-01',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '17:07:44',
-      'checkOutTime': '17:10:14','employeeId':'0','access':'Allowed'},
-     {'date': '2024-12-01',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:55:00',
-      'checkOutTime': '15:33:00'},
-     {'date': '2024-12-01',
-      'name': '2834-Umair-employee',
-      'checkInTime': '7:43:00',
-      'checkOutTime': '14:15:00'},
-     {'date': '2024-12-01',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '9:48:00',
-      'checkOutTime': '16:29:00'},
-     {'date': '2024-12-01',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '10:48:00',
-      'checkOutTime': '19:22:00'},
-     {'date': '2024-12-01',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:25:00',
-      'checkOutTime': '15:45:00'},
-     {'date': '2024-12-02',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:56:00',
-      'checkOutTime': '18:31:00'},
-     {'date': '2024-12-02',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '8:04:00',
-      'checkOutTime': '17:04:00'},
-     {'date': '2024-12-02',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '8:04:00',
-      'checkOutTime': '14:05:00'},
-     {'date': '2024-12-03',
-      'name': '2834-Umair-employee',
-      'checkInTime': '7:38:00',
-      'checkOutTime': '15:54:00'},
-     {'date': '2024-12-03',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '7:30:00',
-      'checkOutTime': '15:51:00'},
-     {'date': '2024-12-03',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '9:34:00',
-      'checkOutTime': '18:13:00'},
-     {'date': '2024-12-03',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '8:03:00',
-      'checkOutTime': '14:22:00'},
-     {'date': '2024-12-04',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:15:00',
-      'checkOutTime': '13:58:00'},
-     {'date': '2024-12-04',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '8:57:00',
-      'checkOutTime': '18:09:00'},
-     {'date': '2024-12-04',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '7:57:00',
-      'checkOutTime': '17:54:00'},
-     {'date': '2024-12-05',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '8:41:00',
-      'checkOutTime': '14:47:00'},
-     {'date': '2024-12-05',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '7:24:00',
-      'checkOutTime': '17:13:00'},
-     {'date': '2024-12-05',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '7:05:00',
-      'checkOutTime': '14:23:00'},
-     {'date': '2024-12-05',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '9:44:00',
-      'checkOutTime': '18:41:00'},
-     {'date': '2024-12-06',
-      'name': '1498-Shabir-emplo+C23yee',
-      'checkInTime': '7:40:00',
-      'checkOutTime': '15:38:00'},
-     {'date': '2024-12-06',
-      'name': '2834-Umair-employee',
-      'checkInTime': '8:33:00',
-      'checkOutTime': '16:05:00'},
-     {'date': '2024-12-06',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '8:55:00',
-      'checkOutTime': '18:33:00'},
-     {'date': '2024-12-06',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '9:22:00',
-      'checkOutTime': '18:21:00'},
-     {'date': '2024-12-06',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '8:41:00',
-      'checkOutTime': '16:11:00'},
-     {'date': '2024-12-07',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '9:00:00',
-      'checkOutTime': '15:07:00'},
-     {'date': '2024-12-07',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '8:14:00',
-      'checkOutTime': '15:33:00'},
-     {'date': '2024-12-07',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '7:52:00',
-      'checkOutTime': '16:45:00'},
-     {'date': '2024-12-07',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:37:00',
-      'checkOutTime': '19:30:00'},
-     {'date': '2024-12-07',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '10:49:00',
-      'checkOutTime': '17:15:00'},
-     {'date': '2024-12-08',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:31:00',
-      'checkOutTime': '16:40:00'},
-     {'date': '2024-12-08',
-      'name': '2834-Umair-employee',
-      'checkInTime': '8:26:00',
-      'checkOutTime': '17:47:00'},
-     {'date': '2024-12-08',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:46:00',
-      'checkOutTime': '15:11:00'},
-     {'date': '2024-12-08',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '7:45:00',
-      'checkOutTime': '17:34:00'},
-     {'date': '2024-12-08',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '8:25:00',
-      'checkOutTime': '16:40:00'},
-     {'date': '2024-12-08',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '9:53:00',
-      'checkOutTime': '19:40:00'},
-     {'date': '2024-12-09',
-      'name': '2834-Umair-employee',
-      'checkInTime': '9:27:00',
-      'checkOutTime': '15:46:00'},
-     {'date': '2024-12-09',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '8:39:00',
-      'checkOutTime': '15:40:00'},
-     {'date': '2024-12-09',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:50:00',
-      'checkOutTime': '19:21:00'},
-     {'date': '2024-12-09',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '10:45:00',
-      'checkOutTime': '18:26:00'},
-     {'date': '2024-12-09',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:36:00',
-      'checkOutTime': '17:01:00'},
-     {'date': '2024-12-09',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '9:01:00',
-      'checkOutTime': '15:01:00'},
-     {'date': '2024-12-10',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:42:00',
-      'checkOutTime': '15:03:00'},
-     {'date': '2024-12-10',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:23:00',
-      'checkOutTime': '14:10:00'},
-     {'date': '2024-12-10',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '7:44:00',
-      'checkOutTime': '16:10:00'},
-     {'date': '2024-12-10',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:43:00',
-      'checkOutTime': '20:20:00'},
-     {'date': '2024-12-10',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '7:30:00',
-      'checkOutTime': '13:38:00'},
-     {'date': '2024-12-11',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:31:00',
-      'checkOutTime': '14:49:00'},
-     {'date': '2024-12-11',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '8:24:00',
-      'checkOutTime': '16:39:00'},
-     {'date': '2024-12-11',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:56:00',
-      'checkOutTime': '18:21:00'},
-     {'date': '2024-12-12',
-      'name': '2834-Umair-employee',
-      'checkInTime': '10:52:00',
-      'checkOutTime': '19:50:00'},
-     {'date': '2024-12-12',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '10:37:00',
-      'checkOutTime': '19:31:00'},
-     {'date': '2024-12-12',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:41:00',
-      'checkOutTime': '16:27:00'},
-     {'date': '2024-12-12',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:40:00',
-      'checkOutTime': '13:49:00'},
-     {'date': '2024-12-13',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:10:00',
-      'checkOutTime': '15:03:00'},
-     {'date': '2024-12-13',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '7:47:00',
-      'checkOutTime': '14:14:00'},
-     {'date': '2024-12-13',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '9:09:00',
-      'checkOutTime': '16:48:00'},
-     {'date': '2024-12-14',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '10:34:00',
-      'checkOutTime': '20:28:00'},
-     {'date': '2024-12-14',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '8:13:00',
-      'checkOutTime': '16:33:00'},
-     {'date': '2024-12-14',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '8:15:00',
-      'checkOutTime': '18:02:00'},
-     {'date': '2024-12-15',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:54:00',
-      'checkOutTime': '15:56:00'},
-     {'date': '2024-12-15',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '7:44:00',
-      'checkOutTime': '17:02:00'},
-     {'date': '2024-12-15',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:45:00',
-      'checkOutTime': '14:03:00'},
-     {'date': '2024-12-16',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:34:00',
-      'checkOutTime': '17:40:00'},
-     {'date': '2024-12-16',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:07:00',
-      'checkOutTime': '18:58:00'},
-     {'date': '2024-12-16',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '10:18:00',
-      'checkOutTime': '19:50:00'},
-     {'date': '2024-12-17',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '10:04:00',
-      'checkOutTime': '18:48:00'},
-     {'date': '2024-12-17',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '9:10:00',
-      'checkOutTime': '15:21:00'},
-     {'date': '2024-12-17',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '9:01:00',
-      'checkOutTime': '17:38:00'},
-     {'date': '2024-12-17',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '8:42:00',
-      'checkOutTime': '15:43:00'},
-     {'date': '2024-12-18',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '10:14:00',
-      'checkOutTime': '17:18:00'},
-     {'date': '2024-12-18',
-      'name': '2834-Umair-employee',
-      'checkInTime': '9:10:00',
-      'checkOutTime': '15:58:00'},
-     {'date': '2024-12-18',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:19:00',
-      'checkOutTime': '17:09:00'},
-     {'date': '2024-12-18',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:14:00',
-      'checkOutTime': '16:40:00'},
-     {'date': '2024-12-19',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:01:00',
-      'checkOutTime': '15:56:00'},
-     {'date': '2024-12-19',
-      'name': '2834-Umair-employee',
-      'checkInTime': '7:26:00',
-      'checkOutTime': '14:02:00'},
-     {'date': '2024-12-19',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:06:00',
-      'checkOutTime': '17:20:00'},
-     {'date': '2024-12-19',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '9:35:00',
-      'checkOutTime': '15:42:00'},
-     {'date': '2024-12-20',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:49:00',
-      'checkOutTime': '18:44:00'},
-     {'date': '2024-12-20',
-      'name': '2834-Umair-employee',
-      'checkInTime': '9:46:00',
-      'checkOutTime': '17:33:00'},
-     {'date': '2024-12-20',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '10:09:00',
-      'checkOutTime': '18:40:00'},
-     {'date': '2024-12-20',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '9:59:00',
-      'checkOutTime': '18:07:00'},
-     {'date': '2024-12-20',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:37:00',
-      'checkOutTime': '16:37:00'},
-     {'date': '2024-12-20',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '7:04:00',
-      'checkOutTime': '16:07:00'},
-     {'date': '2024-12-21',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:23:00',
-      'checkOutTime': '14:05:00'},
-     {'date': '2024-12-21',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '9:57:00',
-      'checkOutTime': '18:06:00'},
-     {'date': '2024-12-21',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '10:49:00',
-      'checkOutTime': '19:19:00'},
-     {'date': '2024-12-22',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '10:32:00',
-      'checkOutTime': '18:27:00'},
-     {'date': '2024-12-22',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '10:19:00',
-      'checkOutTime': '16:54:00'},
-     {'date': '2024-12-22',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:40:00',
-      'checkOutTime': '18:23:00'},
-     {'date': '2024-12-23',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:41:00',
-      'checkOutTime': '14:57:00'},
-     {'date': '2024-12-23',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '10:35:00',
-      'checkOutTime': '19:42:00'},
-     {'date': '2024-12-23',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '10:41:00',
-      'checkOutTime': '16:54:00'},
-     {'date': '2024-12-23',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '10:11:00',
-      'checkOutTime': '18:26:00'},
-     {'date': '2024-12-24',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '8:51:00',
-      'checkOutTime': '18:49:00'},
-     {'date': '2024-12-24',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '9:37:00',
-      'checkOutTime': '17:55:00'},
-     {'date': '2024-12-24',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:00:00',
-      'checkOutTime': '15:32:00'},
-     {'date': '2024-12-24',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '7:46:00',
-      'checkOutTime': '14:46:00'},
-     {'date': '2024-12-24',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:40:00',
-      'checkOutTime': '18:50:00'},
-     {'date': '2024-12-25',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '10:19:00',
-      'checkOutTime': '19:19:00'},
-     {'date': '2024-12-25',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '10:51:00',
-      'checkOutTime': '16:55:00'},
-     {'date': '2024-12-25',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '10:35:00',
-      'checkOutTime': '19:20:00'},
-     {'date': '2024-12-26',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:06:00',
-      'checkOutTime': '15:06:00'},
-     {'date': '2024-12-26',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:59:00',
-      'checkOutTime': '17:21:00'},
-     {'date': '2024-12-27',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '7:57:00',
-      'checkOutTime': '15:58:00'},
-     {'date': '2024-12-27',
-      'name': '2834-Umair-employee',
-      'checkInTime': '8:58:00',
-      'checkOutTime': '16:25:00'},
-     {'date': '2024-12-27',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '9:33:00',
-      'checkOutTime': '18:44:00'},
-     {'date': '2024-12-27',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '8:12:00',
-      'checkOutTime': '15:35:00'},
-     {'date': '2024-12-27',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '8:16:00',
-      'checkOutTime': '16:25:00'},
-     {'date': '2024-12-27',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '8:15:00',
-      'checkOutTime': '17:48:00'},
-     {'date': '2024-12-28',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '8:44:00',
-      'checkOutTime': '15:27:00'},
-     {'date': '2024-12-28',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '10:34:00',
-      'checkOutTime': '17:07:00'},
-     {'date': '2024-12-28',
-      'name': '5912-Ahmad-tenant',
-      'checkInTime': '7:38:00',
-      'checkOutTime': '16:21:00'},
-     {'date': '2024-12-29',
-      'name': '2834-Umair-employee',
-      'checkInTime': '9:33:00',
-      'checkOutTime': '16:21:00'},
-     {'date': '2024-12-29',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '10:45:00',
-      'checkOutTime': '16:57:00'},
-     {'date': '2024-12-29',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '10:43:00',
-      'checkOutTime': '17:44:00'},
-     {'date': '2024-12-29',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '8:47:00',
-      'checkOutTime': '17:51:00'},
-     {'date': '2024-12-29',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '8:19:00',
-      'checkOutTime': '16:13:00'},
-     {'date': '2024-12-30',
-      'name': '1498-Shabir-employee',
-      'checkInTime': '10:05:00',
-      'checkOutTime': '20:04:00'},
-     {'date': '2024-12-30',
-      'name': '3542-Hamza-visitor',
-      'checkInTime': '7:05:00',
-      'checkOutTime': '15:28:00'},
-     {'date': '2024-12-30',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '10:47:00',
-      'checkOutTime': '19:03:00'},
-     {'date': '2024-12-30',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '8:51:00',
-      'checkOutTime': '16:05:00'},
-     {'date': '2024-12-30',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '10:17:00',
-      'checkOutTime': '17:02:00'},
-     {'date': '2024-12-31',
-      'name': '4573-Sharyar-visitor',
-      'checkInTime': '7:54:00',
-      'checkOutTime': '16:03:00'},
-     {'date': '2024-12-31',
-      'name': '5364-Khuram-tenant',
-      'checkInTime': '9:09:00',
-      'checkOutTime': '18:12:00'},
-     {'date': '2024-12-31',
-      'name': '6564-Rizwan-tenant',
-      'checkInTime': '7:54:00',
-      'checkOutTime': '14:12:00'},
-     {'date': '2024-12-31',
-      'name': '7465-Irfan-tenant',
-      'checkInTime': '10:09:00',
-      'checkOutTime': '17:42:00'}
-    // Add more entries as required
-  ];
-
+  logColumns = ['date', 'checkInTime','checkOutTime'];
+  selectedEmployee: any = null;
+  filteredLogs: any[] = [];
+  accessStatus: 'Allowed' | 'Revoked' = 'Allowed';
+  isPresent: boolean = false;
+  selectedCard: string = '';
+  ds:any;
+  lastSyncedTime: string = '';
+  private apiUrl = environment.apiUrl;           
+      private local_apiUrl = environment.localApiUrl;
+      imagePath1Base64:any;
+  constructor(private verticalService: EmployeeRegistrationService,private route: ActivatedRoute,private toastService: ToastService,private http: HttpClient) {
+    debugger;
+    this.updateLastSyncedTime();
+  }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
-    // Generate random "Allowed" or "Restrict" values for Access column
-    this.allData.forEach((entry) => {
-      entry.access = Math.random() > 0.5 ? 'Allowed' : 'Restrict';
-      entry.employeeId  = entry.name.split('-')[0]; // Extract Employee ID from name
+    debugger;
+    this.route.queryParams.subscribe((params) => {
+      this.selectedCard = params['card'];
+      if(this.selectedCard=='Employees')
+      this.selectedCategory='employee'
+    if(this.selectedCard=='Visitors')
+      this.selectedCategory='visitor'
+     if(this.selectedCard=='Executives')
+      this.selectedCategory='tenant'
+    if(this.selectedCard!=undefined)
+      this.isPresent=true;
+      console.log('Selected Card:', this.selectedCard); // Debugging output
     });
+    this.loadData();
+    // this.checkInLogs.paginator = this.paginator;
+  }
 
-    // Sort data by date and time in descending order
-    this.allData.sort((a, b) =>
-      new Date(b.date + ' ' + b.checkInTime).getTime() -
-      new Date(a.date + ' ' + a.checkInTime).getTime()
+refreshComponent(){
+  this.selectedCard=''
+  this.selectedCategory=''
+  this.selectedCompany=''
+  this.searchQuery=''
+  this.selectedEmployee=null
+  this.filteredLogs=[]
+  this.loadData();
+ 
+  
+
+}
+ 
+refreshLogs(){
+    this.onRowClick(this.selectedEmployee)
+}
+  updateLastSyncedTime(): void {
+    const now = new Date();
+    this.lastSyncedTime = `${now.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }
+  loadData(): void {
+    this.verticalService.fetchAllData().subscribe((data:any) => {
+      this.dataSource.data = data.result;
+      this.filterTable(); // Apply default filter
+    });
+  }
+  fetchImages(path:any): void {
+ 
+    debugger
+        const fileName = path.split("\\").pop();
+        
+            this.http.get(this.local_apiUrl+`Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data:any) => {
+           debugger;
+              this.imagePath1Base64 = data.thumbnailBase64;
+           
+            },
+              (error) => {
+                console.error('Error fetching thumbnail:', error);
+              }
+            );
+          }
+  onRowClick(row: any) {
+    debugger;
+    if(this.selectedCategory!='visitor'){
+    this.fetchImages(row.profilePicture)
+    this.selectedEmployee = row;
+    this.accessStatus = 'Allowed';
+    // this.filteredLogs = this.checkInLogs.filter(log => log.name.split('-')[1] === row.name);
+    this.verticalService.fetchCheckInLogs(row.id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredLogs = logs; // Assign API response to filteredLogs
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredLogs = []; // Clear logs on error
+      }
+    );
+  }
+  else
+  {
+    if (row.profilePicture)
+      this.fetchImages(row.profilePicture)
+    this.selectedEmployee = row;
+    this.accessStatus = 'Allowed';
+    this.verticalService.fetchCheckInLogsVisitors(row.id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredLogs = logs; // Assign API response to filteredLogs
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredLogs = []; // Clear logs on error
+      }
     );
 
-    // Show only the last 10 recent entries
-    this.dataSource.data = this.allData.slice(0, 10);
-
-    // Set the most recent entry as the default selection
-    if (this.dataSource.data.length > 0) {
-      this.updateEmployeeInfo(this.dataSource.data[0]);
-    }
+  }
+  }
+  allowAccess() {
+    this.accessStatus = 'Allowed';
+    
+    this.toastService.showSuccess('Access has been allowed.');
   }
 
-  ngAfterViewInit(): void {
-    // Attach paginator to table data source
-    this.dataSource.paginator = this.paginator;
+  revokeAccess() {
+    this.accessStatus = 'Revoked';
+   
+    this.toastService.showSuccess('Access has been revoked.');
   }
+ filterTable(): void {
+    const categoryFilter = this.selectedCategory.toLowerCase();
+    const companyFilter = this.selectedCompany.toLowerCase();
+    const searchFilter = this.searchQuery.toLowerCase();
 
-  // Function to update Employee Information
-  updateEmployeeInfo(selectedRow: any): void {
-    this.employee = {
-      name: selectedRow.name,
-      id: selectedRow.employeeId,
-      access: selectedRow.access,
-      company: 'Northface', // Replace with real data if available
-      floor: '7th', // Replace with real data if available
-      validTill: '12-08-2026', // Replace with real data if available
-      photoUrl: 'assets/photo-logo.png',
-    };
-  }
+    this.ds = this.dataSource.data.filter((item) => {
+      const matchesCompany =
+        !companyFilter || item.company.toLowerCase() === companyFilter;
+      const matchesCategory =
+        !categoryFilter || item.category.toLowerCase() === categoryFilter;
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchFilter) ||
+        item.email.toLowerCase().includes(searchFilter) ||
+        item.phone.includes(searchFilter);
+      const matchesPresent = this.isPresent
+        ? item.status === 'Present' // Assuming the status property holds "Present"/"Absent" information
+        : true;
 
-  // Row click event to update Employee Information
-  onRowClick(row: any): void {
-    this.updateEmployeeInfo(row);
+      return matchesCompany && matchesCategory && matchesSearch && matchesPresent;
+    });
   }
 }

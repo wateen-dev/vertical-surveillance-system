@@ -25,7 +25,7 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-                                <div class="col-md-6 form-group">
+                                <!-- <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Tenant Name</mat-label>
                                         <mat-select name="app" ngModel required>
@@ -37,8 +37,24 @@
                                             Tenant Name is required.
                                         </mat-error>
                                     </mat-form-field>
+                                </div> -->
+                                <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Tenant Name</mat-label>
+                                        <mat-select name="app" ngModel required>
+                                            <mat-option [value]="{ tenant_id: 1, tenant_name: 'The Vertical' }">
+                                                The Vertical
+                                            </mat-option>
+                                            <mat-option [value]="{ tenant_id: 2, tenant_name: 'Wateen' }">
+                                                Wateen
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
+                                            Tenant Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
                                 </div>
-
+                                
                                 <!-- Contact Number -->
                                 <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
@@ -54,7 +70,7 @@
                                 <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Official Email Address</mat-label>
-                                        <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                                        <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$">
                                         <mat-error *ngIf="employeeForm.controls['email']?.invalid && (employeeForm.controls['email']?.touched || employeeForm.controls['email']?.dirty)">
                                             Please enter a valid email address.
                                         </mat-error>
@@ -146,9 +162,9 @@
                                     <h3 class="sideNavHeading mb-0 cssStyle">Select your working days</h3>
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Date Range</mat-label>
-                                        <mat-date-range-input [rangePicker]="dateRangePicker" name="dateRange" ngModel required>
-                                            <input matStartDate placeholder="Start date" ngModel name="startDate" required>
-                                            <input matEndDate placeholder="End date" ngModel name="endDate" required>
+                                        <mat-date-range-input [rangePicker]="dateRangePicker" name="dateRange" ngModel >
+                                            <input matStartDate placeholder="Start date" ngModel name="startDate" >
+                                            <input matEndDate placeholder="End date" ngModel name="endDate" >
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #dateRangePicker></mat-date-range-picker>

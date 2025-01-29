@@ -64,6 +64,7 @@ mat-paginator {
 }
 .txtStyle{
   font-family: 'Century Gothic', sans-serif;
+  font-size: small;
 }
 /* @media (max-width: 768px) {
   .export-info {

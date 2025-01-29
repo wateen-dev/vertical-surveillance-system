@@ -12,12 +12,16 @@
      style="position: absolute; top: 10px; right: 10px; font-size: 24px; color: #007BFF; cursor: pointer; z-index: 10;">
   </i> -->
 <!-- </div> --> 
+<!-- <div class="chart-container">
+  <div id="lineChart1" style="width:100%; height:340px;"></div>
+</div> -->
+
 
 <div class="mainStyle">
   <div class="row">
     <div class="col-lg-6">
       <div class="card-header">
-        <h2 class="mainHeading">Crowd Counting</h2>
+        <h2 class="mainHeading">SOP Compliance</h2>
         <p class="paraStyle"></p>
       </div>
     </div>
@@ -27,6 +31,12 @@
     
   </div>
   <div class="chart-container">
-    <div id="barChart" style="width:100%; height:340px;"></div>
+    <div class="dropdown-container">
+     
+      <select id="employeeSelect" [(ngModel)]="selectedEmployee" (change)="onEmployeeChange()">
+        <option *ngFor="let employee of employeeNames" [value]="employee">{{ employee }}</option>
+      </select>
+    </div>
+    <div id="lineChart1" style="width:100%; height:340px;"></div>
   </div>
 </div> 

@@ -22,7 +22,8 @@
 
  -->
 
- <div class="analyticsStyle">
+ <div class="analyticsStyle ">
+  <h2 class="mainHeading"></h2>
   <div class="container-fluid horizontal-statistics">
     <div class="row">
       <!-- Statistics Cards -->
@@ -31,7 +32,7 @@
           <mat-icon class="stat-icon">{{ getIcon() }}</mat-icon>
           <h3 class="stat-label">{{ stat.label }}</h3>
           <span class="stat-value">{{ stat.value }}</span>
-          <button class="see-details-btn">See Details</button>
+          <button class="see-details-btn"  (click)="navigateToDetails(stat.label)">See Details</button>
         </div>
       </div>
     </div>

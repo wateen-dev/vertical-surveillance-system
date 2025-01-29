@@ -58,6 +58,14 @@ import { ClearanceComponent } from './dashboard-templates/clearance/clearance.co
 import { ReceptionistManagementComponent } from './receptionist-management/receptionist-management.component';
 import { UserRegistrationComponent } from './userregistration/userregistration.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
+import { ActiveAlarmsComponent } from './dashboard-templates/active-alarms/active-alarms.component';
+import { EfficiencyOvertimeComponent } from './dashboard-templates/efficiency-overtime/efficiency-overtime.component';
+import { SopComplianceComponent } from './dashboard-templates/sop-compliance/sop-compliance.component';
+
+
+
+
+// Pass the FusionCharts library and modules to the FusionChartsModule
 
 
 @NgModule({
@@ -81,14 +89,17 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         VisitorregistrationComponent,
         FootfallAnalyticsComponent,
         StatisticsChartComponent,
+        ActiveAlarmsComponent,
         TenantGridComponent,
-        ResetPasswordComponent,
+        EfficiencyOvertimeComponent,
         AvailableOccupancyComponent,
         VisitorAnalyticsComponent,
         EmployeeAttendanceComponent,
         ClearanceComponent,
         ReceptionistManagementComponent,
-        ResetPasswordComponent
+        ResetPasswordComponent,
+        SopComplianceComponent
+       
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,
@@ -117,6 +128,7 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
         NgApexchartsModule,
         HighchartsChartModule,
         MatTableModule,
+        
         MatIconModule],
         
 

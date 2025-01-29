@@ -2,66 +2,77 @@
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-}
-.dots-button{
+  }
+  
+  .dots-button {
     margin-top: -16px;
     float: right;
   }
-.paraStyle {
+  
+  .paraStyle {
     margin-top: -20px;
     font-family: 'Century Gothic', sans-serif;
-}
-
-.mainHeading {
+  }
+  
+  .mainHeading {
     font-family: 'Century Gothic', sans-serif;
-}
-
-.highcharts-figure {
+  }
+  
+  .highcharts-figure {
     width: 100%;
     height: auto;
-}
-
-.chart-container {
+  }
+  
+  .chart-container {
     position: relative;
     width: 100%;
     height: auto;
-}
-
-.highcharts-legend {
+  }
+  
+  .highcharts-legend {
     padding: 20px;
     font-size: 1em;
-    /* Increase font size */
-}
-
-.highcharts-legend-item {
+  }
+  
+  .highcharts-legend-item {
     display: flex;
     align-items: center;
     padding: 5px 0;
-    /* Add padding on top and bottom */
-}
-
-.highcharts-legend-item .legend-color {
+  }
+  
+  .highcharts-legend-item .legend-color {
     width: 15px;
     height: 15px;
     margin-right: 8px;
-    /* Adjust margin for spacing */
-}
-
-.highcharts-legend-item text {
+  }
+  
+  .highcharts-legend-item text {
     color: rgb(51, 51, 51);
     cursor: pointer;
     font-size: 1em;
-    /* Increase font size */
     text-decoration: none;
     fill: rgb(51, 51, 51);
-}
-
-.btnExportStyle {
+  }
+  
+  .btnExportStyle {
     background-color: #1976d2;
     padding: 18px;
-}
-
-.btnExportStyle:hover {
+  }
+  
+  .btnExportStyle:hover {
     border: 1px solid #1976d2;
     background-color: white;
-}
+  }
+  
+  .floor-data-container {
+    max-height: 288px; /* Adjust height as needed */
+    overflow-y: auto; /* Enable scrolling */
+    padding-right: 10px; /* Prevent content cutoff */
+    max-width: fit-content;
+    margin-left: 81px;
+  }
+  
+  .floor-progress {
+    margin-bottom: 10px; /* Add spacing between floor rows */
+  }
+  

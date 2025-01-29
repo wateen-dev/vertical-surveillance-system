@@ -6,6 +6,7 @@ import { ToastService } from '../service/toast.service';
 import { Router } from '@angular/router';
 import { DataService } from '../service/DataService';
 import { DatePipe } from '@angular/common';
+import { Console } from 'console';
 @Component({
   selector: 'app-employeeregistration',
   templateUrl: './employeeregistration.component.html',
@@ -31,12 +32,12 @@ export class EmployeeregistrationComponent {
     EmployeeCNICImage: '',
     EmployeePictureImage: '',
     dateRange: '',
-    startDate: undefined,
+    startDate:undefined,
     endDate: undefined
   };
   ngOnInit(): void {
    
-    this.fetchTenantNames();
+    // this.fetchTenantNames();
   }
   fetchTenantNames() {
     this.employeeService.getTenantDetails().subscribe(
@@ -86,7 +87,14 @@ export class EmployeeregistrationComponent {
     }
   }
   onSubmit(form: any): void {
+    debugger
     if (form.valid) {
+      if(!form.value.startDate || !form.value.startDate)
+      {
+        console.log(form.value.startDate)
+        this.toastService.showError('Please Select Date ranges field.')
+        return;
+      }
       this.isLoading = true;
       
       const formData = new FormData();

@@ -11,9 +11,10 @@ import { ToastService } from '../service/toast.service';
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css']
 })
-export class ResetPasswordComponent implements OnInit {
+export class ResetPasswordComponent  {
   resetPasswordForm: FormGroup;
-  userId: string;
+  userId: string | null = null;
+
 
   constructor(
     private route: ActivatedRoute,private router: Router,
@@ -28,8 +29,13 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.paramMap.get('id')!;
+   
+    this.route.paramMap.subscribe(params => {
+      this.userId = params.get('id'); // Access the 'id' parameter
+      console.log(this.userId);
+    });
   }
+  
 
   resetPassword(): void {
     if (this.resetPasswordForm.valid) {

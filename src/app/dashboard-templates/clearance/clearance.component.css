@@ -10,3 +10,27 @@
 .mainHeading{
     font-family: 'Century Gothic', sans-serif;
 }
+#hygiene-gauge-container {
+    /* Take full width of the parent container */
+     height: auto;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+   }
+@media (max-width: 300px) {
+    #hygiene-gauge-container {
+      width: 130%; /* Smaller screens get 90% width */
+    }
+  }
+  
+  @media (min-width: 601px) and (max-width: 1024px) {
+    #hygiene-gauge-container {
+      width: 70%; /* Medium screens get 70% width */
+    }
+  }
+  
+  @media (min-width: 300px) {
+    #hygiene-gauge-container {
+      width: 110%; /* Larger screens get 50% width */
+    }
+  }

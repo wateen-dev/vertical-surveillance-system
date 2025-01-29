@@ -11,8 +11,8 @@ export interface Tenant {
   floor: string;
 }
 const ELEMENT_DATA: Tenant[] = [
-  { logo: 'apartment', company: 'Node 1', tenant: 123, floor: 'Floor 4' },
-  { logo: 'landscape', company: 'Peak', tenant: 143, floor: 'Floor 6' },
+  { logo: 'apartment', company: 'The Vertical', tenant: 8, floor: 'Floor 0' },
+  { logo: 'landscape', company: 'wateen', tenant: 9, floor: 'Floor 1' },
   { logo: 'waves', company: 'Abyss', tenant: 210, floor: 'Floor 9' },
   { logo: 'hub', company: 'Node 7', tenant: 165, floor: 'Floor 1' },
   { logo: 'developer_board', company: 'Terate', tenant: 184, floor: 'Floor 3' },
@@ -25,7 +25,7 @@ const ELEMENT_DATA: Tenant[] = [
   styleUrls: ['./tenant-grid.component.css']
 })
 export class TenantGridComponent implements OnInit, AfterViewInit {
-  displayedColumns: string[] = ['company', 'tenant', 'floor'];
+  displayedColumns: string[] = ['company', 'tenant', 'floor','leaseStart','leaseEnd'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
   showExportInfo = false;
   @ViewChild(MatPaginator) paginator: MatPaginator = <MatPaginator>{};

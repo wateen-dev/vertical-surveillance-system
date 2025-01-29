@@ -32,7 +32,7 @@ export class VisitorregistrationComponent {
 
   ngOnInit(): void {
     
-    this.fetchTenantNames();
+    // this.fetchTenantNames();
   }
   fetchTenantNames() {
     this.visitorService.getTenantDetails().subscribe(

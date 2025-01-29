@@ -1,15 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ReesetPasswordRoutingModule } from './reset-password-routing.module';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
+
+
 
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    DashboardRoutingModule,
-    
+    ReesetPasswordRoutingModule
   ]
 })
-export class DashboardModule { }
+export class ResetPasswordModule { }

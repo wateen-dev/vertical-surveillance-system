@@ -4,7 +4,7 @@
     <div class="row">
       <div class="col-sm-9">
         <div class="card-header">
-          <h2 class="mainHeading">Tenant</h2>
+          <h2 class="mainHeading">Tenant Details</h2>
           <p class="paraStyle"></p>
         </div>
       </div>
@@ -46,6 +46,14 @@
     <ng-container matColumnDef="floor">
       <mat-header-cell *matHeaderCellDef class="txtStyle"> Floor </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.floor }} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="leaseStart">
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Lease Start Date </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="txtStyle">- </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="leaseEnd">
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Lease End Date </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="txtStyle">- </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

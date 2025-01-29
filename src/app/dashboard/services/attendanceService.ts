@@ -6,7 +6,7 @@ import { environment } from '../../../environment/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class StatisticsService {
+export class AttendanceService {
   private apiUrl = environment.apiUrl;           
       private local_apiUrl = environment.localApiUrl;
 
@@ -19,8 +19,5 @@ export class StatisticsService {
   getAttendancePercentage(): Observable<any> {
     return this.http.get(this.local_apiUrl+"Vertical/attendance-percentage");
    
-  }
-  getEmployeeCheckIns(): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/check-ins`);
   }
 }

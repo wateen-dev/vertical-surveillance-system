@@ -8,6 +8,10 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
   {
+    path: 'vertical-surveillances-system', 
+    loadChildren: () => import('./verticalsurveillances-system/verticalsurveillances-system.module').then(m => m.VerticalsurveillancesSystemModule)
+  },
+  {
     path: 'login', 
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule)
   },
@@ -64,12 +68,14 @@ const routes: Routes = [
     loadChildren: () => import('./visitorregistration/visitorregistration.module').then(m => m.VisitorregistrationModule)
   },
   {
-    path: 'vertical-surveillances-system', 
-    loadChildren: () => import('./verticalsurveillances-system/verticalsurveillances-system.module').then(m => m.VerticalsurveillancesSystemModule)
+    path: 'reset-password/:id', 
+    loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordModule)
   },
+  
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
-  { path: 'reset-password/:id', component: ResetPasswordComponent },
+ 
+  
 ];
 
 @NgModule({

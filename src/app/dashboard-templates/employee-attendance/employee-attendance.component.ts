@@ -11,45 +11,45 @@ export class EmployeeAttendanceComponent {
   chartOptions: any;
 
   totalEmployees: number = 9; // Total number of employees
-  presentEmployees: number = 8; // Number of employees present
-  attendancePercentage: number = Math.round((this.presentEmployees / this.totalEmployees) * 100); // Round off the present percentage
-  absentPercentage: number = Math.round(((this.totalEmployees - this.presentEmployees) / this.totalEmployees) * 100); // Round off the absent percentage
+  presentEmployees: number = 7; // Number of employees present (example)
+  attendancePercentage: number = Math.round((this.presentEmployees / this.totalEmployees) * 100); // Rounded percentage of present
+  absentPercentage: number = Math.round(((this.totalEmployees - this.presentEmployees) / this.totalEmployees) * 100); // Rounded percentage of absent
 
   constructor() {
     this.chartOptions = {
       chart: {
         type: 'pie',
-        marginTop: 40, // Space for the title
+         // Optional: make the chart background transparent
+        marginTop: 20,
+        marginBottom: -120, // Adjust margin for the half-donut effect
       },
       title: {
         text: 'Staff Attendance',
-        align: 'left', // Align title to the left
-        x: 0, // Horizontal position adjustment
-        y:10,
-        
+        align: 'center', // Center the title
         style: {
-          fontSize: '18px', // Customize title font size
+          fontSize: '20px',
           fontWeight: 'normal',
-          fontFamily: 'Century Gothic, sans-serif', // Add Century Gothic font
+          fontFamily: 'Century Gothic, sans-serif',
         },
       },
       tooltip: {
-        pointFormat: '{point.name}: {point.percentage:.1f}%', // Only show percentage of present/absent employees
-        enabled: true,
+        pointFormat: '{point.name}: {point.percentage:.1f}%',
       },
       plotOptions: {
         pie: {
-          innerSize: '75%', // Donut effect
+          startAngle: -90, // Begin at the top
+          endAngle: 90, // End at the bottom for half-donut
+          innerSize: '75%', // Creates the donut effect
+          center: ['50%', '70%'], // Adjust the center for a larger and centered chart
           dataLabels: {
-            enabled: true, // Show percentage in the center
-            format: '{y}%', // Display percentage value
+            enabled: true,
+            format: '{y}%',
             style: {
               fontWeight: 'bold',
               color: 'black',
-              fontSize: '18px',
+              fontSize: '16px',
             },
           },
-          borderWidth: 0, // Removes the border of the donut chart
         },
       },
       series: [
@@ -59,13 +59,13 @@ export class EmployeeAttendanceComponent {
           data: [
             {
               name: 'Present',
-              y: this.attendancePercentage, // Dynamic present percentage
-              color: '#4CAF50', // Green color for present employees
+              y: this.attendancePercentage,
+              color: '#4CAF50', // Green color
             },
             {
               name: 'Absent',
-              y: this.absentPercentage, // Dynamic absent percentage
-              color: '#F44336', // Red color for absent employees
+              y: this.absentPercentage,
+              color: '#F44336', // Red color
             },
           ],
         },

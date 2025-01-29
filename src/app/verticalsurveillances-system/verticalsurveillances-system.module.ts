@@ -7,7 +7,7 @@ import { VerticalsurveillancesSystemRoutingModule } from './verticalsurveillance
 @NgModule({
   declarations: [],
   imports: [
-    CommonModule,
+ 
     VerticalsurveillancesSystemRoutingModule
   ]
 })

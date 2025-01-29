@@ -31,4 +31,19 @@ export class EmployeeRegistrationService {
   verifyOtp(otpCode: string): Observable<any> {
     return this.http.get(this.local_apiUrl + `Vertical/VerifyOtp?otpCode=${otpCode}`);
   }
+  fetchAllData(): Observable<any> {
+    return this.http.get(this.local_apiUrl+`Vertical/fetch-combined-data`);
+  }
+  fetchCheckInLogs(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogs?employeeId=${employeeId}`);
+  }
+  fetchCheckInLogsVisitors(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogsVisitors?employeeId=${employeeId}`);
+  }
+  getEmployeeCheckIns(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/check-ins`);
+  }
+  getefficiencyOvertime(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/average-wait-time`);
+  }
 }
