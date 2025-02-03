@@ -46,4 +46,7 @@ export class EmployeeRegistrationService {
   getefficiencyOvertime(): Observable<any> {
     return this.http.get(this.local_apiUrl + `Vertical/average-wait-time`);
   }
+  getsopCompliance(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/sop-compliance`);
+  }
 }

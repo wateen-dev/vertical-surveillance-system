@@ -17,16 +17,9 @@ export class SopComplianceComponent implements OnInit, OnDestroy {
 
   private destroy$ = new Subject<void>();
 
-  employeeNames: string[] = ['Faliha', 'Wali']; // Predefined employee names
-  selectedEmployee: string = 'Faliha'; // Default selected employee
-
-  staticData = {
-    categories: ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM'],
-    seriesData: {
-      Faliha: [85, 90, 95, 80, 70],
-      Wali: [75, 80, 85, 70, 65],
-    },
-  };
+  employeeNames: string[] = [];
+  selectedEmployee: string = '';
+  employeeData: any[] = []; // Holds API data for filtering
 
   lineChartOptions: Highcharts.Options = {
     chart: {
@@ -43,10 +36,9 @@ export class SopComplianceComponent implements OnInit, OnDestroy {
       title: { text: 'Time' },
     },
     yAxis: {
-      title: { text: 'Percentage' },
+      title: { text: 'Compliance Percentage (%)' },
       min: 0,
-      max: 100,
-      tickInterval: 10,
+      max: 100
     },
     series: [
       {
@@ -62,38 +54,92 @@ export class SopComplianceComponent implements OnInit, OnDestroy {
   constructor(private analyticsService: EmployeeRegistrationService) {}
 
   ngOnInit(): void {
-    // Initialize the chart with the default selected employee data
-    this.updateChartForEmployee(this.selectedEmployee);
+    this.fetchChartData();
+  }
+
+  fetchChartData(): void {
+    this.analyticsService
+      .getsopCompliance()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (data: any[]) => {
+          if (data && data.length) {
+            this.employeeData = data;
+
+            // Extract unique employee names
+            this.employeeNames = [...new Set(data.map(item => item.employeeName))];
+
+            // Default to the first employee in the list
+            this.selectedEmployee = this.employeeNames[0];
+            this.updateChartForEmployee(this.selectedEmployee);
+          }
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+        }
+      );
   }
 
   updateChartForEmployee(employeeName: string): void {
-    // Get the data for the selected employee
-    const categories = this.staticData.categories;
-    const seriesData = this.staticData.seriesData[employeeName as keyof typeof this.staticData.seriesData];
+    // Filter data for the selected employee
+    const filteredData = this.employeeData.filter(item => item.employeeName === employeeName);
+  
+    // Process data for chart
+    const categories: string[] = [];
+    const seriesData: number[] = [];
+  
+    filteredData.forEach(item => {
+      const formattedTime = this.formatTimeTo12Hour(item.time); // Convert time format
+      categories.push(formattedTime);
+      seriesData.push(item.totalPercentage);
+    });
+
+    // Sort by time
+    const sortedIndices = categories.map((_, i) => i)
+      .sort((a, b) => this.compareTime(categories[a], categories[b]));
+    
+    const sortedCategories = sortedIndices.map(i => categories[i]);
+    const sortedSeriesData = sortedIndices.map(i => seriesData[i]);
 
     if (!this.chartInitialized) {
-      // Initialize the chart only if it hasn't been initialized already
       this.chartInstance = Highcharts.chart(this.chartId1, this.lineChartOptions);
       this.chartInitialized = true;
     }
 
     if (this.chartInstance) {
-      // Clear the existing data
-      this.chartInstance.series[0].setData([], true); // Clear existing data without redrawing
-
-      // Now update the chart with the new data
-      this.chartInstance.series[0].setData(seriesData, true); // The second argument `true` redraws the chart
-      this.chartInstance.xAxis[0].setCategories(categories);
+      this.chartInstance.series[0].setData(sortedSeriesData);
+      this.chartInstance.xAxis[0].setCategories(sortedCategories);
     }
   }
 
+  // Helper function to format time in 12-hour format
+  formatTimeTo12Hour(time: string): string {
+    const [hours, minutes] = time.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const formattedHours = hours % 12 || 12; // Convert 0 or 12 to 12 AM/PM
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+  }
+
+  compareTime(a: string, b: string): number {
+    const parseTime = (t: string) => {
+      const matches = t.match(/\d+|\w+/g) || [];
+      const hour = parseInt(matches[0] || '0'); // Default to 0 if undefined
+      const minute = parseInt(matches[1] || '0'); // Default to 0 if undefined
+      const period = matches[2] || 'AM'; // Default to 'AM' if undefined
+  
+      const hours = (hour % 12) + (period.toUpperCase() === 'PM' ? 12 : 0);
+      return hours * 60 + minute;
+    };
+  
+    return parseTime(a) - parseTime(b);
+  }
+  
+
   onEmployeeChange(): void {
-    // Update the chart when a new employee is selected
     this.updateChartForEmployee(this.selectedEmployee);
   }
 
   ngOnDestroy(): void {
-    // Cleanup chart and subscription
     if (this.chartInstance) {
       try {
         this.chartInstance.destroy();
