@@ -65,20 +65,38 @@ export class SopComplianceComponent implements OnInit, OnDestroy {
         (data: any[]) => {
           if (data && data.length) {
             this.employeeData = data;
-
+  
             // Extract unique employee names
             this.employeeNames = [...new Set(data.map(item => item.employeeName))];
-
+  
             // Default to the first employee in the list
             this.selectedEmployee = this.employeeNames[0];
             this.updateChartForEmployee(this.selectedEmployee);
+          } else {
+            // Use dummy data when no API data is available
+            this.setDummyData();
           }
         },
         (error) => {
           console.error('Error fetching data:', error);
+          this.setDummyData(); // Set dummy data on error
         }
       );
   }
+  
+  // Function to set dummy data
+  setDummyData(): void {
+    this.employeeData = [
+      { employeeName: 'Wali', time: '08:00', totalPercentage: 75 },
+      { employeeName: 'Wali', time: '12:00', totalPercentage: 80 },
+      { employeeName: 'Wali', time: '16:00', totalPercentage: 85 }
+    ];
+  
+    this.employeeNames = ['Wali'];
+    this.selectedEmployee = 'Wali';
+    this.updateChartForEmployee('Wali');
+  }
+  
 
   updateChartForEmployee(employeeName: string): void {
     // Filter data for the selected employee

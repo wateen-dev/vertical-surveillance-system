@@ -57,26 +57,35 @@ export class EfficiencyOvertimeComponent implements OnInit, OnDestroy {
   }
 
   fetchChartData(): void {
-    this.analyticsService
-      .getefficiencyOvertime()
+    this.analyticsService.getefficiencyOvertime()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (data: any[]) => {
           if (data && data.length) {
             this.employeeData = data;
-
-            // Extract unique employee names
             this.employeeNames = [...new Set(data.map(item => item.employeeName))];
-
-            // Default to the first employee in the list
             this.selectedEmployee = this.employeeNames[0];
             this.updateChartForEmployee(this.selectedEmployee);
+          } else {
+            this.setDummyData();
           }
         },
         (error) => {
           console.error('Error fetching data:', error);
+          this.setDummyData();
         }
       );
+  }
+
+  setDummyData(): void {
+    this.employeeData = [
+      { employeeName: 'Maheen', time: '08:00', duration: '00:45:00' },
+      { employeeName: 'Maheen', time: '10:00', duration: '01:30:00' },
+      { employeeName: 'Maheen', time: '14:00', duration: '00:55:00' }
+    ];
+    this.employeeNames = ['Maheen'];
+    this.selectedEmployee = 'Maheen';
+    this.updateChartForEmployee(this.selectedEmployee);
   }
 
   updateChartForEmployee(employeeName: string): void {
