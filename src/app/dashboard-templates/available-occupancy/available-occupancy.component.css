@@ -8,12 +8,26 @@
     margin-top: -16px;
     float: right;
   }
-  
+  .small-dropdown {
+    width: 180px; /* Adjust width as needed */
+    
+  }
   .paraStyle {
     margin-top: -20px;
     font-family: 'Century Gothic', sans-serif;
   }
-  
+  .dropdown-container {
+    position: absolute;
+    top: -47px;
+    right: 10px;
+    z-index: 10; /* Ensure the dropdown is above the chart */
+    background: rgba(255, 255, 255, 0.8); /* Slightly transparent background */
+    padding: 5px;
+    border-radius: 5px;
+    /* box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); */
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
   .mainHeading {
     font-family: 'Century Gothic', sans-serif;
   }

@@ -1,70 +1,51 @@
 <mat-card class="custom-card">
-  <!-- 3 Dots Icon Button at the Top -->
   <div class="container">
     <div class="row">
       <div class="col-sm-9">
         <div class="card-header">
-          <h2 class="mainHeading">Tenant Details</h2>
-          <p class="paraStyle"></p>
+          <h2 class="mainHeading">City-Wise Statistics</h2>
         </div>
       </div>
       <div class="col-sm-3">
-        <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <div *ngIf="showExportInfo" class="export-info">
-          <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
-        </div>
+        <mat-form-field appearance="outline" class="small-dropdown">
+          <mat-label>Select City</mat-label>
+          <mat-select [(value)]="selectedCity" (selectionChange)="filterData()">
+            <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
   </div>
-  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tblStyle">
-    <!-- Company Logo -->
-    <ng-container matColumnDef="logo" >
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Logo </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="txtStyle" style="width:300px">
-        <mat-icon>{{ element.logo }}</mat-icon>
-      </mat-cell>
-    </ng-container>
 
-    <!-- Company Name -->
+  <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tblStyle">
     <ng-container matColumnDef="company">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Tenant </mat-header-cell>
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Branches </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle">
         <mat-icon class="mticon">{{ element.logo }}</mat-icon>
         &nbsp;&nbsp;<span>{{ element.company }}</span>
       </mat-cell>
     </ng-container>
 
-    <!-- Tenant Number -->
     <ng-container matColumnDef="tenant">
       <mat-header-cell *matHeaderCellDef class="txtStyle"> Employees </mat-header-cell>
       <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.tenant }} </mat-cell>
     </ng-container>
 
-    <!-- Floor Number -->
-    <ng-container matColumnDef="floor">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Floor </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.floor }} </mat-cell>
+    <ng-container matColumnDef="PPE">
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> PPE Compliance Score </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.PPE }} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="leaseStart">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Lease Start Date </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="txtStyle">- </mat-cell>
-    </ng-container>
-    <ng-container matColumnDef="leaseEnd">
-      <mat-header-cell *matHeaderCellDef class="txtStyle"> Lease End Date </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="txtStyle">- </mat-cell>
+    <ng-container matColumnDef="effRate">
+      <mat-header-cell *matHeaderCellDef class="txtStyle"> Efficiency Rate </mat-header-cell>
+      <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.effRate }} </mat-cell>
     </ng-container>
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
   </mat-table>
 
-  <!-- Pagination -->
   <div class="paginator-container">
-    <mat-paginator [pageSizeOptions]="[5, 10, dataSource.data.length]"
-      aria-label="Select page of periodic elements">
+    <mat-paginator [pageSizeOptions]="[7, 20, dataSource.data.length]" aria-label="Select page of periodic elements">
     </mat-paginator>
   </div>
-  <!-- Overlay Click to Close Export Section -->
 </mat-card>

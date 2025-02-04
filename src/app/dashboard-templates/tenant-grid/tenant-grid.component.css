@@ -48,7 +48,11 @@ mat-table {
   justify-content: flex-start;
   align-items: center;
 }
-
+.small-dropdown {
+  width: 150px; /* Adjust width as needed */
+  margin-top: 18px;
+  
+}
 mat-paginator {
   flex: 1; /* Ensures the paginator stretches across */
 }

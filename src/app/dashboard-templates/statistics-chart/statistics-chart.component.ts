@@ -107,7 +107,15 @@ lineChartOptions: Highcharts.Options = {
     // Subscribe to router events to listen for navigation
     
   }
-
+  getCardStyle(index: number): any {
+    const styles = [
+      { borderColor: 'rgb(35, 64, 255)', boxShadow: 'rgb(35, 64, 255) 0px 4px 8px 0px' },
+      { borderColor: 'rgb(0, 150, 136)', boxShadow: 'rgb(0, 150, 136) 0px 4px 8px 0px' },
+      { borderColor: 'rgb(233, 30, 99)', boxShadow: 'rgb(233, 30, 99) 0px 4px 8px 0px' }
+    ];
+    
+    return styles[index % styles.length]; // Cycle through styles dynamically
+  }
  
 
   loadStatistics(): void {
