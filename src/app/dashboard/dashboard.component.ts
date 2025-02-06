@@ -15,7 +15,9 @@ export class DashboardComponent {
   constructor() {
     this.updateLastSyncedTime();
   }
-
+  ngOnInit(): void {
+    this.refreshDashboard();
+  }
   // Update the "last synced" time
   updateLastSyncedTime(): void {
     const now = new Date();
