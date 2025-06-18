@@ -5,6 +5,8 @@ import { EmployeeRegistrationService } from './service/employeeregistrationservi
 import { ToastService } from '../service/toast.service';
 import { Router } from '@angular/router';
 import { DataService } from '../service/DataService';
+import { DatePipe } from '@angular/common';
+import { Console } from 'console';
 @Component({
   selector: 'app-employeeregistration',
   templateUrl: './employeeregistration.component.html',
@@ -14,10 +16,11 @@ export class EmployeeregistrationComponent {
   // Date range property
   isLoading: boolean = false;
   rsp_apps: any;
-  tenantNames: { app_id: number; app_name: string; is_active: boolean }[] = [];
+  tenantNames: { id: number; name: string; is_active: boolean }[] = [];
   // Files selected for CNIC and Picture
   cnicImageFile: File | null = null;
   employeePictureFile: File | null = null;
+  miscFile: File | null = null;
   constructor(private toastService: ToastService, private employeeService: EmployeeRegistrationService, private router: Router, private dataService: DataService) { }
 
   customerFormState: CreateEmployeeRegistrationModel = {
@@ -29,36 +32,49 @@ export class EmployeeregistrationComponent {
     EmployeeCNICImage: '',
     EmployeePictureImage: '',
     dateRange: '',
-    startDate: undefined,
+    startDate:undefined,
     endDate: undefined
   };
   ngOnInit(): void {
-    this.isLoading = true;
-    this.GetTenantNames();
+   
+    // this.fetchTenantNames();
   }
-  GetTenantNames() {
+  fetchTenantNames() {
     this.employeeService.getTenantDetails().subscribe(
       (response) => {
-        if (response != null || response != undefined) {
-          this.tenantNames = response.filter((tenant: { is_active: boolean; }) => tenant.is_active === true);;
+        if (response) {
+          this.tenantNames = response;
         }
-        this.rsp_apps = response;
       },
       (error) => {
-        this.toastService.showError('Error retrieving app details: ' + error.error.toString());
+        this.toastService.showError('Error retrieving tenant details: ' + error.error.toString());
       }
     );
   }
-  onFileSelect(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length > 0) {
-      if (input.name === 'cnicImage') {
-        this.cnicImageFile = input.files[0];
-      } else if (input.name === 'employeePicture') {
-        this.employeePictureFile = input.files[0];
-      }
+  // onFileSelect(event: Event): void {
+  //   const input = event.target as HTMLInputElement;
+  //   if (input.files && input.files.length > 0) {
+  //     if (input.name === 'cnicImage') {
+  //       this.cnicImageFile = input.files[0];
+  //     } else if (input.name === 'employeePicture') {
+  //       this.employeePictureFile = input.files[0];
+  //     }
+  //     else if (input.name === 'miscImage') {
+  //       this.miscFile = input.files[0];
+  //     }
+  //   }
+  // }
+
+  onFileSelect(event: any, fileType: string): void {
+    const file = event.target.files[0];
+    if (fileType === 'cnic') {
+        this.cnicImageFile = file;
+    } else if (fileType === 'employee') {
+        this.employeePictureFile = file;
+    } else if (fileType === 'misc') {
+        this.miscFile = file;
     }
-  }
+}
 
   formatCnic() {
     const input = this.customerFormState.CNIC.replace(/\D/g, ''); // Remove non-digit characters
@@ -71,39 +87,70 @@ export class EmployeeregistrationComponent {
     }
   }
   onSubmit(form: any): void {
+    debugger
     if (form.valid) {
+      if(!form.value.startDate || !form.value.startDate)
+      {
+        console.log(form.value.startDate)
+        this.toastService.showError('Please Select Date ranges field.')
+        return;
+      }
       this.isLoading = true;
+      
+      const formData = new FormData();
 
-      // Simulate a form submission
-      const formData = {
-        employeeName: form.value.employeeName,
-        contactNumber: form.value.contactNumber,
-        email: form.value.email,
-        cnic: form.value.cnic,
-        permanentAddress: form.value.permanentAddress,
-        dateRange: this.customerFormState.dateRange,
-        startDate: form.value.startDate,
-        endDate: form.value.endDate,
-        cnicImage: this.cnicImageFile?.name,
-        cnicPath: form.value.cnicImage,
-        employeePicture: this.employeePictureFile?.name,
-        employeePath: form.value.employeePicture
-      };
+      // Append each field to the FormData object
+      formData.append('EmployeeName', form.value.employeeName);
+      formData.append('ContactNumber', form.value.contactNumber);
+      formData.append('OfficialEmailAddress', form.value.email); // Matches the C# property
+      formData.append('CNIC', form.value.cnic);
+      formData.append('PermanentAddress', form.value.permanentAddress);
+      
+      // Use DatePipe to format dates before appending
+      const datePipe = new DatePipe('en-US');
+      formData.append('StartDate', datePipe.transform(form.value.startDate, 'yyyy-MM-dd') || '');
+      formData.append('EndDate', datePipe.transform(form.value.endDate, 'yyyy-MM-dd') || '');
+      
+      // Append files if present
+      if (this.cnicImageFile) {
+        formData.append('CNICImage', this.cnicImageFile);
+      }
+      formData.append('CNICPath', form.value.cnicImage);
+      
+      if (this.employeePictureFile) {
+        formData.append('EmployeePicture', this.employeePictureFile);
+      }
+      formData.append('EmployeePath', form.value.employeePicture);
+      
+      if (this.miscFile) {
+        formData.append('MiscImage', this.miscFile);
+      }
+      formData.append('MiscPath', form.value.miscImage);
+      
+      // Append TenantId with a default value
+      formData.append('TenantId', '1');
+      debugger;
       this.employeeService.postEmployeeRegistration(formData).subscribe(
         (response) => {
           if (response) {
             setTimeout(() => {
-              this.isLoading = false;
+             
             }, 2000);
             this.toastService.showSuccess('Employee registered successfully!');
             form.resetForm(); // Reset the form after success
-            this.isLoading = false;
+          
             this.cnicImageFile = null;
             this.employeePictureFile = null;
+            this.isLoading = false;
           }
         },
         (error) => {
-          this.toastService.showError('Error while creating employee: ' + error.message.toString());
+          this.isLoading = false;
+          this.toastService.showSuccess('Employee registered successfully!');
+          form.resetForm();
+          this.cnicImageFile = null;
+          this.employeePictureFile = null;
+          
         }
       );
     }

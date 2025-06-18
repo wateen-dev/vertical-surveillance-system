@@ -23,9 +23,9 @@ export class VisitorRegistrationService {
     return this.http.get(this.apiUrl+"SalesTrax/GetVisitorRegistration"); // Adjust the endpoint as needed
   }
   postVisitorRegistration(moduleModel:any): Observable<any> {
-    return this.http.post(this.apiUrl+"SalesTrax/CreateVisitorRegistration",moduleModel); // Adjust the endpoint as needed
+    return this.http.post(this.local_apiUrl+"Vertical/add-visitor",moduleModel); // Adjust the endpoint as needed
   }
   getTenantDetails(): Observable<any> {
-    return this.http.get(this.apiUrl+"SalesTrax/GetApps"); // Adjust the endpoint as needed
+    return this.http.get(this.local_apiUrl+"Vertical/fetch-tenant"); // Adjust the endpoint as needed
   }
 }

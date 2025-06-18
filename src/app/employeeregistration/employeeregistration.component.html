@@ -25,20 +25,36 @@
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
+                                <!-- <div class="col-md-6 form-group">
+                                    <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Tenant Name</mat-label>
+                                        <mat-select name="app" ngModel required>
+                                            <mat-option *ngFor="let tenant of tenantNames" [value]="{ tenant_id: tenant.id, tenant_name: tenant.name }">
+                                                {{ tenant.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
+                                            Tenant Name is required.
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div> -->
                                 <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Tenant Name</mat-label>
                                         <mat-select name="app" ngModel required>
-                                            <mat-option *ngFor="let tenant of tenantNames" [value]="{ tenant_id: tenant.app_id, tenant_name: tenant.app_name }">
-                                                {{ tenant.app_name }}
+                                            <mat-option [value]="{ tenant_id: 1, tenant_name: 'UBM' }">
+                                                UBM
+                                            </mat-option>
+                                            <mat-option [value]="{ tenant_id: 2, tenant_name: 'Wateen' }">
+                                                Wateen
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
-                                            App Name is required.
+                                            Tenant Name is required.
                                         </mat-error>
                                     </mat-form-field>
                                 </div>
-
+                                
                                 <!-- Contact Number -->
                                 <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
@@ -54,7 +70,7 @@
                                 <div class="col-md-6 form-group">
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Official Email Address</mat-label>
-                                        <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$">
+                                        <input matInput type="email" name="email" ngModel required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$">
                                         <mat-error *ngIf="employeeForm.controls['email']?.invalid && (employeeForm.controls['email']?.touched || employeeForm.controls['email']?.dirty)">
                                             Please enter a valid email address.
                                         </mat-error>
@@ -95,7 +111,7 @@
                                             class="form-control" 
                                             ngModel 
                                             required 
-                                            (change)="onFileSelect($event)">
+                                            (change)="onFileSelect($event,'cnic')">
                                     </div>
                                     <div class="invalid-feedback d-block" *ngIf="employeeForm.controls['cnicImage']?.invalid && 
                                                                                 (employeeForm.controls['cnicImage']?.touched || 
@@ -116,7 +132,7 @@
                                             class="form-control" 
                                             ngModel 
                                             required 
-                                            (change)="onFileSelect($event)">
+                                            (change)="onFileSelect($event,'employee')">
                                     </div>
                                     <div class="invalid-feedback d-block" *ngIf="employeeForm.controls['employeePicture']?.invalid && 
                                                                                 (employeeForm.controls['employeePicture']?.touched || 
@@ -124,14 +140,31 @@
                                         Employee Picture is required.
                                     </div>
                                 </div>
-                                
+                                <div class="col-md-6 form-group colStyling">
+                                    <label for="employeePicture sideNavHeading mb-0" class="form-label cssStyle">Miscellaneous File  </label>
+                                    <div class="input-group">
+                                        <input 
+                                            type="file" 
+                                            id="miscImage" 
+                                            name="miscImage" 
+                                            class="form-control" 
+                                            ngModel 
+                                            required 
+                                            (change)="onFileSelect($event,'misc')">
+                                    </div>
+                                    <div class="invalid-feedback d-block" *ngIf="employeeForm.controls['miscImage']?.invalid && 
+                                                                                (employeeForm.controls['miscImage']?.touched || 
+                                                                                 employeeForm.controls['miscImage']?.dirty)">
+                                        Employee Picture is required.
+                                    </div>
+                                </div>
                                 <div class="col-md-12 form-group">
                                     <h3 class="sideNavHeading mb-0 cssStyle">Select your working days</h3>
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Date Range</mat-label>
-                                        <mat-date-range-input [rangePicker]="dateRangePicker" name="dateRange" ngModel required>
-                                            <input matStartDate placeholder="Start date" ngModel name="startDate" required>
-                                            <input matEndDate placeholder="End date" ngModel name="endDate" required>
+                                        <mat-date-range-input [rangePicker]="dateRangePicker" name="dateRange" ngModel >
+                                            <input matStartDate placeholder="Start date" ngModel name="startDate" >
+                                            <input matEndDate placeholder="End date" ngModel name="endDate" >
                                         </mat-date-range-input>
                                         <mat-datepicker-toggle matSuffix [for]="dateRangePicker"></mat-datepicker-toggle>
                                         <mat-date-range-picker #dateRangePicker></mat-date-range-picker>

@@ -5,11 +5,11 @@
                 <mat-icon>{{ isSidenavOpened ? 'menu_open' : 'menu' }}</mat-icon>
             </button>
         </div>
-        <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()"><b>Surveillance</b> System</h2>
+        <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()"><b>Building Management System</b> </h2>
     </div>
     <div class="right-icons d-flex align-items-center">
         <mat-icon class="username-icon" aria-label="User" (click)="toggleInfo()">account_circle</mat-icon>
-        <span class="username mx-2" (click)="toggleInfo()">{{ this.employee?.employeename }}</span>
+        <span class="username mx-2" (click)="toggleInfo()">{{ this.employee?.firstName }} {{ this.employee?.lastName }}</span>
         <mat-icon class="logout-icon" (click)="logout()" aria-label="Logout">logout</mat-icon>
     </div>
     <div class="info-slider" [class.open]="isInfoOpen">
@@ -21,7 +21,7 @@
         
             <div class="info-item">
                 <mat-label><b>Name: </b></mat-label>
-                <span >{{this.employee?.employeename}}</span>
+                <span >{{ this.employee?.firstName }} {{ this.employee?.lastName }}</span>
             </div>
     
             <div class="info-item">
@@ -31,7 +31,7 @@
     
             <div class="info-item">
                 <mat-label><b>Employee Number: </b></mat-label>
-                <span>{{this.employee?.employeeno}}</span>
+                <span>{{this.employee?.userId}}</span>
             </div>
     
             <div class="info-item">

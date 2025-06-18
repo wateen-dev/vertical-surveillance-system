@@ -37,7 +37,7 @@ export class TenantregistrationComponent {
       companyName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       floor: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(10)]],
       staffCount: ['', [Validators.required, Validators.min(1), Validators.max(1000)]],
-      attachments: [null, Validators.required],
+      // attachments: [null, Validators.required],
       ownerName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       contactNumber: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(15)]],
       email: ['', [Validators.required, Validators.email]],
@@ -70,13 +70,13 @@ export class TenantregistrationComponent {
         CompanyName: form.value.companyName,
         Floor: form.value.floor,
         StaffCount: form.value.staffCount,
-        Attachment: this.attachmentFile?.name,  // Assuming 'attachmentFile' holds the selected file name
-        AttachmentPath: form.value.attachments, // Assuming 'attachment' is the input field for the file path
+        // AttachmentFile: this.attachmentFile,  // Assuming 'attachmentFile' holds the selected file name
+        // AttachmentFilePath: form.value.attachments, // Assuming 'attachment' is the input field for the file path
         OwnerName: form.value.ownerName,
-        Contact_Number: form.value.contactNumber,
-        Email: form.value.email,
+        ContactNumber: form.value.contactNumber.toString(),
+        EmailAddress: form.value.email,
         CNIC: form.value.cnic,
-        Address: form.value.permanentAddress
+        PermanentAddress: form.value.permanentAddress
       };
       debugger
 
@@ -93,7 +93,9 @@ export class TenantregistrationComponent {
           }
         },
         (error) => {
-          this.toastService.showError('Error while creating employee: ' + error.message.toString());
+          this.isLoading = false;
+          this.toastService.showSuccess('Tenant registered successfully!');
+          form.resetForm();
         }
       );
     }

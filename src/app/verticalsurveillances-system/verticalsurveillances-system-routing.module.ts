@@ -4,7 +4,7 @@ import { VerticalsurveillancesSystemComponent } from './verticalsurveillances-sy
 import { AuthGuard } from '../auth.guard';
 
 const routes: Routes = [
-  { path: '', component: VerticalsurveillancesSystemComponent, canActivate: [AuthGuard]}
+  { path: '', component: VerticalsurveillancesSystemComponent,canActivate: [AuthGuard]}
 ];
 
 @NgModule({

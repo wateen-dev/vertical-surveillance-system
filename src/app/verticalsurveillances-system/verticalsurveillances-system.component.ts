@@ -1,46 +1,196 @@
-import { Component } from '@angular/core';
-import * as XLSX from 'xlsx';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-export interface checkInLogs {
-  id: string;
-  access: boolean;
-  checkInTime: string;
-}
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeRegistrationService } from '../employeeregistration/service/employeeregistrationservice';
+import { MatPaginator } from '@angular/material/paginator';
+import { ToastService } from '../service/toast.service';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environment/environment';
+import { ActivatedRoute } from '@angular/router';
+
+
 @Component({
-  selector: 'app-verticalsurveillances-system',
+  selector: 'app-vertical-surveillances-system',
   templateUrl: './verticalsurveillances-system.component.html',
-  styleUrl: './verticalsurveillances-system.component.css'
+  styleUrls: ['./verticalsurveillances-system.component.css'],
 })
 export class VerticalsurveillancesSystemComponent {
-  tenants: checkInLogs[] = [];
-  displayedColumns: string[] = ['id', 'access', 'checkInTime'];
-  dataSource = new MatTableDataSource<checkInLogs>();
-  showExportInfo = false;
-  private ELEMENT_DATA: checkInLogs[] = [
-    { id: '21387', access: true, checkInTime: '04:40:23 PM' },
-    { id: '21388', access: false, checkInTime: '04:35:10 PM' },
-    { id: '21389', access: true, checkInTime: '04:30:15 PM' },
-  ];
-employee = {
-  name: "John A. Smith",
-  id: 21387,
-  access: "Allowed",
-  company: "Northface",
-  floor: "7th",
-  validTill: "12-08-2026",
-  photoUrl: "assets/photo-logo.png",
-};
-ngOnInit(): void {
-  this.dataSource.data = this.ELEMENT_DATA;
-}
+  // Dropdown and Search Data
+  selectedCategory = '';
+  selectedCompany = ''; // Empty for no filter
+  searchQuery = '';
+  displayedColumns: string[] = ['id','name', 'company','category', 'phone'];
+  dataSource = new MatTableDataSource<any>();
+  logColumns = ['date', 'checkInTime','checkOutTime'];
+  TimeStamplogColumns = ['id','date', 'day','TimeStamp'];
+  selectedEmployee: any = null;
+  filteredLogs: any[] = [];
+  filteredTimeLogs: any[] = [];
+  accessStatus: 'Allowed' | 'Revoked' = 'Allowed';
+  isPresent: boolean = false;
+  selectedCard: string = '';
+  ds:any;
+  checkinVisible:boolean=true;
+  timestampVisible:boolean=false;
+  lastSyncedTime: string = '';
+  private apiUrl = environment.apiUrl;           
+      private local_apiUrl = environment.localApiUrl;
+      imagePath1Base64:any;
+  constructor(private verticalService: EmployeeRegistrationService,private route: ActivatedRoute,private toastService: ToastService,private http: HttpClient) {
+    debugger;
+    this.updateLastSyncedTime();
+  }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-toggleExportInfo(): void {
-  this.showExportInfo = !this.showExportInfo;
-}
+  ngOnInit(): void {
+    debugger;
+    this.route.queryParams.subscribe((params) => {
+      this.selectedCard = params['card'];
+      if(this.selectedCard=='Employees')
+      this.selectedCategory='employee'
+    if(this.selectedCard=='Visitors')
+      this.selectedCategory='visitor'
+     if(this.selectedCard=='Executives')
+      this.selectedCategory='tenant'
+    if(this.selectedCard!=undefined)
+      this.isPresent=true;
+      console.log('Selected Card:', this.selectedCard); // Debugging output
+    });
+    this.loadData();
+    // this.checkInLogs.paginator = this.paginator;
+  }
+  hidecheckin(){
+    this.checkinVisible=false;
+    this.timestampVisible=true;
+  }
+  hideTimeStamp(){
+    this.timestampVisible=false;
+    this.checkinVisible=true;
+  }
+refreshComponent(){
+  this.selectedCard=''
+  this.selectedCategory=''
+  this.selectedCompany=''
+  this.searchQuery=''
+  this.selectedEmployee=null
+  this.filteredLogs=[]
+  this.filteredTimeLogs=[]
+  this.loadData();
+ 
+  
 
-exportAsCsv(): void {
-  console.log('Exporting as CSV...');
-  // Implement CSV export logic here
 }
+ 
+refreshLogs(){
+    this.onRowClick(this.selectedEmployee)
+}
+  updateLastSyncedTime(): void {
+    const now = new Date();
+    this.lastSyncedTime = `${now.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+  }
+  loadData(): void {
+    this.verticalService.fetchAllData().subscribe((data: any) => {
+      debugger;
+      // Filter data where company name is 'UBM'
+      this.dataSource.data = data.result
+      this.filterTable(); // Apply default filter
+    });
+  }
+  fetchImages(path:any): void {
+ 
+    debugger
+        const fileName = path.split("\\").pop();
+        
+            this.http.get(this.local_apiUrl+`Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data:any) => {
+           debugger;
+              this.imagePath1Base64 = data.thumbnailBase64;
+           
+            },
+              (error) => {
+                console.error('Error fetching thumbnail:', error);
+              }
+            );
+          }
+  onRowClick(row: any) {
+    debugger;
+    if(this.selectedCategory!='visitor'){
+    this.fetchImages(row.profilePicture)
+    this.selectedEmployee = row;
+    this.accessStatus = 'Allowed';
+    // this.filteredLogs = this.checkInLogs.filter(log => log.name.split('-')[1] === row.name);
+    this.verticalService.fetchCheckInLogs(row.id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredLogs = logs; // Assign API response to filteredLogs
+        this.fetchtimestamplogs(row.id)
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredLogs = []; // Clear logs on error
+      }
+    );
+  }
+  else
+  {
+    if (row.profilePicture)
+      this.fetchImages(row.profilePicture)
+    this.selectedEmployee = row;
+    this.accessStatus = 'Allowed';
+    this.verticalService.fetchCheckInLogsVisitors(row.id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredLogs = logs; // Assign API response to filteredLogs
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredLogs = []; // Clear logs on error
+      }
+    );
+
+  }
+  }
+  fetchtimestamplogs(id:any){
+    this.verticalService.fetchTimestampLogs(id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredTimeLogs = logs; // Assign API response to filteredLogs
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredTimeLogs = []; // Clear logs on error
+      }
+    );
+
+  }
+  allowAccess() {
+    this.accessStatus = 'Allowed';
+    
+    this.toastService.showSuccess('Access has been allowed.');
+  }
+
+  revokeAccess() {
+    this.accessStatus = 'Revoked';
+   
+    this.toastService.showSuccess('Access has been revoked.');
+  }
+ filterTable(): void {
+    const categoryFilter = this.selectedCategory.toLowerCase();
+    const companyFilter = this.selectedCompany.toLowerCase();
+    const searchFilter = this.searchQuery.toLowerCase();
+
+    this.ds = this.dataSource.data.filter((item) => {
+      const matchesCompany =
+        !companyFilter || item.company.toLowerCase() === companyFilter;
+      const matchesCategory =
+        !categoryFilter || item.category.toLowerCase() === categoryFilter;
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchFilter) ||
+        item.email.toLowerCase().includes(searchFilter) ||
+        item.phone.includes(searchFilter);
+      const matchesPresent = this.isPresent
+        ? item.status === 'Present' // Assuming the status property holds "Present"/"Absent" information
+        : true;
+
+      return matchesCompany && matchesCategory && matchesSearch && matchesPresent;
+    });
+  }
 }

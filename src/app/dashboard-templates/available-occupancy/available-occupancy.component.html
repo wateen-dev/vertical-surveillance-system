@@ -1,54 +1,57 @@
-<mat-card class="custom-card">
-    <!-- 3 Dots Icon Button at the Top -->
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-9">
-                <div class="card-header">
-                    <h2 class="mainHeading">Occupancy</h2>
-                    <p class="paraStyle">Progress this Month</p>
-                </div>
-            </div>
-            <div class="col-sm-3">
-                <button mat-icon-button (click)="toggleExportInfo()" class="dots-button">
-                    <mat-icon>more_vert</mat-icon>
-                </button>
-                <div *ngIf="showExportInfo" class="export-info">
-                    <button mat-button (click)="exportAsCsv()" class="btnExportStyle">Excel</button>
-                </div>
-            </div>
+<div class="mainStyle">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card-header">
+        <div class="d-flex align-items-center">
+          <h2 class="mainHeading">Branches Utilization</h2>
+
+          <mat-form-field appearance="outline" class="small-dropdown mx-5">
+            <mat-label>Select City</mat-label>
+            <mat-select [(ngModel)]="selectedCity" (selectionChange)="onCityChange()">
+              <mat-option *ngFor="let city of cities" [value]="city">{{ city }}</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="small-dropdown">
+            <mat-label>Select Branch</mat-label>
+            <mat-select [(ngModel)]="selectedBranch" (selectionChange)="onBranchChange()" [disabled]="!selectedCity">
+              <mat-option *ngFor="let branch of branchesData[selectedCity]" [value]="branch">
+                {{ branch }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
+      </div>
     </div>
-    <mat-table [dataSource]="dataSource" class="mat-elevation-z8 tblStyle">
-        <!-- Company Logo -->
-        <!-- Tenant Number -->
-           <!-- Floor Number -->
-        <ng-container matColumnDef="floor">
-            <mat-header-cell *matHeaderCellDef class="txtStyle"> Floor </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="txtStyle"> {{ element.floor }} </mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="completion">
-            <mat-header-cell *matHeaderCellDef class="txtStyle"> Completion </mat-header-cell>
-            <mat-cell *matCellDef="let element" class="txtStyle">
-                <!-- <span class="progress-label progressStyling" style="position: relative;top:-10px">{{ element.completion }}</span> -->
-                <div class="progress-bar small">
-                    <div 
-                        class="progress-fill" 
-                        [style.width]="getProgressWidth(getNumericCompletion(element.completion))" 
-                        [style.backgroundColor]="getColor(element.completion)" matTooltip="{{ element.completion }}">
-                       
-                    </div>
-                </div>
-            </mat-cell>
-        </ng-container>
+  </div>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-    </mat-table>
-
-    <!-- Pagination -->
-    <div class="paginator-container">
-        <mat-paginator [pageSizeOptions]="[4, 8, dataSource.data.length]">
-        </mat-paginator>
+  <div class="row mt-3">
+    <!-- Pie Chart Section -->
+    <div class="col-md-8">
+      <div id="container" style="width: 100%; height: 400px;">
+        <highcharts-chart
+          [Highcharts]="Highcharts"
+          [options]="chartOptions"
+          style="width: 100%; height: 100%; display: block;"
+        ></highcharts-chart>
+      </div>
     </div>
-    <!-- Overlay Click to Close Export Section -->
-</mat-card>
+
+    <!-- Utilization Section -->
+    <div class="col-md-4">
+      <h3 class="subHeading text-center">Utilization</h3>
+      <div class="floor-data-container">
+        <div class="floor-progress" *ngFor="let floor of floorData">
+          <p>{{ floor.name }}: {{ floor.covered }}%</p>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              [style.width]="floor.covered + '%'"
+              [style.backgroundColor]="floor.color"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,3 +1,20 @@
 .rowStyle{
     padding-top: 20px;
 }
+.component-container {
+    flex: 1; /* Ensures equal width for both components */
+    margin: 0 0px; /* Adds spacing between components */
+  }
+  .dashboard-title {
+    font-weight: bold;
+  }
+  
+  #lastSynced {
+    font-size: 14px;
+  }
+  
+  button.btn {
+    display: flex;
+    align-items: center;
+  }
+  

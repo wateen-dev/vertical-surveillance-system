@@ -1,4 +1,4 @@
-<div style="width: 100%; max-width: 800px; margin: auto;">
+<!-- <div style="width: 100%; max-width: 800px; margin: auto; position: relative;">
   <highcharts-chart
     [Highcharts]="Highcharts"
     [options]="lineChartOptions"
@@ -6,4 +6,27 @@
     [id]="chartId1"
     class="highcharts-footfall"
   ></highcharts-chart>
-</div>
+
+   Refresh Icon inside the chart -->
+  <!-- <i class="fa fa-refresh" (click)="fetchChartData()" 
+     style="position: absolute; top: 10px; right: 10px; font-size: 24px; color: #007BFF; cursor: pointer; z-index: 10;">
+  </i> -->
+<!-- </div> --> 
+
+<div class="mainStyle">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="card-header">
+        <h2 class="mainHeading">Crowd Counting</h2>
+        <p class="paraStyle"></p>
+      </div>
+    </div>
+    <div class="col-lg-6">
+     
+    </div>
+    
+  </div>
+  <div class="chart-container">
+    <div id="barChart" style="width:100%; height:340px;"></div>
+  </div>
+</div> 

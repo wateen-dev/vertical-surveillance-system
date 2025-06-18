@@ -1,14 +1,22 @@
 .mainStyle {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    /* margin-top: -200px; */
-}
-
-.paraStyle {
-    font-family: 'Century Gothic', sans-serif;
-}
-
-.mainHeading {
-    font-family: 'Century Gothic', sans-serif;
-}
+    padding: 15px;
+  }
+  
+  .card-header {
+    background-color: #f7f7f7;
+    border: 0px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .mainHeading {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .paraStyle {
+    font-size: 14px;
+    color: #666;
+  }
+  

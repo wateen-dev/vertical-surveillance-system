@@ -11,8 +11,23 @@ h2 {
 .infocontent{
     display: ruby;
 }
+.field-row {
+    display: flex;
+    flex-direction: row; /* Stack label and value vertically */
+    margin-bottom: 15px; /* Add spacing between rows */
+}
+.custom-table .clickable-row {
+    cursor: pointer;
+  }
+  
+  /* Optional: Add hover effect */
+  .custom-table .clickable-row:hover {
+    background-color: #f5f5f5; /* Light gray background on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
 .paddStyle{
     padding-left: 5px;
+    margin-bottom: 10px;
 }
 .check-in-log-card{
 margin-top: 20px;
@@ -42,14 +57,17 @@ margin-top: 20px;
     }
 }
 .employee-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-}
+    width: 150px; /* Adjust size as needed */
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Circular image */
+    border: 2px solid #ddd; }
 .header-controls {
     padding-top: 10px;
 }
-
+.infocontent mat-label {
+    display: block; /* Ensures labels are aligned properly */
+}
 .main-content {
     display: flex;
     padding-top: 5px;
@@ -93,4 +111,66 @@ margin-top: 20px;
             }
         }
     }
+}
+.employee-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.infocontent {
+    margin-bottom: 15px; /* Space between fields */
+}
+
+.infocontent strong {
+    display: block; /* Ensure label is on its own row */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.paddStyle {
+    margin: 0; /* Prevent extra margins */
+}
+.field-row {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    gap: 5px; /* Add space between label and badge */
+  }
+  
+  .align-center {
+    justify-content: flex-start; /* Ensure alignment starts from the left */
+  }
+  
+  .badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+  }
+  
+  .badge-success {
+    background-color: green;
+  }
+  
+  .badge-danger {
+    background-color: red;
+  }
+  .text-success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .text-danger {
+    color: red;
+    font-weight: bold;
+  }
+  .position-absolute {
+    position: absolute; /* Position the buttons absolutely within the parent */
+    top: -10px; /* Adjust as needed */
+    right:10px; /* Align to the top-right corner */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: flex-end; /* Align buttons to the right */
 }

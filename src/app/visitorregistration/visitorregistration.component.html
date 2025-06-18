@@ -38,14 +38,28 @@
                                     <mat-form-field appearance="fill" class="w-100">
                                         <mat-label>Tenant Name</mat-label>
                                         <mat-select name="app" ngModel required>
-                                            <mat-option *ngFor="let tenant of tenantNames" [value]="{ tenant_id: tenant.app_id, tenant_name: tenant.app_name }">
-                                                {{ tenant.app_name }}
+                                            <mat-option [value]="{ tenant_id: 1, tenant_name: 'UBM' }">
+                                               UBM
+                                            </mat-option>
+                                            <mat-option [value]="{ tenant_id: 2, tenant_name: 'Wateen' }">
+                                                Wateen
                                             </mat-option>
                                         </mat-select>
                                         <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
-                                            App Name is required.
+                                            Tenant Name is required.
                                         </mat-error>
                                     </mat-form-field>
+                                    <!-- <mat-form-field appearance="fill" class="w-100">
+                                        <mat-label>Tenant Name</mat-label>
+                                        <mat-select name="app" ngModel required>
+                                            <mat-option *ngFor="let tenant of tenantNames" [value]="{ tenant_id: tenant.id, tenant_name: tenant.name }">
+                                                {{ tenant.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                        <mat-error *ngIf="employeeForm.controls['tenant']?.invalid && (employeeForm.controls['tenant']?.touched || employeeForm.controls['tenant']?.dirty)">
+                                            Tenant Name is required.
+                                        </mat-error>
+                                    </mat-form-field> -->
                                 </div>
                                 <!-- Contact Number -->
                                 <div class="col-md-6 form-group">

@@ -1,0 +1,82 @@
+<form [formGroup]="registrationForm" (ngSubmit)="registerUser()" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="registration-container">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="sideNavHeading mb-0">User Registration Form</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="UserName" />
+                <mat-error *ngIf="registrationForm.get('UserName')?.hasError('required')">
+                  Username is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>First Name</mat-label>
+                <input matInput formControlName="FirstName" />
+                <mat-error *ngIf="registrationForm.get('FirstName')?.hasError('required')">
+                  First Name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Last Name</mat-label>
+                <input matInput formControlName="LastName" />
+                <mat-error *ngIf="registrationForm.get('LastName')?.hasError('required')">
+                  Last Name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Email</mat-label>
+                <input matInput formControlName="Email" />
+                <mat-error *ngIf="registrationForm.get('Email')?.hasError('required')">
+                  Email is required.
+                </mat-error>
+                <mat-error *ngIf="registrationForm.get('Email')?.hasError('email')">
+                  Enter a valid email address.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Phone</mat-label>
+                <input matInput formControlName="Phone" />
+                <mat-error *ngIf="registrationForm.get('Phone')?.hasError('pattern')">
+                  Phone number must be 11 digits.
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Role Rights</mat-label>
+                <mat-select formControlName="RoleRights">
+                  <mat-option value="Admin">Admin</mat-option>
+                  <mat-option value="Receptionist">Receptionist</mat-option>
+                </mat-select>
+                <mat-error *ngIf="registrationForm.get('RoleRights')?.hasError('required')">
+                  Role Rights are required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="!registrationForm.valid">
+              Register
+            </button>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</form>

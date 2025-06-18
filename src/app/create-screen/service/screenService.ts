@@ -20,7 +20,7 @@ export class ScreenService {
 
   
   getScreenDetails(): Observable<any> {
-    return this.http.get(this.apiUrl+"SalesTrax/GetMiscCodes"); // Adjust the endpoint as needed
+    return this.http.get(this.local_apiUrl+"Vertical/GetMiscCodes"); // Adjust the endpoint as needed
   }
   getAppDetails(): Observable<any> {
     return this.http.get(this.apiUrl+"SalesTrax/GetApps"); // Adjust the endpoint as needed

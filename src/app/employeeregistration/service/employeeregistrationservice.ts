@@ -23,9 +23,33 @@ export class EmployeeRegistrationService {
     return this.http.get(this.apiUrl+"SalesTrax/GetEmployeeRegistration"); // Adjust the endpoint as needed
   }
   postEmployeeRegistration(moduleModel:any): Observable<any> {
-    return this.http.post(this.apiUrl+"SalesTrax/CreateEmployeeRegistration",moduleModel); // Adjust the endpoint as needed
+    return this.http.post(this.local_apiUrl+"Vertical/add-employee",moduleModel); // Adjust the endpoint as needed
   }
   getTenantDetails(): Observable<any> {
-    return this.http.get(this.apiUrl+"SalesTrax/GetApps"); // Adjust the endpoint as needed
+    return this.http.get(this.local_apiUrl+"Vertical/fetch-tenant"); // Adjust the endpoint as needed
+  }
+  verifyOtp(otpCode: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/VerifyOtp?otpCode=${otpCode}`);
+  }
+  fetchAllData(): Observable<any> {
+    return this.http.get(this.local_apiUrl+`Vertical/fetch-combined-data`);
+  }
+  fetchCheckInLogs(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogs?employeeId=${employeeId}`);
+  }
+  fetchTimestampLogs(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetTimeStampLogs?employeeId=${employeeId}`);
+  }
+  fetchCheckInLogsVisitors(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogsVisitors?employeeId=${employeeId}`);
+  }
+  getEmployeeCheckIns(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/check-ins`);
+  }
+  getefficiencyOvertime(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/average-wait-time`);
+  }
+  getsopCompliance(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/sop-compliance`);
   }
 }

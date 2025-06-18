@@ -10,6 +10,6 @@ export class AppComponent {
   constructor(private router: Router) {}
 
   isLoginRoute(): boolean {
-    return this.router.url === '/login' ||this.router.url === '/';
+    return this.router.url === '/login' ||this.router.url === '/' || this.router.url.startsWith('/reset-password');
   }
 }

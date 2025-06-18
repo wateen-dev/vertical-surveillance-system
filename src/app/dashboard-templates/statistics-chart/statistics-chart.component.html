@@ -1,4 +1,4 @@
-<div class="analyticsStyle">
+<!-- <div class="analyticsStyle">
 <h2 class="mainHeading">Analytics</h2>
 <p class="mainStyle"><span class="analyticspara">(+2.3%)</span> than last week</p>
 
@@ -19,5 +19,27 @@
   </div>
 </div>
 </div>
+
+ -->
+
+ <div class="analyticsStyle ">
+  <h2 class="mainHeading"></h2>
+  <div class="container-fluid horizontal-statistics">
+    <div class="row">
+      <!-- Statistics Cards -->
+      <div class="col-md-4" *ngFor="let stat of statistics; let i = index">
+        <div class="card statistics-card" 
+             [ngStyle]="getCardStyle(i)">
+          <mat-icon class="stat-icon">{{ stat.icon }}</mat-icon>
+          <h3 class="stat-label">{{ stat.label }}</h3>
+          <span class="stat-value">{{ stat.value }}</span>
+          <button class="see-details-btn" (click)="navigateToDetails(stat.label)">See Details</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
 
 

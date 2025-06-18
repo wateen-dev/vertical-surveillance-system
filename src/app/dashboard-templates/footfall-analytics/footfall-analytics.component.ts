@@ -1,86 +1,129 @@
-import { Component } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as Highcharts from 'highcharts';
-import exporting from 'highcharts/modules/exporting';
-import ApexCharts from 'apexcharts';
+import { EmployeeRegistrationService } from '../../employeeregistration/service/employeeregistrationservice';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-footfall-analytics',
   templateUrl: './footfall-analytics.component.html',
-  styleUrl: './footfall-analytics.component.css'
+  styleUrls: ['./footfall-analytics.component.css']
 })
-export class FootfallAnalyticsComponent {
-  Highcharts = Highcharts; // Highcharts namespace
-  chartId1 = 'lineChart';
-  
-  // Line Chart Options
-  lineChartOptions: Highcharts.Options = {
+export class FootfallAnalyticsComponent implements OnInit, OnDestroy {
+  Highcharts = Highcharts;
+  chartId1 = 'barChart';
+  chartInstance: Highcharts.Chart | null = null;
+  chartInitialized = false; // Flag to prevent re-initialization
+
+  private destroy$ = new Subject<void>(); // Lifecycle management
+
+  barChartOptions: Highcharts.Options = {
     chart: {
-      type: 'areaspline', // Smooth area chart
-      // backgroundColor: '#cac9c9', // Optional: Set background color
+      type: 'column', // Bar chart
+      height: 340,
     },
     title: {
-      text: 'Footfall Analytics', // Main title
-      align: 'left', // Align title to the left
-      x: 0, // Horizontal position adjustment
-      y:30,
-      margin:38,
-      style: {
-        fontSize: '18px', // Customize title font size
-        fontWeight: 'normal',
-        fontFamily: 'Century Gothic, sans-serif', // Add Century Gothic font
-      },
-    },
-    subtitle: {
-      text: 'All Floors', // Smaller subtitle
-      align: 'left', // Align subtitle to the left
-      x: 0, // Horizontal position adjustment
-      y: 55, // Move below the main title
-      style: {
-        fontSize: '12px', // Customize subtitle font size
-        color: '#666666', // Subtitle color
-        fontweigh: 'bold',
-        fontFamily: 'Century Gothic, sans-serif', // Add Century Gothic font
-      },
+      text: '',
+      align: 'left',
+      style: { fontSize: '18px' },
     },
     xAxis: {
-      categories: ['00:00', '02:00', '04:00', '06:00', '08:00', '10:00'],
-      gridLineWidth: 0, // Hide horizontal grid lines
-      tickWidth: 0, // Hide tick marks on the X-axis
-      lineWidth: 0, // Hide the X-axis line
+      categories: [], // Time intervals (will be dynamically set)
+      title: { text: 'Time' },
     },
     yAxis: {
-
-      lineColor: '#666666', // Y-axis line color
-      title: {
-        text: 'Footfall',
-      },
-      plotLines: [
-        {
-          value: 0, // Y-axis base line
-          width: 1, // Line width
-          color: '#666666', // Line color
-          dashStyle: 'Dash', // Dotted line style
-        },
-      ],
+      title: { text: 'Footfall' },
     },
     series: [
       {
         name: 'Footfall',
-        type: 'areaspline',
-        data: [100, 200, 150, 300, 250, 400],
-        color: '#007BFF', // Line color
-        fillColor: {
-          linearGradient: { x1: 0, y1: 0, x2: 0, y2: 1 }, // Gradient effect
-          stops: [
-            [0, '#007BFF'], // Solid blue at the top
-            [1, 'rgba(0, 123, 255, 0)'], // Transparent at the bottom
-          ],
-        },
+        type: 'column',
+        data: [], // Footfall data (will be dynamically set)
+        color: '#007BFF',
       },
     ],
-    credits: {
-      enabled: false, // Remove Highcharts watermark
-    },
+    credits: { enabled: false },
   };
+
+  staticData = {
+    categories: ['09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '01:00 PM'], // Static time intervals
+    seriesData: [10, 20, 15, 30, 25], // Static footfall data
+  };
+
+  constructor(private analyticsService: EmployeeRegistrationService) {}
+
+  ngOnInit(): void {
+    // Fetch chart data on init
+    this.fetchChartData();
+  }
+
+  fetchChartData(): void {
+    this.analyticsService
+      .getEmployeeCheckIns()
+      .pipe(takeUntil(this.destroy$)) // Clean up subscription on destroy
+      .subscribe(
+        (data) => {
+          // Check if data exists and has content
+          const hasData = Array.isArray(data) && data.length > 0;
+
+          const categories = hasData
+            ? data.map((item: any) => this.formatTime(item.key)) // Format time intervals
+            : this.staticData.categories;
+          const seriesData = hasData
+            ? data.map((item: any) => item.value) // Footfall counts
+            : this.staticData.seriesData;
+
+          if (!this.chartInitialized) {
+            // Initialize chart if it's not already initialized
+            this.chartInstance = Highcharts.chart(this.chartId1, this.barChartOptions);
+            this.chartInitialized = true;
+            this.updateChart(categories, seriesData);
+          } else {
+            // Update chart with new or fallback data if already initialized
+            this.updateChart(categories, seriesData);
+          }
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
+
+          // Handle error by showing static data
+          if (!this.chartInitialized) {
+            this.chartInstance = Highcharts.chart(this.chartId1, this.barChartOptions);
+            this.chartInitialized = true;
+          }
+          this.updateChart(this.staticData.categories, this.staticData.seriesData);
+        }
+      );
+  }
+
+  formatTime(timeSpan: string): string {
+    // Format TimeSpan to 'HH:MM AM/PM'
+    const [hours, minutes] = timeSpan.split(':').map(Number);
+    const isPM = hours >= 12;
+    const formattedHours = hours % 12 || 12; // Convert 24-hour to 12-hour format
+    return `${formattedHours}:${minutes.toString().padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
+  }
+
+  updateChart(categories: string[] = [], seriesData: number[] = []): void {
+    if (this.chartInstance) {
+      // Update the existing chart's data and categories
+      this.chartInstance.series[0].setData(seriesData);
+      this.chartInstance.xAxis[0].setCategories(categories);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up subscriptions and handle chart destruction if necessary
+    if (this.chartInstance) {
+      try {
+        this.chartInstance.destroy();
+      } catch (error) {
+        console.warn('Error destroying chart:', error);
+      }
+      this.chartInstance = null;
+    }
+    this.destroy$.next(); // Emit the value to trigger the subscription cleanup
+    this.destroy$.complete(); // Complete the subject
+    console.log('FootfallComponent destroyed');
+  }
 }

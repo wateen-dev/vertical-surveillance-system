@@ -23,6 +23,6 @@ export class TenantRegistrationService {
     return this.http.get(this.apiUrl+"SalesTrax/GetTenantRegistration"); // Adjust the endpoint as needed
   }
   postTenantRegistration(moduleModel:any): Observable<any> {
-    return this.http.post(this.apiUrl+"SalesTrax/CreateTenantRegistration",moduleModel); // Adjust the endpoint as needed
+    return this.http.post(this.local_apiUrl+"Vertical/add-tenant",moduleModel); // Adjust the endpoint as needed
   }
 }
