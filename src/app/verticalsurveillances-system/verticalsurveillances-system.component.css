@@ -157,6 +157,15 @@ margin-top: 20px;
   .badge-danger {
     background-color: red;
   }
+  .text-success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .text-danger {
+    color: red;
+    font-weight: bold;
+  }
   .position-absolute {
     position: absolute; /* Position the buttons absolutely within the parent */
     top: -10px; /* Adjust as needed */

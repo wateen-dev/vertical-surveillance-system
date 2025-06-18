@@ -37,6 +37,9 @@ export class EmployeeRegistrationService {
   fetchCheckInLogs(employeeId: string): Observable<any> {
     return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogs?employeeId=${employeeId}`);
   }
+  fetchTimestampLogs(employeeId: string): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetTimeStampLogs?employeeId=${employeeId}`);
+  }
   fetchCheckInLogsVisitors(employeeId: string): Observable<any> {
     return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogsVisitors?employeeId=${employeeId}`);
   }

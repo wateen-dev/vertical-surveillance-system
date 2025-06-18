@@ -21,12 +21,16 @@ export class VerticalsurveillancesSystemComponent {
   displayedColumns: string[] = ['id','name', 'company','category', 'phone'];
   dataSource = new MatTableDataSource<any>();
   logColumns = ['date', 'checkInTime','checkOutTime'];
+  TimeStamplogColumns = ['id','date', 'day','TimeStamp'];
   selectedEmployee: any = null;
   filteredLogs: any[] = [];
+  filteredTimeLogs: any[] = [];
   accessStatus: 'Allowed' | 'Revoked' = 'Allowed';
   isPresent: boolean = false;
   selectedCard: string = '';
   ds:any;
+  checkinVisible:boolean=true;
+  timestampVisible:boolean=false;
   lastSyncedTime: string = '';
   private apiUrl = environment.apiUrl;           
       private local_apiUrl = environment.localApiUrl;
@@ -54,7 +58,14 @@ export class VerticalsurveillancesSystemComponent {
     this.loadData();
     // this.checkInLogs.paginator = this.paginator;
   }
-
+  hidecheckin(){
+    this.checkinVisible=false;
+    this.timestampVisible=true;
+  }
+  hideTimeStamp(){
+    this.timestampVisible=false;
+    this.checkinVisible=true;
+  }
 refreshComponent(){
   this.selectedCard=''
   this.selectedCategory=''
@@ -62,6 +73,7 @@ refreshComponent(){
   this.searchQuery=''
   this.selectedEmployee=null
   this.filteredLogs=[]
+  this.filteredTimeLogs=[]
   this.loadData();
  
   
@@ -76,8 +88,10 @@ refreshLogs(){
     this.lastSyncedTime = `${now.toLocaleDateString([], { year: 'numeric', month: 'short', day: 'numeric' })} ${now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
   }
   loadData(): void {
-    this.verticalService.fetchAllData().subscribe((data:any) => {
-      this.dataSource.data = data.result;
+    this.verticalService.fetchAllData().subscribe((data: any) => {
+      debugger;
+      // Filter data where company name is 'UBM'
+      this.dataSource.data = data.result
       this.filterTable(); // Apply default filter
     });
   }
@@ -107,6 +121,7 @@ refreshLogs(){
       (logs: any[]) => {
         debugger
         this.filteredLogs = logs; // Assign API response to filteredLogs
+        this.fetchtimestamplogs(row.id)
       },
       (error) => {
         console.error('Error fetching check-in logs:', error);
@@ -132,6 +147,19 @@ refreshLogs(){
     );
 
   }
+  }
+  fetchtimestamplogs(id:any){
+    this.verticalService.fetchTimestampLogs(id).subscribe(
+      (logs: any[]) => {
+        debugger
+        this.filteredTimeLogs = logs; // Assign API response to filteredLogs
+      },
+      (error) => {
+        console.error('Error fetching check-in logs:', error);
+        this.filteredTimeLogs = []; // Clear logs on error
+      }
+    );
+
   }
   allowAccess() {
     this.accessStatus = 'Allowed';
