@@ -1,0 +1,65 @@
+<h1>{{violationCount}}</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+            <div *ngIf="isLoading">
+                <p>Loading image...</p>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <img class="violation-image" *ngIf="!isLoading && base64Image" [src]="base64Image" alt="Violation Evidence"
+                style="max-width: 100%; height: auto; border: 2px solid #ccc; border-radius: 8px;" />
+
+        </div>
+        <div class="col-sm-6">
+            <div class="violation-card">
+  <div class="violation-title">
+    <span class="label">Violation Name:</span>
+    <span class="value highlighted">{{ violationInfo.name }}</span>
+  </div>
+
+  <div class="violation-detail">
+    <span class="label">Area:</span>
+    <span class="value">{{ violationInfo.area }}</span>
+  </div>
+
+  <div class="violation-detail">
+    <span class="label">Violation Date:</span>
+    <span class="value">{{ violationInfo.date }}</span>
+  </div>
+
+  <div class="violation-detail">
+    <span class="label">Camera Name:</span>
+    <span class="value">{{ violationInfo.camera }}</span>
+  </div>
+
+  <div class="violation-detail">
+    <span class="label">Time:</span>
+    <span class="value">{{ violationInfo.time }}</span>
+  </div>
+</div>
+
+
+        </div>
+    </div>
+</div>
+
+<!-- <div class="table-container">
+    <table class="statistics-table">
+        <thead>
+            <tr>
+                <th>Icon</th>
+                <th>Label</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let stat of statistics">
+                <td><mat-icon class="stat-icon">{{ stat.icon }}</mat-icon></td>
+                <td>{{ stat.label }}</td>
+                <td>{{ stat.value }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div> -->

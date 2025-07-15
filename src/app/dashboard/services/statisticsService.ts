@@ -23,4 +23,18 @@ export class StatisticsService {
   getEmployeeCheckIns(): Observable<any> {
     return this.http.get(this.local_apiUrl + `Vertical/check-ins`);
   }
+   getDiningStatistics(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetDiningStatistics`);
+  }
+  getCashierStatistics(): Observable<any> {
+    return this.http.get(this.local_apiUrl + `Vertical/GetCashierStatistics`);
+  }
+  // Fetch base64 image using filename from path
+  getImageBase64(path: string): Observable<{ thumbnailBase64: string }> {
+    debugger
+    const fileName = path.split('\\').pop(); // handle Windows-style path
+    return this.http.get<{ thumbnailBase64: string }>(
+      this.local_apiUrl + `Vertical/GetImagesBase64?fileName=${fileName}`
+    );
+  }
 }

@@ -61,6 +61,9 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { ActiveAlarmsComponent } from './dashboard-templates/active-alarms/active-alarms.component';
 import { EfficiencyOvertimeComponent } from './dashboard-templates/efficiency-overtime/efficiency-overtime.component';
 import { SopComplianceComponent } from './dashboard-templates/sop-compliance/sop-compliance.component';
+import { CakesbakesComponent } from './dashboard-templates/cakesbakes/cakesbakes.component';
+import { DiningtableComponent } from './dashboard-templates/diningtable/diningtable.component';
+import { UniformViolationsComponent } from './uniform-violations/uniform-violations.component';
 
 
 
@@ -98,7 +101,10 @@ import { SopComplianceComponent } from './dashboard-templates/sop-compliance/sop
         ClearanceComponent,
         ReceptionistManagementComponent,
         ResetPasswordComponent,
-        SopComplianceComponent
+        SopComplianceComponent,
+        CakesbakesComponent,
+        DiningtableComponent,
+        UniformViolationsComponent
        
     ],
     bootstrap: [AppComponent],

@@ -1,0 +1,115 @@
+.analyticsStyle {
+  padding: 20px;
+}
+
+.mainHeading {
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.horizontal-statistics {
+  display: flex;
+  justify-content: center;
+  /* flex-wrap: wrap; */
+  gap: 20px;
+}
+
+.statistics-card {
+  width: 31%;
+  max-width: 300px;
+  height: 172px;
+  background-color: white;
+  border: 3px solid;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease;
+  border-color: white;
+}
+
+.statistics-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-icon {
+  
+  color: inherit;
+}
+
+.stat-label {
+  font-size: 18px;
+  font-weight: bold;
+  
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.see-details-btn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.see-details-btn:hover {
+  background-color: white;
+  border:1px solid   #f44336;
+  color: #f44336;
+}
+.see-details-btn {
+  display: none;
+  margin-top: 12px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Show button only when hovering the card */
+.statistics-card:hover .see-details-btn {
+  display: inline-block;
+}
+.statistics-card:hover .employee-details-btn{
+  display: inline-block;
+}
+.employee-details-btn {
+  margin-top: 8px;
+  padding: 8px 16px;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.employee-details-btn:hover {
+  background-color: white;
+  border:1px solid   #1976d2;
+  color: #1976d2;
+}
+.employee-details-btn {
+  display: none;
+  margin-top: 12px;
+  background-color: blue;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+}

@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { StatisticsChartComponent } from '../dashboard-templates/statistics-chart/statistics-chart.component';
 import { FootfallAnalyticsComponent } from '../dashboard-templates/footfall-analytics/footfall-analytics.component';
+import { DiningtableComponent } from '../dashboard-templates/diningtable/diningtable.component';
+import { CakesbakesComponent } from '../dashboard-templates/cakesbakes/cakesbakes.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +12,8 @@ import { FootfallAnalyticsComponent } from '../dashboard-templates/footfall-anal
 export class DashboardComponent {
   @ViewChild(StatisticsChartComponent) statisticsChartComponent: StatisticsChartComponent | undefined;
   @ViewChild(FootfallAnalyticsComponent) footfallAnalyticsComponent: FootfallAnalyticsComponent | undefined;
+  @ViewChild(DiningtableComponent) diningChartComponent: DiningtableComponent | undefined;
+  @ViewChild(CakesbakesComponent) cakesbakesChartComponent: CakesbakesComponent | undefined;
   lastSyncedTime: string = '';
 
   constructor() {
@@ -34,9 +38,23 @@ export class DashboardComponent {
   }
 
   // Logic to refresh child components
-  refreshComponents(): void {
-    if (this.statisticsChartComponent) {
-      this.statisticsChartComponent.loadStatistics();
+  // refreshComponents(): void {
+  //   if (this.statisticsChartComponent) {
+  //     this.statisticsChartComponent.loadStatistics();
+  //     // this.footfallAnalyticsComponent?.fetchChartData();
+  //   }
+
+  //   // Update the last synced time
+  //   this.updateLastSyncedTime();
+  // }
+
+    refreshComponents(): void {
+    if (this.diningChartComponent) {
+      this.diningChartComponent.loadStatistics();
+      // this.footfallAnalyticsComponent?.fetchChartData();
+    }
+    if (this.cakesbakesChartComponent) {
+      this.cakesbakesChartComponent.loadCashierStatistics();
       // this.footfallAnalyticsComponent?.fetchChartData();
     }
 

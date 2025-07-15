@@ -67,6 +67,10 @@ const routes: Routes = [
     path: 'visitor-registration', 
     loadChildren: () => import('./visitorregistration/visitorregistration.module').then(m => m.VisitorregistrationModule)
   },
+   {
+    path: 'uniform-violations', 
+    loadChildren: () => import('./uniform-violations/uniform-violations.module').then(m => m.UniformViolationsModule)
+  },
   {
     path: 'reset-password/:id', 
     loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordModule)

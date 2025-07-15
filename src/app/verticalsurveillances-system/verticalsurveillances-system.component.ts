@@ -95,21 +95,20 @@ refreshLogs(){
       this.filterTable(); // Apply default filter
     });
   }
-  fetchImages(path:any): void {
- 
-    debugger
-        const fileName = path.split("\\").pop();
-        
-            this.http.get(this.local_apiUrl+`Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data:any) => {
-           debugger;
-              this.imagePath1Base64 = data.thumbnailBase64;
-           
-            },
-              (error) => {
-                console.error('Error fetching thumbnail:', error);
-              }
-            );
-          }
+  fetchImages(path: any): void {
+    const fileName = path.split("\\").pop();
+    // this.http.get(this.local_apiUrl+`Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data:any) => {
+
+    this.http.get(this.local_apiUrl + `Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data: any) => {
+
+      this.imagePath1Base64 = data.thumbnailBase64;
+
+    },
+      (error) => {
+        console.error('Error fetching thumbnail:', error);
+      }
+    );
+  }
   onRowClick(row: any) {
     debugger;
     if(this.selectedCategory!='visitor'){
