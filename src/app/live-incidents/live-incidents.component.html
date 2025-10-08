@@ -1,0 +1,125 @@
+<div class="incidents-container">
+  <mat-card class="incidents-card mat-elevation-z4">
+    <!-- Header -->
+    <div class="card-head">
+      <div class="title-block">
+        <h2>Live Security Incidents</h2>
+      </div>
+      <div class="realtime-indicator">
+        <span class="dot"></span>
+        <small>Real-time monitoring</small>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters">
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>City</mat-label>
+        <mat-select [(value)]="selectedCity" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let c of cityList" [value]="c">{{ c }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Violations</mat-label>
+        <mat-select [(value)]="selectedViolation" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let v of violationList" [value]="v">{{ v }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Status</mat-label>
+        <mat-select [(value)]="selectedStatus" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let s of statuses" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="filter-field">
+        <mat-label>Severity</mat-label>
+        <mat-select [(value)]="selectedSeverity" (selectionChange)="applyFilters()">
+          <mat-option *ngFor="let s of severities" [value]="s">{{ s }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="filter-actions">
+        <button mat-stroked-button color="primary" (click)="clearFilters()">Reset</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-wrapper">
+      <table mat-table [dataSource]="dataSource" matSort class="incidents-table">
+
+        <!-- Time -->
+        <ng-container matColumnDef="time">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+          <td mat-cell *matCellDef="let element">{{ element.time }}</td>
+        </ng-container>
+
+        <!-- Outlet -->
+        <ng-container matColumnDef="outlet">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Outlet</th>
+          <td mat-cell *matCellDef="let element">
+            <a class="outlet-link">{{ element.outlet }}</a>
+          </td>
+        </ng-container>
+
+        <!-- Type -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+        </ng-container>
+
+        <!-- Confidence -->
+        <ng-container matColumnDef="confidence">
+            <th mat-header-cell *matHeaderCellDef>Confidence</th>
+            <td mat-cell *matCellDef="let element">
+                <div class="conf-cell" matTooltip="{{ element.confidence }}% Confidence" matTooltipPosition="above">
+                    <div class="conf-bar">
+                        <div class="conf-fill" [style.width.%]="element.confidence"></div>
+                    </div>
+                    <div class="conf-label">{{ element.confidence }}%</div>
+                </div>
+            </td>
+        </ng-container>
+
+        <!-- Status -->
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-chip [ngClass]="statusColor(element.status)" selected>
+              {{ element.status }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Severity -->
+        <ng-container matColumnDef="severity">
+          <th mat-header-cell *matHeaderCellDef>Severity</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-chip [ngClass]="severityColor(element.severity)" selected>
+              {{ element.severity }}
+            </mat-chip>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-stroked-button color="primary" class="action-btn" (click)="goToLiveIncident(element)" aria-label="View">
+              <mat-icon>visibility</mat-icon>
+              <span class="btn-text">View</span>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <!-- Pagination -->
+      <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
+    </div>
+  </mat-card>
+</div>

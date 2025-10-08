@@ -1,0 +1,29 @@
+<div class="analytics-container">
+  <!-- Loading Spinner -->
+  <div *ngIf="loading" class="loading-spinner text-center">
+    <mat-spinner diameter="50"></mat-spinner>
+  </div>
+
+  <!-- Cards Grid -->
+  <div *ngIf="!loading && analyticsData" class="row">
+    <div class="col-12 col-sm-6 col-md-3 mb-3" *ngFor="let card of analyticsData | keyvalue">
+      <mat-card class="stat-card h-100">
+        <div class="card-content d-flex justify-content-between align-items-center">
+          <div class="stat-text">
+            <p class="stat-label">{{ card.key | titlecase }}</p>
+            <h3 class="stat-value">{{ card.value.value }}</h3>
+            <div *ngIf="card.value.change" class="stat-change">
+              {{ card.value.change }}
+            </div>
+            <div *ngIf="card.value.note" class="stat-note">
+              {{ card.value.note }}
+            </div>
+          </div>
+        <div class="icon-wrapper" [ngStyle]="{'background-color': card.value.color}">
+          <mat-icon class="stat-icon">{{ card.value.icon }}</mat-icon>
+        </div>
+        </div>
+      </mat-card>
+    </div>
+  </div>
+</div>

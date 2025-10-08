@@ -38,7 +38,7 @@ export class LoginComponent {
             this.toastService.showSuccess('Login Successful');
             // Save user data for further use if needed
             this.dataService.setContent(response.user);
-            this.router.navigate(['/dashboard']);
+            this.router.navigate(['/admin-dashboard']);
           } else {
             this.toastService.showError(response.message || 'Login Failed');
           }

@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatIconModule } from '@angular/material/icon'; // Import MatIconModule
@@ -40,13 +41,14 @@ import { CreateCustomerComponent } from './create-customer/create-customer.compo
 import { CreateOpportunityComponent } from './create-opportunity/create-opportunity.component';
 import { LovManagerComponent } from './lov-manager/lov-manager.component';
 import { MatTableModule } from '@angular/material/table';
+import { MatDividerModule } from '@angular/material/divider';
 import { CustomFormComponent } from './custom-form/custom-form.component';
 import { CreateNewCoustomerComponent } from './create-new-coustomer/create-new-coustomer.component';
 import { CustomServicesComponent } from './custom-services/custom-services.component';
 import { EmployeeregistrationComponent } from './employeeregistration/employeeregistration.component';
 import { TenantregistrationComponent } from './tenantregistration/tenantregistration.component';
 import { VerticalsurveillancesSystemComponent } from './verticalsurveillances-system/verticalsurveillances-system.component';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { VisitorregistrationComponent } from './visitorregistration/visitorregistration.component';
 import { FootfallAnalyticsComponent } from './dashboard-templates/footfall-analytics/footfall-analytics.component';
 import { StatisticsChartComponent } from './dashboard-templates/statistics-chart/statistics-chart.component';
@@ -64,13 +66,24 @@ import { SopComplianceComponent } from './dashboard-templates/sop-compliance/sop
 import { CakesbakesComponent } from './dashboard-templates/cakesbakes/cakesbakes.component';
 import { DiningtableComponent } from './dashboard-templates/diningtable/diningtable.component';
 import { UniformViolationsComponent } from './uniform-violations/uniform-violations.component';
-
-
-
-
-// Pass the FusionCharts library and modules to the FusionChartsModule
-
-
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { FloorHeatmapComponent } from './dashboard-templates/floor-heatmap/floor-heatmap.component';
+import { AppViolationsComponent } from './dashboard-templates/app-violations/app-violations.component';
+import { AnalyticsOverviewComponent } from './dashboard-templates/analytics-overview/analytics-overview.component';
+import { GraphHeatmapComponent } from './dashboard-templates/graph-heatmap/graph-heatmap.component';
+import { AttendanceLogsComponent } from './attendance-logs/attendance-logs.component';
+import { StaffPerfomanceComponent } from './staff-perfomance/staff-perfomance.component';
+import { LiveFootfallChartComponent } from './dashboard-templates/live-footfall-chart/live-footfall-chart.component';
+import { SalesCategoryChartComponent } from './dashboard-templates/sales-category-chart/sales-category-chart.component';
+import { SalesCategoryWeeklyChartComponent } from './dashboard-templates/sales-category-weekly-chart/sales-category-weekly-chart.component';
+import { SystemHealthComponent } from './dashboard-templates/system-health/system-health.component';
+import { BusinessInsightsComponent } from './dashboard-templates/business-insights/business-insights.component';
+import { PerformanceMetricsComponent } from './dashboard-templates/performance-metrics/performance-metrics.component';
+import { PerformanceOverviewComponent } from './dashboard-templates/performance-overview/performance-overview.component';
+import { TopPerformingOutletsComponent } from './dashboard-templates/top-performing-outlets/top-performing-outlets.component';
+import { LiveIncidentsComponent } from './live-incidents/live-incidents.component';
+import { LiveIncidentReportingComponent } from './live-incident-reporting/live-incident-reporting.component';
+import { RealTimeViolationComponent } from './dashboard-templates/real-time-violation/real-time-violation.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -104,8 +117,25 @@ import { UniformViolationsComponent } from './uniform-violations/uniform-violati
         SopComplianceComponent,
         CakesbakesComponent,
         DiningtableComponent,
-        UniformViolationsComponent
-       
+        UniformViolationsComponent,
+        AdminDashboardComponent,
+        FloorHeatmapComponent,
+        AppViolationsComponent,
+        AnalyticsOverviewComponent,
+        GraphHeatmapComponent,
+        AttendanceLogsComponent,
+        StaffPerfomanceComponent,
+        LiveFootfallChartComponent,
+        SalesCategoryChartComponent,
+        SalesCategoryWeeklyChartComponent,
+        SystemHealthComponent,
+        BusinessInsightsComponent,
+        PerformanceMetricsComponent,
+        PerformanceOverviewComponent,
+        TopPerformingOutletsComponent,
+        LiveIncidentsComponent,
+        LiveIncidentReportingComponent,
+        RealTimeViolationComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,
@@ -117,6 +147,8 @@ import { UniformViolationsComponent } from './uniform-violations/uniform-violati
         MatButtonModule,
         MatCardModule,
         MatTabsModule,
+        MatProgressBarModule,
+        MatDividerModule,
         MatGridListModule,
         MatDatepickerModule,
         MatNativeDateModule,
@@ -125,6 +157,7 @@ import { UniformViolationsComponent } from './uniform-violations/uniform-violati
         MatToolbarModule,
         MatTooltipModule,
         MatPaginatorModule,
+        MatProgressSpinnerModule,
         ReactiveFormsModule,
         MatChipsModule,
         MatCheckboxModule,
@@ -134,15 +167,11 @@ import { UniformViolationsComponent } from './uniform-violations/uniform-violati
         NgApexchartsModule,
         HighchartsChartModule,
         MatTableModule,
-        
         MatIconModule],
-        
-
     providers: [
         provideClientHydration(),
         provideAnimationsAsync(),
-        provideHttpClient(withFetch()) // Enable fetch
-        ,
+        provideHttpClient(withFetch()),
         provideHttpClient(withInterceptorsFromDi())
     ]
 })

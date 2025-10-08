@@ -1,0 +1,115 @@
+/* Enable vertical scroll with smooth behavior */
+.scroll-container {
+  max-height: 300px; /* adjust as needed */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-right: 4px;
+}
+
+/* =====================================================
+   Performance Card with SVG-style Arc / Gradient Background
+===================================================== */
+.performance-card {
+  position: relative;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+  padding: 30px;
+  overflow: hidden; /* ensures background stays inside */
+}
+
+/* Decorative arc/gradient background effect */
+.performance-card::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at 80% 30%,
+    rgba(20, 96, 170, 0.08) 0%,
+    rgba(20, 96, 170, 0.03) 40%,
+    rgba(20, 96, 170, 0) 70%
+  );
+  z-index: 0;
+  pointer-events: none;
+}
+
+.performance-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.performance-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* Typography tuning */
+.city-title {
+  font-size: 18px;
+  color: #111827;
+  padding-bottom: 6px;
+}
+
+.text-muted {
+  color: #6b7280 !important;
+  font-size: 14px;
+}
+
+.text-dark {
+  color: #111827 !important;
+  font-size: 16px !important;
+}
+
+.text-primary {
+  color: #1460aa !important;
+}
+
+.text-primary-link {
+  color: #1460aa !important;
+  font-size: 24px;
+  padding-bottom: 6px;
+}
+
+.small {
+  font-size: 14px;
+}
+
+.details span {
+  font-size: 14px;
+}
+
+/* Dot indicator */
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+/* Text color sizing */
+.text-success,
+.text-warning,
+.text-danger {
+  font-size: 14px;
+}
+
+.heading-span {
+  font-size: 14px;
+}
+
+.justify-content-between {
+  padding-top: 10px;
+}
+
+/* Optional responsive refinement */
+@media (max-width: 768px) {
+  .performance-card {
+    padding: 20px;
+  }
+}

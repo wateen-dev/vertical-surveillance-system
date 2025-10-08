@@ -14,8 +14,6 @@ interface SharePointItem {
   id?: string;   // Optional field example
   title?: string; // Optional field example
 }
-
-
 @Component({
   selector: 'app-create-screen',
   templateUrl: './create-screen.component.html',
@@ -41,6 +39,7 @@ export class CreateScreenComponent {
     this.isLoading = true;
     // this.GetSharePointItems();
     // this.GetVideoSharePoint();
+    debugger
     this.LoadContentInfo();
     this.GetScreenDetails();  
     this.GetAppNames();
@@ -49,6 +48,7 @@ export class CreateScreenComponent {
   }
 
   onSubmit(form: any) {
+    debugger
     let module_id = form.value.module.module_id;
     let module_name = form.value.module.module_name;
     let module_icon = "";
@@ -119,37 +119,37 @@ export class CreateScreenComponent {
       }
     );
   }
-  GetSharePointItems() {
-    this.screenService.getSharePointDetails().subscribe(
-      (response) => {
-        if(response != null || response != undefined){
-          let responseData: SharePointItem[] = response;
-          debugger
-          let mp4Data = responseData.filter((item: SharePointItem) => {
-            return item.webUrl && item.webUrl.endsWith('.mp4');
-          });
+  // GetSharePointItems() {
+  //   this.screenService.getSharePointDetails().subscribe(
+  //     (response) => {
+  //       if(response != null || response != undefined){
+  //         let responseData: SharePointItem[] = response;
+  //         debugger
+  //         let mp4Data = responseData.filter((item: SharePointItem) => {
+  //           return item.webUrl && item.webUrl.endsWith('.mp4');
+  //         });
 
-          this.allSharePointItems = mp4Data;
-          console.log('mp4Data', this.allSharePointItems);
+  //         this.allSharePointItems = mp4Data;
+  //         console.log('mp4Data', this.allSharePointItems);
 
           
-    }
-      },
-      (error) => {
-        this.toastService.showError('Error retrieving app details: ' + error.error.toString());
-      }
-    );
-  }
-  GetVideoSharePoint() {
-    this.screenService.getSharePointVideo().subscribe({
-      next: (url: string) => {
-        this.videoUrl = url; // Set the video URL for playback
-      },
-      error: (err) => {
-        console.error('Error fetching video:', err);
-      },
-  });
-  }
+  //   }
+  //     },
+  //     (error) => {
+  //       this.toastService.showError('Error retrieving app details: ' + error.error.toString());
+  //     }
+  //   );
+  // }
+  // GetVideoSharePoint() {
+  //   this.screenService.getSharePointVideo().subscribe({
+  //     next: (url: string) => {
+  //       this.videoUrl = url; // Set the video URL for playback
+  //     },
+  //     error: (err) => {
+  //       console.error('Error fetching video:', err);
+  //     },
+  // });
+  // }
   GetModulesNames() {
     this.screenService.getModulesDetails().subscribe(
       (response) => {
@@ -195,7 +195,8 @@ onModuleChange(event: any): void {
   LoadContentInfo() {
     this.employeeContent = this.dataService.getContent();
     if (this.employeeContent != null) {
-      this.createdBy = this.employeeContent.content.employeeno;
+      debugger
+      this.createdBy = this.employeeContent.userId;
     }
   }
 }

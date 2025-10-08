@@ -53,6 +53,17 @@ export class SidenavComponent implements OnInit {
     this.screenService.getScreenDetails().subscribe(
       (data) => {
         this.sidenavItems = data; 
+        const desiredOrder = [
+          'Dashboard',
+          'Surveillance System',
+          'Registration Center',
+          'Administration',
+          'Coming Soon'
+        ];
+
+        this.sidenavItems = this.sidenavItems.sort(
+          (a, b) => desiredOrder.indexOf(a.title) - desiredOrder.indexOf(b.title)
+        );
         this.setActiveSubmenu(this.router.url);
       },
       (error) => {
@@ -81,7 +92,7 @@ export class SidenavComponent implements OnInit {
     });
   }
   navigateToDashboard() {
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['/admin-dashboard']).then(() => {
       this.isSidenavOpened = false; // Close the sidenav after navigation
     });
   }

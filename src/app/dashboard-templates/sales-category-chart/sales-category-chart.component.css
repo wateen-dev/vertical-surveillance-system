@@ -1,0 +1,21 @@
+.chart-wrapper {
+  width: 100%;
+  overflow-x: hidden;  /* prevents horizontal overflow */
+  display: flex;
+  justify-content: center;
+}
+
+.chart-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+apx-chart {
+  width: 100% !important;   /* ensure the chart fits its container */
+  max-width: 100% !important;
+}

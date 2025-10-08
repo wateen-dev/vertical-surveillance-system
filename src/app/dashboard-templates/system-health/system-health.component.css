@@ -1,0 +1,128 @@
+.system-health-card {
+  border-radius: 14px;
+  background: #fff;
+  padding: 18px 20px;
+  width: 100%;
+  max-width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1e1e1e;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 0.85rem;
+  color: #8b8b8b;
+  margin: 0;
+}
+
+.status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #9e9e9e;
+}
+.status.online {
+  color: #27ae60;
+}
+
+/* Scroll container */
+.items-scroll {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 350px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  width: 100% !important;
+}
+
+/* Individual Item */
+.health-item {
+  background: #fafafa;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.health-item:hover {
+  background: #f4f7ff;
+  transform: translateY(-2px);
+}
+
+.left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.icon-wrapper {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  color: #1e1e1e;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.sub {
+  font-size: 12px;
+  color: #7a7a7a;
+  margin: 0;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+/* Right side (value + sub) */
+.right {
+    font-weight: 500;
+    font-size: 18px;
+    flex-shrink: 0;
+    display: grid;
+    align-items: baseline;
+    gap: 8px;
+    flex-shrink: 0;
+    text-align: right;
+}
+.subright {
+    font-weight: 500;
+    font-size: 12px;
+}

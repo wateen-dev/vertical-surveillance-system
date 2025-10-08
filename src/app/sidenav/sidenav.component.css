@@ -233,6 +233,7 @@ mat-toolbar {
     font-family: 'Century Gothic', sans-serif ;
     margin-left: 5px; /* Space between username and user icon */
     color: white; /* Username color */
+    cursor:pointer;
 }
 
 .logout-icon:hover {

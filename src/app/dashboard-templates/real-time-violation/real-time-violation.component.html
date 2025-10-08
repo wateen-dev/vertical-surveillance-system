@@ -1,0 +1,28 @@
+<div class="violation-card">
+  <div class="violations-grid">
+    <div
+      class="violation-box"
+      *ngFor="let item of violations"
+      [ngStyle]="{ 'background-color': item.bg }"
+    >
+      <div class="icon-wrapper" [ngStyle]="{ color: item.color }">
+        <mat-icon class="iconstyling">{{ item.icon }}</mat-icon>
+      </div>
+      <h2 class="value" [ngStyle]="{ color: item.color }">{{ item.value }}</h2>
+      <p class="label" [ngStyle]="{ color: item.color }">{{ item.label }}</p>
+      <p class="sublabel" [ngStyle]="{ color: item.color }">
+        {{ item.subLabel }}
+      </p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div class="info">
+      <span class="muted">🏢 All Branches</span>
+      <span class="dot"></span>
+      <span class="muted">🕒 Updated 2 minutes ago</span>
+      <span class="dot"></span>
+      <span class="muted">🎯 98.2% Detection Accuracy</span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="business-insights-card">
+    <!-- <div class="header">
+    <div>
+      <h3 class="title">Business Insights</h3>
+      <p class="subtitle">Real-time recommendations from advanced analytics</p>
+    </div>
+    <div class="status" [class.active]="status === 'AI Active'">
+      ● {{ status }}
+    </div>
+  </div> -->
+
+    <div class="insights-scroll">
+        <div class="insights-grid" *ngIf="businessInsights$ | async as insights">
+            <div *ngFor="let item of insights" class="insight-box">
+                <div class="box-header">
+                    <h4>{{ item.title }}</h4>
+                    <span class="tag" [ngStyle]="{ 'background-color': item.tagColor + '20', color: item.tagColor }">
+                        {{ item.tag }}
+                    </span>
+                </div>
+                <p class="description">{{ item.description }}</p>
+                <div class="value-row">
+                    <span class="value" [style.color]="item.valueColor">{{ item.value }}</span>
+                    <span class="confidence" [style.color]="item.confidenceColor">
+                        <mat-icon class="confidence-icon">insert_chart_outlined</mat-icon>
+                        {{ item.confidence }}
+                    </span>
+                </div>
+                <button mat-button color="primary" class="details" (click)="openDetailsDialog(item)">
+                    View Details →
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Inline MatDialog Template -->
+  <ng-template #dialogTemplate let-data>
+  <div class="dialog-wrapper">
+
+    <!-- HEADER -->
+    <div class="dialog-header" [style.background]="data.color || '#2563eb'">
+      <h2 class="dialog-title">{{ data.title }}</h2>
+    </div>
+
+    <!-- BODY -->
+    <mat-dialog-content class="dialog-content">
+      <div class="dialog-body">
+        <div class="dialog-section">
+          <h3>Overview</h3>
+          <p><strong>Value:</strong> <span class="highlight">{{ data.value }}</span></p>
+          <p><strong>Change:</strong> {{ data.change }}</p>
+        </div>
+
+        <div class="dialog-section">
+          <h3>Description</h3>
+          <p>{{ data.description }}</p>
+        </div>
+      </div>
+    </mat-dialog-content>
+
+    <!-- FOOTER -->
+    <mat-dialog-actions align="end" class="dialog-footer">
+      <button mat-stroked-button color="primary" mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+
+  </div>
+</ng-template>
+</div>
