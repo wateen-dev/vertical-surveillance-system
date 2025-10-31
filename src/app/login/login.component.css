@@ -87,11 +87,11 @@
 }
 
 .sideNavHeading {
-  font-family: 'Century Gothic', sans-serif ;
     /* Increase font size for the heading */
     color:#1976d2;
     /* Remove default margin */
     font-weight: 200;
+    font-size: 32px;
     top: 0px;
     /* Make the text slightly bolder */
     white-space: nowrap;
@@ -132,6 +132,38 @@
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+.svglayout{
+  position:relative;
+  left:-20px;
+}
+.img-styling {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8fafc; /* subtle light background */
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  margin-bottom: 40px;
+}
 
+.img-styling:hover {
+  background: #eef4ff;
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
 
-  
+.img-styling img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease, filter 0.3s ease;
+  filter: brightness(0.95);
+}
+
+.img-styling:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.1);
+}

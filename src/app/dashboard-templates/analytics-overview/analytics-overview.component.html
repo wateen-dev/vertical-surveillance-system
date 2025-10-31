@@ -1,13 +1,11 @@
 <div class="analytics-container">
-  <!-- Loading Spinner -->
-  <div *ngIf="loading" class="loading-spinner text-center">
-    <mat-spinner diameter="50"></mat-spinner>
-  </div>
-
-  <!-- Cards Grid -->
-  <div *ngIf="!loading && analyticsData" class="row">
+ 
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
+  <div *ngIf="!isLoading && analyticsData" class="row">
     <div class="col-12 col-sm-6 col-md-3 mb-3" *ngFor="let card of analyticsData | keyvalue">
-      <mat-card class="stat-card h-100">
+      <mat-card class="stat-card h-100" style="cursor: pointer;" (click)="onCardClick(card.key, card.value)">
         <div class="card-content d-flex justify-content-between align-items-center">
           <div class="stat-text">
             <p class="stat-label">{{ card.key | titlecase }}</p>
@@ -19,11 +17,187 @@
               {{ card.value.note }}
             </div>
           </div>
-        <div class="icon-wrapper" [ngStyle]="{'background-color': card.value.color}">
-          <mat-icon class="stat-icon">{{ card.value.icon }}</mat-icon>
-        </div>
+
+          <div class="icon-wrapper" [ngStyle]="{'background-color': card.value.color}">
+            <svg class="icon-bg" width="100" height="100" viewBox="0 0 52 52">
+              <defs>
+                <filter id="glowShadow" x="-70%" y="-70%" width="240%" height="240%">
+                  <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.35)" />
+                </filter>
+                <clipPath id="ovalArcCut">
+                  <path d="M 1 1 A 1 383 90 0 0 5262 50 A 1604 0 9100 0 0 1 10 Z" />
+                </clipPath>
+              </defs>
+              <circle cx="25" cy="25" r="25" [attr.fill]="card.value.color" filter="url(#glowShadow)" opacity="0.15"
+                clip-path="url(#ovalArcCut)" />
+            </svg>
+            <mat-icon class="stat-icon">{{ card.value.icon }}</mat-icon>
+          </div>
         </div>
       </mat-card>
     </div>
   </div>
+  <!-- Inline Mat Dialog -->
+  <ng-template [ngIf]="dialogVisible">
+    <div class="mat-dialog-container">
+      <h2 mat-dialog-title>{{ dialogTitle }}</h2>
+      <mat-dialog-content>
+        <p>Value: <strong>{{ dialogValue }}</strong></p>
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+        <button mat-button (click)="closeDialog()">Close</button>
+      </mat-dialog-actions>
+    </div>
+  </ng-template>
+  <!-- Avg Queue Time Dialog -->
+  <ng-template #avgQueueDialog>
+    <div class="dialog-header">
+      <h2 mat-dialog-title class="mat-title">Average Queue Time (Live Data)</h2>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+      <p class="dialog-subtitle">
+        Below is the average wait time recorded today across all active queues.
+      </p>
+
+      <!-- Loading Spinner -->
+      <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading data...</p>
+      </div>
+
+      <!-- Data Table -->
+      <div *ngIf="!isLoading">
+        <table mat-table [dataSource]="avgQueueData" class="mat-elevation-z8 w-100 queue-table"
+          *ngIf="(avgQueueData?.length || 0) > 0; else noQueueData">
+          <!-- Queue # Column -->
+          <ng-container matColumnDef="queueNumber">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">Queue #</th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.queueNumber }}
+            </td>
+          </ng-container>
+
+          <!-- Avg Wait Time (Seconds) -->
+          <ng-container matColumnDef="avgWaitTimeSeconds">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">
+              Avg Wait (sec)
+            </th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.avgWaitTimeSeconds }}
+            </td>
+          </ng-container>
+
+          <!-- Avg Wait Time (Minutes) -->
+          <ng-container matColumnDef="avgWaitTimeMinutes">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">
+              Avg Wait (min)
+            </th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.avgWaitTimeMinutes }}
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="[
+            'queueNumber',
+            'avgWaitTimeSeconds',
+            'avgWaitTimeMinutes'
+          ]"></tr>
+          <tr mat-row *matRowDef="
+            let row;
+            columns: [
+              'queueNumber',
+              'avgWaitTimeSeconds',
+              'avgWaitTimeMinutes'
+            ]
+          "></tr>
+        </table>
+
+        <!-- No Data Fallback -->
+        <ng-template #noQueueData>
+          <div class="no-data">No queue data available at the moment.</div>
+        </ng-template>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button mat-raised-button color="primary" (click)="closeAllDialogs()">
+        Close
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+
+  <ng-template #employeeEfficiencyDialog>
+    <div class="dialog-header">
+      <h2 mat-dialog-title class="mat-title">Employee Efficiency (Top Performers)</h2>
+    </div>
+
+    <mat-dialog-content class="dialog-content">
+      <p class="dialog-subtitle">
+        Below are the top-performing employees ranked by their efficiency score.
+      </p>
+
+      <!-- Loading Spinner -->
+      <!-- <div *ngIf="isLoading" class="loading-container">
+        <mat-spinner diameter="40"></mat-spinner>
+        <p>Loading employee data...</p>
+      </div> -->
+
+      <!-- Data Table -->
+      <div>
+        <table mat-table [dataSource]="employeeEfficiencyData" class="mat-elevation-z8 w-100 efficiency-table"
+          *ngIf="(employeeEfficiencyData?.length || 0) > 0; else noEmployeeData">
+          <!-- Position -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">Position</th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.position }}
+            </td>
+          </ng-container>
+
+          <!-- Employee ID -->
+          <ng-container matColumnDef="employeeId">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">Employee ID</th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.employeeId }}
+            </td>
+          </ng-container>
+
+          <!-- Employee Name -->
+          <ng-container matColumnDef="employeeName">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">Employee Name</th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.employeeName }}
+            </td>
+          </ng-container>
+
+          <!-- Efficiency -->
+          <ng-container matColumnDef="efficiency">
+            <th mat-header-cell *matHeaderCellDef class="header-cell">
+              Efficiency (%)
+            </th>
+            <td mat-cell *matCellDef="let element" class="data-cell">
+              {{ element.efficiency }}
+            </td>
+          </ng-container>
+
+          <!-- Register Columns -->
+          <tr mat-header-row *matHeaderRowDef="displayedEmployeeColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedEmployeeColumns"></tr>
+        </table>
+
+        <!-- No Data -->
+        <ng-template #noEmployeeData>
+          <div class="no-data">No employee efficiency data available.</div>
+        </ng-template>
+      </div>
+    </mat-dialog-content>
+
+    <mat-dialog-actions align="end" class="dialog-actions">
+      <button mat-raised-button color="primary" (click)="closeAllDialogs()">
+        Close
+      </button>
+    </mat-dialog-actions>
+  </ng-template>
+
 </div>

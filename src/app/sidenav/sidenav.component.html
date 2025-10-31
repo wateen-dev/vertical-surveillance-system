@@ -5,7 +5,13 @@
                 <mat-icon>{{ isSidenavOpened ? 'menu_open' : 'menu' }}</mat-icon>
             </button>
         </div>
-        <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()">Saphire Operations </h2>
+        <div class="imgsec">
+            <div class="img-styling">
+                <img src="assets/WDS.png" class="img-class" alt="Company Logo" width="120" height="auto"
+                    (click)="navigateToDashboard()" />
+            </div>
+            <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()">Ai Vision Analytics </h2>
+        </div>
     </div>
     <div class="right-icons d-flex align-items-center">
         <mat-icon class="username-icon" aria-label="User" (click)="toggleInfo()">account_circle</mat-icon>

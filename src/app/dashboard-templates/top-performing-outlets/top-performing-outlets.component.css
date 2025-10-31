@@ -1,6 +1,6 @@
 /* Scroll Container */
 .scroll-container {
-  max-height: 320px; /* requested height */
+  max-height: 350px; /* requested height */
   overflow-y: auto;
   overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
@@ -18,10 +18,11 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   overflow: hidden;
   min-height: 300px; /* kept as you wanted */
+  border-left:2px rgba(0, 0, 0, 0.08);
 }
 
 /* Decorative gradient arc (top-right) */
-.outlet-card::before {
+/* .outlet-card::before {
   content: "";
   position: absolute;
   top: -30%;
@@ -36,7 +37,7 @@
   );
   z-index: 0;
   pointer-events: none;
-}
+} */
 
 /* ensure card content renders above gradient */
 .outlet-card > * {
@@ -56,7 +57,7 @@
   top: -20px;
   right: 12px;
   float: right;
-  background: #1460aa;
+  background: #1460aa !important;/*In case of multi color just remove important so it will get the color from database*/
   color: #ffffff;
   font-weight: 700;
   border-radius: 50%;
@@ -257,3 +258,117 @@ mat-icon {
   font-size: 18px;
   vertical-align: middle;
 }
+
+
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 998;
+}
+
+.outlet-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.outlet-dialog {
+  background: #fff;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header,
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.outlet-card,
+.reviews-card {
+  margin: 1rem;
+  border-radius: 10px;
+}
+
+.outlet-info p {
+  margin: 4px 0;
+}
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.review-table {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+mat-toolbar.dialog-footer {
+  justify-content: center;
+  font-size: 13px;
+  color: #f0f0f0;
+}
+.full-screen-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+.outlet-card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  cursor: pointer;
+}
+/* ===== Full Page Loading Overlay ===== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7); /* semi-transparent white */
+  backdrop-filter: blur(3px); /* slight blur for background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* high value to overlay everything */
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Spinner styling */
+.loading-overlay .spinner {
+  border: 6px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid #1e88e5; /* Primary color */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

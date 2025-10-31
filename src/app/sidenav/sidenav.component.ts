@@ -58,7 +58,7 @@ export class SidenavComponent implements OnInit {
           'Surveillance System',
           'Registration Center',
           'Administration',
-          'Coming Soon'
+          'System Integration'
         ];
 
         this.sidenavItems = this.sidenavItems.sort(

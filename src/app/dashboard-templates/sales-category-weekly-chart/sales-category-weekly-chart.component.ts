@@ -53,7 +53,7 @@ export class SalesCategoryWeeklyChartComponent {
         },
       ],
       chart: {
-        height: 300,
+        height: 315,
         type: "line",
         toolbar: { show: false },
       },

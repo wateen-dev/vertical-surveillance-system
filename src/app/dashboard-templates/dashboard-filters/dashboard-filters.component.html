@@ -1,0 +1,42 @@
+<mat-card class="filter-card">
+  <div class="filter-container">
+    <!-- Country Dropdown -->
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Country</mat-label>
+      <mat-select [(value)]="selectedCountry">
+        <mat-option *ngFor="let c of countryList" [value]="c">{{ c }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- City Dropdown -->
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>City</mat-label>
+      <mat-select [(value)]="selectedCity">
+        <mat-option *ngFor="let city of cityList" [value]="city">{{ city }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Area Dropdown -->
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Area</mat-label>
+      <mat-select [(value)]="selectedArea">
+        <mat-option *ngFor="let area of areaList" [value]="area">{{ area }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Additional Dropdown Example -->
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Outlet Type</mat-label>
+      <mat-select [(value)]="selectedOutletType">
+        <mat-option *ngFor="let type of outletTypes" [value]="type">{{ type }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- Search Button -->
+    <div class="filter-actions">
+      <button mat-raised-button color="primary" (click)="applyFilters()">
+        <mat-icon>search</mat-icon> Search
+      </button>
+    </div>
+  </div>
+</mat-card>

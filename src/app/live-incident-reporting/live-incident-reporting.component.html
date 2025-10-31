@@ -6,6 +6,10 @@
             <div class="row">
                 <div class="col-sm-6">
                     <!-- Header -->
+                    <button class="back-button" (click)="goBack()">
+                        <mat-icon>arrow_back</mat-icon>
+                        <span>Back to Live Incidents</span>
+                    </button>
                     <div class="lir-header mb-3">
                         <div class="lir-title">
                             <h2>{{ incidentTitle }}</h2>
@@ -17,7 +21,7 @@
                     <div class="lir-top-right">
                         <div class="text-end">
                             <div class="small-muted">{{ location }} </div>
-                            <div class="small-muted">{{ timestamp }}</div>
+                            <div class="small-muted textStyling">{{ timestamp }}</div>
                         </div>
                         <div class="priority-badge ms-2">{{ priority }}</div>
                     </div>
@@ -176,7 +180,7 @@
                     <mat-card class="ticket-card mat-elevation-z2">
                         <div class="ticket-header">
                             <h2>Ticket Information</h2>
-                            <span class="ticket-id">TK-2024-001547</span>
+                            <span class="ticket-id">VId - {{violationId}}</span>
                         </div>
 
                         <div class="ticket-info">
@@ -235,7 +239,7 @@
                         <div class="info-group two-col">
                             <div>
                                 <label>Date Assigned</label>
-                                <div class="value">Aug 10, 2025</div>
+                                <div class="value">{{violationDate}}</div>
                             </div>
                             <div>
                                 <label>Due Date</label>

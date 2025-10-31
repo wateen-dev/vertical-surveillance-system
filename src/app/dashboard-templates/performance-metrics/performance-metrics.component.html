@@ -7,8 +7,9 @@
                     [plotOptions]="getChartOptions(item.title, item.percentage, item.color).plotOptions"
                     [stroke]="getChartOptions(item.title, item.percentage, item.color).stroke"
                     [colors]="getChartOptions(item.title, item.percentage, item.color).colors"
-                    [tooltip]="getChartOptions(item.title, item.percentage, item.color).tooltip">
+                    >
                 </apx-chart>
+                <!-- [tooltip]="getChartOptions(item.title, item.percentage, item.color).tooltip" -->
 
                 <div class="text-center mt-n3">
                     <h6 class="metric-title mb-1">{{ item.title }}</h6>

@@ -84,6 +84,9 @@ import { TopPerformingOutletsComponent } from './dashboard-templates/top-perform
 import { LiveIncidentsComponent } from './live-incidents/live-incidents.component';
 import { LiveIncidentReportingComponent } from './live-incident-reporting/live-incident-reporting.component';
 import { RealTimeViolationComponent } from './dashboard-templates/real-time-violation/real-time-violation.component';
+import { HeatmapChartComponent } from './dashboard-templates/heatmap-chart/heatmap-chart.component';
+import { DashboardFiltersComponent } from './dashboard-templates/dashboard-filters/dashboard-filters.component';
+import { OutletDialogComponent } from './dashboard-templates/outlet-dialog/outlet-dialog.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -135,7 +138,10 @@ import { RealTimeViolationComponent } from './dashboard-templates/real-time-viol
         TopPerformingOutletsComponent,
         LiveIncidentsComponent,
         LiveIncidentReportingComponent,
-        RealTimeViolationComponent
+        RealTimeViolationComponent,
+        HeatmapChartComponent,
+        DashboardFiltersComponent,
+        OutletDialogComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,

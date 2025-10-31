@@ -49,13 +49,22 @@
     <!-- Table -->
     <div class="table-wrapper">
       <table mat-table [dataSource]="dataSource" matSort class="incidents-table">
-
+        <!-- Violation ID -->
+        <ng-container matColumnDef="violationId">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let element">{{ element.violationId }}</td>
+        </ng-container>
         <!-- Time -->
         <ng-container matColumnDef="time">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
           <td mat-cell *matCellDef="let element">{{ element.time }}</td>
         </ng-container>
 
+        <!-- Type -->
+        <ng-container matColumnDef="type">
+          <th mat-header-cell *matHeaderCellDef>Type</th>
+          <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+        </ng-container>
         <!-- Outlet -->
         <ng-container matColumnDef="outlet">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Outlet</th>
@@ -64,23 +73,44 @@
           </td>
         </ng-container>
 
-        <!-- Type -->
-        <ng-container matColumnDef="type">
-          <th mat-header-cell *matHeaderCellDef>Type</th>
-          <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+        <!-- Violation Duration -->
+        <ng-container matColumnDef="violationDuration">
+          <th mat-header-cell *matHeaderCellDef>Duration</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="duration-cell" matTooltip="{{ element.violationDuration }} seconds" matTooltipPosition="above">
+              <div class="duration-bar">
+                <div class="duration-fill" [ngStyle]="{
+                    width: (element.violationDuration / 120) * 100 + '%',
+                    background: getDurationColor(element.violationDuration)
+                  }"></div>
+              </div>
+              
+            </div>
+          </td>
         </ng-container>
+        
+        <!-- Violation Date -->
+        <ng-container matColumnDef="violationDate">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.violationDate | date: 'mediumDate' }}
+          </td>
+        </ng-container>
+
+
+
 
         <!-- Confidence -->
         <ng-container matColumnDef="confidence">
-            <th mat-header-cell *matHeaderCellDef>Confidence</th>
-            <td mat-cell *matCellDef="let element">
-                <div class="conf-cell" matTooltip="{{ element.confidence }}% Confidence" matTooltipPosition="above">
-                    <div class="conf-bar">
-                        <div class="conf-fill" [style.width.%]="element.confidence"></div>
-                    </div>
-                    <div class="conf-label">{{ element.confidence }}%</div>
-                </div>
-            </td>
+          <th mat-header-cell *matHeaderCellDef>Confidence</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="conf-cell" matTooltip="{{ element.confidence }}% Confidence">
+              <div class="conf-bar">
+                <div class="conf-fill" [style.width.%]="element.confidence"></div>
+              </div>
+              <div class="conf-label">{{ element.confidence }}%</div>
+            </div>
+          </td>
         </ng-container>
 
         <!-- Status -->
@@ -102,12 +132,16 @@
             </mat-chip>
           </td>
         </ng-container>
-
+        <!-- Camera ID -->
+        <ng-container matColumnDef="cameraId">
+          <th mat-header-cell *matHeaderCellDef>Camera</th>
+          <td mat-cell *matCellDef="let element">{{ element.cameraId }}</td>
+        </ng-container>
         <!-- Actions -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>Actions</th>
           <td mat-cell *matCellDef="let element">
-            <button mat-stroked-button color="primary" class="action-btn" (click)="goToLiveIncident(element)" aria-label="View">
+            <button mat-stroked-button color="primary" (click)="goToLiveIncident(element)">
               <mat-icon>visibility</mat-icon>
               <span class="btn-text">View</span>
             </button>
@@ -118,7 +152,6 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
-      <!-- Pagination -->
       <mat-paginator [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons></mat-paginator>
     </div>
   </mat-card>

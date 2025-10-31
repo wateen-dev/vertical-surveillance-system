@@ -71,52 +71,64 @@ export class PerformanceMetricsComponent {
     colors: string[];
     tooltip: ApexTooltip;
   } {
-    return {
-      series: [value, 100 - value],
-      chart: {
-        type: 'donut' as ChartType,
-        height: 180,
-        sparkline: { enabled: true }
-      },
-      colors: [color, '#E5E7EB'], // filled + remaining
-      plotOptions: {
-        pie: {
-          donut: {
-            size: '75%',
-            labels: {
+      return {
+    series: [value, 100 - value],
+    chart: {
+      type: 'donut' as ChartType,
+      height: 180,
+      sparkline: { enabled: true }
+    },
+    colors: [color, '#f1f1f1'],
+    plotOptions: {
+      pie: {
+        donut: {
+          size: '75%',
+          labels: {
+            show: true, // ✅ must be true to show center label
+            name: {
+              show: false, // hide name if not needed
+            },
+            value: {
               show: true,
-              value: {
-                show: true,
-                fontSize: '22px',
-                fontWeight: '700',
-                color: '#111827',
-                formatter: () => `${value}%`
-              }
-            }
-          }
-        }
-      },
-      dataLabels: { enabled: false },
-      stroke: { show: false },
-      fill: { type: 'solid' },
-      tooltip: {
-        enabled: true,
-        theme: 'dark',
-        y: {
-          formatter: (val: number) => `${label}: ${val}%`
+              fontSize: '30px',
+              fontWeight: '700',
+              offsetY: 26, // ✅ moves the percentage slightly lower for perfect centering
+              color: color, // ✅ dynamic color for active metric
+              formatter: () => `${value}%`,
+            },
+            total: {
+             show: true,
+              showAlways: true,
+              label: '',
+              fontSize: '30px',
+              fontWeight: '700',
+              color: color,
+              formatter: () => `${value}%`
+            },
+          },
         },
-        custom: ({ series, seriesIndex, w }) => {
-          // Ensure tooltip shows only for the main filled segment
-          if (seriesIndex === 0) {
-            return `<div style="padding:4px 8px;font-size:13px;">
+      },
+    },
+    dataLabels: { enabled: false }, // optional: disable small outside labels
+    stroke: { show: true },
+    fill: { type: 'solid' },
+    tooltip: {
+      enabled: true,
+      theme: 'dark',
+      y: {
+        formatter: (val: number) => `${label}: ${val}%`
+      },
+      custom: ({ seriesIndex }) => {
+        if (seriesIndex === 0) {
+          return `<div style="padding:4px 8px;font-size:13px;">
                     <strong>${label}:</strong> ${value}%
                   </div>`;
-          }
-          return '';
         }
+        return '';
       }
-    };
-  }
+    }
+  };
+}
 
 
 

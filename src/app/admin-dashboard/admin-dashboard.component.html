@@ -1,11 +1,24 @@
-<div class="admin-content">
+<div class="admin-content admin-background">
     <div class="container-fluid">
         <div class="row admin-styling">
             <div class="col-sm-12">
+                <!-- <div #analyticsSection class="admin-dashboard fade-in"> -->
+                <div class="admin-dashboard">
+                    <div class="analytics-header">
+                        <h2 class="analytics-title">Outlet Analytics Filters</h2>
+                        <!-- <p class="analytics-subtitle">Refine insights by country, city, and area in real time</p> -->
+                    </div>
+                    <app-dashboard-filters></app-dashboard-filters>
+                </div>
+            </div>
+        </div>
+        <div class="row admin-styling">
+            <div class="col-sm-12">
+                <!-- <div #analyticsSection class="admin-dashboard fade-in"> -->
                 <div class="admin-dashboard">
                     <div class="analytics-header">
                         <h2 class="analytics-title">Retail AI Analytics Overview</h2>
-                        <p class="analytics-subtitle">Real-time insights across 50 Pakistan outlets</p>
+                        <p class="analytics-subtitle">Real-time insights across retail outlets</p>
                     </div>
                     <app-analytics-overview></app-analytics-overview>
                 </div>
@@ -35,7 +48,7 @@
                 </div>
             </div>  
         </div>
-        <div class="row salescharts">
+        <!-- <div class="row salescharts">
             <div class="col-sm-12">
                 <div class="admin-dashboard">
                     <div class="real-time-detection">
@@ -51,7 +64,7 @@
                     <app-real-time-violation></app-real-time-violation>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row salescharts">
             <div class="col-sm-6">
                 <div class="admin-dashboard">
@@ -68,7 +81,8 @@
                         <h2 class="analytics-title">Weekly Trends</h2>
                         <p class="analytics-subtitle">Sales perfomance & security monitoring</p>
                     </div>
-                    <app-sales-category-weekly-chart></app-sales-category-weekly-chart>
+                    <!-- <app-sales-category-weekly-chart></app-sales-category-weekly-chart> -->
+                     <app-heatmap-chart></app-heatmap-chart>
                 </div>
             </div>
         </div>
@@ -104,7 +118,8 @@
                 </div>
             </div>
         </div>
-        <div class="row salescharts">
+        <!-- <div #performanceSection class="admin-dashboard fade-in-left"> -->
+        <!-- <div class="row salescharts">
             <div class="col-sm-12">
                 <div class="admin-dashboard">
                     <div class="real-time-detection">
@@ -120,8 +135,9 @@
                     <app-performance-metrics></app-performance-metrics>
                 </div>
             </div>
-        </div>
-        <div class="row salescharts">
+        </div> -->
+        <!-- <div #performanceOverviewSection class="admin-dashboard fade-in-left"> -->
+        <!-- <div class="row salescharts">
             <div class="col-sm-12">
                 <div class="admin-dashboard">
                     <div class="real-time-detection">
@@ -136,7 +152,7 @@
                     <app-performance-overview></app-performance-overview>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="row salescharts">
             <div class="col-sm-12">
                 <div class="admin-dashboard">

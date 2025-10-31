@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {
   ApexAxisChartSeries,
   ApexChart,
@@ -12,6 +12,8 @@ import {
   ApexTitleSubtitle,
   ApexLegend
 } from 'ng-apexcharts';
+import { catchError, of } from "rxjs";
+import { ViolationService } from '../services/violation.service';
 
 export type ChartOptions = {
   series: ApexAxisChartSeries;
@@ -33,27 +35,48 @@ export type ChartOptions = {
   templateUrl: './live-footfall-chart.component.html',
   styleUrls: ['./live-footfall-chart.component.css']
 })
-export class LiveFootfallChartComponent {
-  @ViewChild('chart') chart: any;
-  public chartOptions: Partial<ChartOptions>;
+export class LiveFootfallChartComponent implements OnInit{
+    @ViewChild("chart") chart: any;
+  public chartOptions: Partial<ChartOptions> = {};
+  footfallData: number[] = [];
 
-  constructor() {
+  constructor(private violationService: ViolationService) {}
+
+  ngOnInit(): void {
+    this.loadFootfallData();
+  }
+
+  loadFootfallData(): void {
+    this.violationService.getHourlyFootfall()
+      .pipe(catchError(() => of([])))
+      .subscribe((data: any[]) => {
+        // ✅ Extract visit counts and fill missing hours (09:00–20:00)
+        const hours = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
+        const hourMap = new Map(data.map(item => [item.hourOfDay, item.visitCount]));
+
+        this.footfallData = hours.map((h, i) => hourMap.get(i + 9) || 0);
+
+        this.setupChart();
+      });
+  }
+
+  setupChart(): void {
     this.chartOptions = {
       series: [
         {
           name: 'Footfall',
           type: 'area',
-          data: [120, 180, 260, 350, 460, 570, 680, 790, 710]
+          data: this.footfallData // ✅ Real API data
         },
         {
           name: 'Revenue',
           type: 'area',
-          data: [80, 140, 200, 270, 350, 430, 500, 560, 490]
+          data: [40, 80, 150, 260, 400, 520, 680, 750, 720, 630, 520, 410] // 🧩 Dummy
         },
         {
           name: 'Conversions',
           type: 'line',
-          data: [20, 40, 90, 150, 210, 270, 330, 380, 340]
+          data: [180, 280, 380, 520, 1050, 1280, 1600, 1850, 1750, 1500, 1200, 900] // 🧩 Dummy
         }
       ],
       chart: {
@@ -79,7 +102,7 @@ export class LiveFootfallChartComponent {
       },
       markers: { size: 4 },
       xaxis: {
-        categories: ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'],
+        categories: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
         labels: { style: { fontSize: '12px' } }
       },
       yaxis: [

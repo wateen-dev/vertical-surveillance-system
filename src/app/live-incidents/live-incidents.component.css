@@ -13,7 +13,7 @@ h2 {
 
 .incidents-card {
   width: 100%;
-  max-width: 1400px;
+
   background: #ffffff;
   border-radius: 16px;
   padding: 20px;
@@ -189,3 +189,24 @@ mat-chip.chip-low {
   background-color: #ecfdf5 !important;
   color: #047857 !important;
 }
+/*Adding Duration Colors*/
+/* ====== Duration Progress Bar ====== */
+
+
+.duration-bar {
+  flex: 1;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.duration-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+
+
+

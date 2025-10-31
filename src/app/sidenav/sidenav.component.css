@@ -28,9 +28,9 @@
 }
 
 .sideNavHeading {
-    font-size: 1em;
+    font-size: 1.3em;
     /* Increase font size for the heading */
-    color: white;
+    color: #1976d2;
     /* Remove default margin */
     font-weight: 400;
     top: 0px;
@@ -46,6 +46,8 @@
     padding-left: 10px;
     color: #ffffff;
     cursor: pointer;
+    position: relative;
+    top:6px;
     /* Primary color for heading */
 }
 
@@ -310,4 +312,40 @@ mat-toolbar {
     #5a5959, 
     #7b7b7b
   ); */
+}
+.img-styling {
+  border-radius: 16px;
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  box-shadow: 0 6px 16px rgba(235, 205, 205, 0.6);
+  position:relative;
+  right: -5px;
+  background-color: white;
+}
+
+.img-styling:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.img-styling img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+  transition: transform 0.4s ease, filter 0.3s ease;
+  filter: brightness(0.95);
+}
+
+.img-styling:hover img {
+  transform: scale(1.07);
+  filter: brightness(1.1);
+}
+.div-styling {
+    display: flex;
+    background-color: white;
+}
+.imgsec{
+    display: flex;
+    padding-left: 20px;
 }

@@ -1,64 +1,60 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { Router } from '@angular/router';
+import { ViolationService } from '../dashboard-templates/services/violation.service';
+
 interface Incident {
   time: string;
+  violationId: number;
+  cameraId: string;
+  violationDuration: number;
+  violationDate: string;
   outlet: string;
   type: string;
   confidence: number;
   status: string;
   severity: string;
+  isReal?: boolean;
 }
 
 @Component({
   selector: 'app-live-incidents',
   templateUrl: './live-incidents.component.html',
   styleUrls: ['./live-incidents.component.css'],
-  standalone: false,
 })
-export class LiveIncidentsComponent implements AfterViewInit {
-  constructor(private router: Router) {}
-  displayedColumns: string[] = ['time', 'outlet', 'type', 'confidence', 'status', 'severity', 'actions'];
-  originalData: Incident[] = [
-    { time: '2:32:15 PM', outlet: 'Karachi', type: 'Shoplifting Detection', confidence: 96, status: 'Active', severity: 'High' },
-    { time: '2:28:42 PM', outlet: 'Lahore', type: 'POS Anomaly', confidence: 89, status: 'Investigating', severity: 'High' },
-    { time: '2:15:18 PM', outlet: 'Islamabad', type: 'Loitering Alert', confidence: 82, status: 'Monitoring', severity: 'Medium' },
-    { time: '1:57:33 PM', outlet: 'Lahore', type: 'Grab & Run Attempt', confidence: 93, status: 'Prevented', severity: 'High' },
-    { time: '1:44:27 PM', outlet: 'Karachi', type: 'Return Fraud', confidence: 87, status: 'Investigating', severity: 'Medium' },
-    { time: '1:21:19 PM', outlet: 'Rawalpindi', type: 'Staff Area Breach', confidence: 91, status: 'Resolved', severity: 'Medium' },
-    { time: '1:05:42 PM', outlet: 'Peshawar', type: 'Suspicious Movement', confidence: 77, status: 'Monitoring', severity: 'Low' },
-    { time: '12:58:09 PM', outlet: 'Lahore', type: 'POS Anomaly', confidence: 88, status: 'Investigating', severity: 'Medium' },
-    { time: '12:45:32 PM', outlet: 'Karachi', type: 'Unauthorized Entry', confidence: 95, status: 'Active', severity: 'High' },
-    { time: '12:33:14 PM', outlet: 'Islamabad', type: 'Loitering Alert', confidence: 79, status: 'Monitoring', severity: 'Low' },
-    { time: '12:20:48 PM', outlet: 'Rawalpindi', type: 'Shoplifting Detection', confidence: 92, status: 'Prevented', severity: 'Medium' },
-    { time: '12:08:51 PM', outlet: 'Faisalabad', type: 'POS Anomaly', confidence: 84, status: 'Investigating', severity: 'Medium' },
-    { time: '11:55:33 AM', outlet: 'Karachi', type: 'Grab & Run Attempt', confidence: 97, status: 'Active', severity: 'High' },
-    { time: '11:42:17 AM', outlet: 'Lahore', type: 'Return Fraud', confidence: 90, status: 'Investigating', severity: 'Medium' },
-    { time: '11:29:46 AM', outlet: 'Islamabad', type: 'Staff Area Breach', confidence: 86, status: 'Resolved', severity: 'Medium' },
-    { time: '11:15:22 AM', outlet: 'Peshawar', type: 'Loitering Alert', confidence: 75, status: 'Monitoring', severity: 'Low' },
-    { time: '11:01:08 AM', outlet: 'Karachi', type: 'Shoplifting Detection', confidence: 94, status: 'Prevented', severity: 'High' },
-    { time: '10:48:49 AM', outlet: 'Lahore', type: 'POS Anomaly', confidence: 83, status: 'Investigating', severity: 'Medium' },
-    { time: '10:35:16 AM', outlet: 'Islamabad', type: 'Unauthorized Entry', confidence: 91, status: 'Active', severity: 'High' },
-    { time: '10:21:55 AM', outlet: 'Rawalpindi', type: 'Staff Area Breach', confidence: 88, status: 'Resolved', severity: 'Low' },
-    { time: '10:10:33 AM', outlet: 'Karachi', type: 'Grab & Run Attempt', confidence: 93, status: 'Prevented', severity: 'High' },
-    { time: '9:58:14 AM', outlet: 'Lahore', type: 'Return Fraud', confidence: 80, status: 'Monitoring', severity: 'Medium' },
-    { time: '9:45:47 AM', outlet: 'Islamabad', type: 'Loitering Alert', confidence: 78, status: 'Investigating', severity: 'Low' },
-    { time: '9:31:22 AM', outlet: 'Faisalabad', type: 'POS Anomaly', confidence: 85, status: 'Investigating', severity: 'Medium' },
-    { time: '9:18:59 AM', outlet: 'Rawalpindi', type: 'Shoplifting Detection', confidence: 90, status: 'Resolved', severity: 'Low' },
-    { time: '9:05:40 AM', outlet: 'Karachi', type: 'Unauthorized Entry', confidence: 96, status: 'Active', severity: 'High' },
-    { time: '8:52:13 AM', outlet: 'Lahore', type: 'Grab & Run Attempt', confidence: 92, status: 'Prevented', severity: 'Medium' },
-    { time: '8:39:47 AM', outlet: 'Islamabad', type: 'Return Fraud', confidence: 89, status: 'Investigating', severity: 'Medium' },
-    { time: '8:25:24 AM', outlet: 'Rawalpindi', type: 'Staff Area Breach', confidence: 87, status: 'Resolved', severity: 'Low' },
-    { time: '8:12:58 AM', outlet: 'Peshawar', type: 'Suspicious Movement', confidence: 76, status: 'Monitoring', severity: 'Low' }
+export class LiveIncidentsComponent implements OnInit, AfterViewInit {
+  constructor(private router: Router, private violationService: ViolationService) {}
+
+  displayedColumns: string[] = [
+    // 'violationId',
+    'time',
+    'type',
+    'outlet',
+    'violationDuration',
+    'violationDate',
+    // 'confidence',
+    'status',
+    'severity',
+    'cameraId',
+    'actions',
   ];
 
-  dataSource = new MatTableDataSource<Incident>(this.originalData);
+  dataSource = new MatTableDataSource<Incident>([]);
+  originalData: Incident[] = [];
 
-  cityList = ['All Cities', 'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi'];
-  violationList = ['All Violations', 'Shoplifting Detection', 'POS Anomaly', 'Loitering Alert', 'Grab & Run Attempt', 'Return Fraud', 'Staff Area Breach'];
+  // Filters
+  cityList = ['All Cities', 'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi','Y Block Lahore'];
+  violationList = [
+    'All Violations',
+    'Shoplifting Detection',
+    'POS Anomaly',
+    'Loitering Alert',
+    'Grab & Run Attempt',
+    'Return Fraud',
+    'Staff Area Breach',
+  ];
   statuses = ['Active', 'Investigating', 'Monitoring', 'Prevented', 'Resolved'];
   severities = ['High', 'Medium', 'Low'];
 
@@ -70,15 +66,133 @@ export class LiveIncidentsComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  ngOnInit() {
+    this.loadViolations();
+  }
+
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
+  // ✅ Load real + dummy violations
+  loadViolations() {
+    this.violationService.getRealViolations().subscribe({
+      next: (apiData: any[]) => {
+        const formattedLiveData: Incident[] = apiData.map((v) => ({
+          time: this.formatTime(v.violationTime),
+          violationId: v.violationId,
+          cameraId: v.cameraId,
+          violationDuration: Number(v.violationDuration),
+          violationDate: v.violationDate,
+          outlet: this.mapCameraToOutlet(v.cameraId),
+          type: this.mapViolationName(v.violationName),
+          confidence: this.randomConfidence(),
+          status: this.randomStatus(),
+          severity: this.randomSeverity(),
+          isReal: true,
+        }));
+
+        const dummyData: Incident[] = [
+          {
+            time: '2:32:15 PM',
+            violationId: 1001,
+            cameraId: 'cam-1',
+            violationDuration: 45.6,
+            violationDate: '2025-09-28',
+            outlet: 'Karachi',
+            type: 'Shoplifting Detection',
+            confidence: 96,
+            status: 'Active',
+            severity: 'High',
+          },
+          {
+            time: '2:28:42 PM',
+            violationId: 1002,
+            cameraId: 'cam-2',
+            violationDuration: 75.8,
+            violationDate: '2025-09-28',
+            outlet: 'Lahore',
+            type: 'POS Anomaly',
+            confidence: 89,
+            status: 'Investigating',
+            severity: 'High',
+          },
+          {
+            time: '2:15:18 PM',
+            violationId: 1003,
+            cameraId: 'cam-3',
+            violationDuration: 55.3,
+            violationDate: '2025-09-28',
+            outlet: 'Islamabad',
+            type: 'Loitering Alert',
+            confidence: 82,
+            status: 'Monitoring',
+            severity: 'Medium',
+          },
+        ];
+
+        this.originalData = [...formattedLiveData, ...dummyData];
+        this.dataSource.data = this.originalData;
+      },
+      error: (err) => {
+        console.error('Error fetching live violations:', err);
+      },
+    });
+  }
+
+  // ✅ Helpers
+  private formatTime(timeStr: string): string {
+    if (!timeStr) return '--';
+    const [hours, minutes, seconds] = timeStr.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, seconds);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit',
+      second: '2-digit',
+    });
+  }
+
+  private mapCameraToOutlet(cameraId: string): string {
+    const map: Record<string, string> = {
+      'cam-1': 'Lahore',
+      'cam-2': 'Karachi',
+      'cam-3': 'Y Block Lahore',
+      'cam-4': 'Islamabad',
+    };
+    return map[cameraId] || 'Unknown';
+  }
+
+  private mapViolationName(name: string): string {
+    const map: Record<string, string> = {
+      counter_is_empty: 'Counter Empty',
+      pos_anomaly: 'POS Anomaly',
+      shoplifting: 'Shoplifting Detection',
+    };
+    return map[name] || name.replace(/_/g, ' ');
+  }
+
+  private randomConfidence(): number {
+    return Math.floor(Math.random() * (98 - 75 + 1)) + 75;
+  }
+
+  private randomStatus(): string {
+    const list = ['Active', 'Investigating', 'Monitoring', 'Prevented', 'Resolved'];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  private randomSeverity(): string {
+    const list = ['High', 'Medium', 'Low'];
+    return list[Math.floor(Math.random() * list.length)];
+  }
+
+  // ✅ Filters
   applyFilters() {
-    this.dataSource.data = this.originalData.filter(item => {
+    this.dataSource.data = this.originalData.filter((item) => {
       const cityMatch = this.selectedCity === 'All Cities' || item.outlet === this.selectedCity;
-      const violationMatch = this.selectedViolation === 'All Violations' || item.type === this.selectedViolation;
+      const violationMatch =
+        this.selectedViolation === 'All Violations' || item.type === this.selectedViolation;
       const statusMatch = !this.selectedStatus || item.status === this.selectedStatus;
       const severityMatch = !this.selectedSeverity || item.severity === this.selectedSeverity;
       return cityMatch && violationMatch && statusMatch && severityMatch;
@@ -99,7 +213,7 @@ export class LiveIncidentsComponent implements AfterViewInit {
       'chip-investigating': status === 'Investigating',
       'chip-monitoring': status === 'Monitoring',
       'chip-prevented': status === 'Prevented',
-      'chip-resolved': status === 'Resolved'
+      'chip-resolved': status === 'Resolved',
     };
   }
 
@@ -107,18 +221,28 @@ export class LiveIncidentsComponent implements AfterViewInit {
     return {
       'chip-high': severity === 'High',
       'chip-medium': severity === 'Medium',
-      'chip-low': severity === 'Low'
+      'chip-low': severity === 'Low',
     };
   }
+
   goToLiveIncident(element: any) {
-    // Optional: pass the incident details as query params
     this.router.navigate(['/live-incident-reporting'], {
-      queryParams: { 
+      queryParams: {
         outlet: element.outlet,
         type: element.type,
         status: element.status,
-        severity: element.severity
-      }
+        severity: element.severity,
+        violationId: element.violationId,
+        time:element.time,
+        violationDate:element.violationDate,
+      },
     });
   }
+  getDurationColor(duration: number): string {
+    if (duration < 30) return '#4caf50'; // green
+    if (duration < 60) return '#ffb300'; // amber
+    if (duration < 90) return '#ff7043'; // orange
+    return '#e53935'; // red for long durations
+  }
+
 }
