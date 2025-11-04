@@ -26,7 +26,7 @@ interface Incident {
 })
 export class LiveIncidentsComponent implements OnInit, AfterViewInit {
   constructor(private router: Router, private violationService: ViolationService) {}
-
+  isLoading: boolean = false; // 🔹 Loading state
   displayedColumns: string[] = [
     // 'violationId',
     'time',
@@ -77,69 +77,83 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
 
   // ✅ Load real + dummy violations
   loadViolations() {
-    this.violationService.getRealViolations().subscribe({
-      next: (apiData: any[]) => {
-        const formattedLiveData: Incident[] = apiData.map((v) => ({
-          time: this.formatTime(v.violationTime),
-          violationId: v.violationId,
-          cameraId: v.cameraId,
-          violationDuration: Number(v.violationDuration),
-          violationDate: v.violationDate,
-          outlet: this.mapCameraToOutlet(v.cameraId),
-          type: this.mapViolationName(v.violationName),
-          confidence: this.randomConfidence(),
-          status: this.randomStatus(),
-          severity: this.randomSeverity(),
-          isReal: true,
-        }));
+  // 🔹 Start spinner
+  this.isLoading = true;
 
-        const dummyData: Incident[] = [
-          {
-            time: '2:32:15 PM',
-            violationId: 1001,
-            cameraId: 'cam-1',
-            violationDuration: 45.6,
-            violationDate: '2025-09-28',
-            outlet: 'Karachi',
-            type: 'Shoplifting Detection',
-            confidence: 96,
-            status: 'Active',
-            severity: 'High',
-          },
-          {
-            time: '2:28:42 PM',
-            violationId: 1002,
-            cameraId: 'cam-2',
-            violationDuration: 75.8,
-            violationDate: '2025-09-28',
-            outlet: 'Lahore',
-            type: 'POS Anomaly',
-            confidence: 89,
-            status: 'Investigating',
-            severity: 'High',
-          },
-          {
-            time: '2:15:18 PM',
-            violationId: 1003,
-            cameraId: 'cam-3',
-            violationDuration: 55.3,
-            violationDate: '2025-09-28',
-            outlet: 'Islamabad',
-            type: 'Loitering Alert',
-            confidence: 82,
-            status: 'Monitoring',
-            severity: 'Medium',
-          },
-        ];
+  this.violationService.getRealViolations().subscribe({
+    next: (apiData: any[]) => {
+      const formattedLiveData: Incident[] = apiData.map((v) => ({
+        time: this.formatTime(v.violationTime),
+        violationId: v.violationId,
+        cameraId: v.cameraId,
+        violationDuration: Number(v.violationDuration),
+        violationDate: v.violationDate,
+        outlet: this.mapCameraToOutlet(v.cameraId),
+        type: this.mapViolationName(v.violationName),
+        confidence: this.randomConfidence(),
+        status: this.randomStatus(),
+        severity: this.randomSeverity(),
+        isReal: true,
+      }));
 
-        this.originalData = [...formattedLiveData, ...dummyData];
-        this.dataSource.data = this.originalData;
-      },
-      error: (err) => {
-        console.error('Error fetching live violations:', err);
-      },
-    });
-  }
+      // Dummy fallback data
+      const dummyData: Incident[] = [
+        {
+          time: '2:32:15 PM',
+          violationId: 1001,
+          cameraId: 'cam-1',
+          violationDuration: 45.6,
+          violationDate: '2025-09-28',
+          outlet: 'Karachi',
+          type: 'Shoplifting Detection',
+          confidence: 96,
+          status: 'Active',
+          severity: 'High',
+        },
+        {
+          time: '2:28:42 PM',
+          violationId: 1002,
+          cameraId: 'cam-2',
+          violationDuration: 75.8,
+          violationDate: '2025-09-28',
+          outlet: 'Lahore',
+          type: 'POS Anomaly',
+          confidence: 89,
+          status: 'Investigating',
+          severity: 'High',
+        },
+        {
+          time: '2:15:18 PM',
+          violationId: 1003,
+          cameraId: 'cam-3',
+          violationDuration: 55.3,
+          violationDate: '2025-09-28',
+          outlet: 'Islamabad',
+          type: 'Loitering Alert',
+          confidence: 82,
+          status: 'Monitoring',
+          severity: 'Medium',
+        },
+      ];
+
+      this.originalData = [...formattedLiveData, ...dummyData];
+      this.dataSource.data = this.originalData;
+
+      // 🔹 Stop spinner when data loads successfully
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error fetching live violations:', err);
+      // 🔹 Stop spinner on error
+      this.isLoading = false;
+    },
+    complete: () => {
+      // (Optional) ensures loading stops even if the stream completes early
+      this.isLoading = false;
+    }
+  });
+}
+
 
   // ✅ Helpers
   private formatTime(timeStr: string): string {
@@ -159,7 +173,8 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
       'cam-1': 'Lahore',
       'cam-2': 'Karachi',
       'cam-3': 'Y Block Lahore',
-      'cam-4': 'Islamabad',
+      'cam-8': 'Y Block Lahore',
+      'cam-4': 'Y Block Lahore',
     };
     return map[cameraId] || 'Unknown';
   }

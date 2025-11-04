@@ -31,7 +31,7 @@ export class LiveIncidentReportingComponent implements OnInit {
   timestamp = 'Feb 2, 2025 at 2:22 p.m.';
   priority = 'High';
   confidence = 96;
-
+  isLoading: boolean = false; // 🔹 Loading state
   // new — query params
   violationId: string | null = null;
   violationDate: string | null = null;
@@ -82,7 +82,7 @@ export class LiveIncidentReportingComponent implements OnInit {
   ];
 
   // list of real violationIds that have matching images
-  realViolationIds = ['79016544', '41920645', '83460247'];
+  realViolationIds = ['79016544', '41920645', '83460247','24942603','78255929','95822412'];
 
   // violation info
   violation = {
@@ -116,39 +116,56 @@ export class LiveIncidentReportingComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
-  ngOnInit(): void {
-  // get violationId and other query params from URL
-  this.route.queryParams.subscribe((params) => {
-    debugger;
-    this.violationId = params['violationId'] || null;
-    this.isRealData = this.violationId
-      ? this.realViolationIds.includes(this.violationId)
-      : false;
+ngOnInit(): void {
+  // 🔹 Start spinner at the beginning
+  this.isLoading = true;
 
-    // ✅ Existing logic — don't touch
-    this.configureImages();
+  this.route.queryParams.subscribe({
+    next: (params) => {
+      debugger;
 
-    // ✅ New logic — dynamic field mapping
-    const outlet = params['outlet'] || 'Unknown Location';
-    const type = params['type'] || 'Unknown Type';
-    const status = params['status'] || 'N/A';
-    const severity = params['severity'] || 'N/A';
-    const violationId = params['violationId'] || 'N/A';
-    const violationDate = params['violationDate'] || null;
-    const time = params['time'] || 'N/A';
+      this.violationId = params['violationId'] || null;
+      this.isRealData = this.violationId
+        ? this.realViolationIds.includes(this.violationId)
+        : false;
 
-    // ✅ Populate your data dynamically from URL
-    this.incidentTitle = `${type} - ${status}`;
-    this.location = outlet;
-    this.timestamp = time;
-    this.priority = severity;
-    this.confidence = this.isRealData ? 98 : 90; // Example: real vs dummy confidence
-    this.violationId = violationId;
-    this.violationDate = violationDate
-  ? violationDate.split('T')[0] // ✅ take only the date part, ignore timezone
-  : 'N/A';
+      // ✅ Existing logic — don't touch
+      this.configureImages();
+
+      // ✅ Dynamic field mapping
+      const outlet = params['outlet'] || 'Unknown Location';
+      const type = params['type'] || 'Unknown Type';
+      const status = params['status'] || 'N/A';
+      const severity = params['severity'] || 'N/A';
+      const violationId = params['violationId'] || 'N/A';
+      const violationDate = params['violationDate'] || null;
+      const time = params['time'] || 'N/A';
+
+      // ✅ Populate your data dynamically from URL
+      this.incidentTitle = `${type} - ${status}`;
+      this.location = outlet;
+      this.timestamp = time;
+      this.priority = severity;
+      this.confidence = this.isRealData ? 98 : 90; // Example: real vs dummy confidence
+      this.violationId = violationId;
+      this.violationDate = violationDate
+        ? violationDate.split('T')[0] // take only the date part
+        : 'N/A';
+
+      // 🔹 Stop spinner after processing
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error while loading route params:', err);
+      this.isLoading = false; // stop spinner on error
+    },
+    complete: () => {
+      // (optional) stop loading in case observable completes early
+      this.isLoading = false;
+    }
   });
 }
+
   // 🔧 dynamic image setup
   configureImages() {
     if (this.isRealData && this.violationId) {

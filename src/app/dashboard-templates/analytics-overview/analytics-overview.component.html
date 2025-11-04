@@ -60,12 +60,6 @@
         Below is the average wait time recorded today across all active queues.
       </p>
 
-      <!-- Loading Spinner -->
-      <div *ngIf="isLoading" class="loading-container">
-        <mat-spinner diameter="40"></mat-spinner>
-        <p>Loading data...</p>
-      </div>
-
       <!-- Data Table -->
       <div *ngIf="!isLoading">
         <table mat-table [dataSource]="avgQueueData" class="mat-elevation-z8 w-100 queue-table"
@@ -136,13 +130,6 @@
       <p class="dialog-subtitle">
         Below are the top-performing employees ranked by their efficiency score.
       </p>
-
-      <!-- Loading Spinner -->
-      <!-- <div *ngIf="isLoading" class="loading-container">
-        <mat-spinner diameter="40"></mat-spinner>
-        <p>Loading employee data...</p>
-      </div> -->
-
       <!-- Data Table -->
       <div>
         <table mat-table [dataSource]="employeeEfficiencyData" class="mat-elevation-z8 w-100 efficiency-table"

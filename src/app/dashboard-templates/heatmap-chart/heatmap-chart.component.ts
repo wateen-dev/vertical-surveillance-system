@@ -27,66 +27,94 @@ export type ChartOptions = {
 export class HeatmapChartComponent implements OnInit {
   public chartOptions!: Partial<ChartOptions>;
 
-  constructor(private violationService: ViolationService) {}
+  constructor(private violationService: ViolationService) { }
 
   ngOnInit(): void {
     this.loadHeatMapData();
   }
 
   loadHeatMapData() {
-    this.violationService.getHeatMap().subscribe({
-      next: (data) => {
-        const realData = data.map((item: any) => ({
-          ...item,
-          type: "real",
-        }));
+    try {
+      this.violationService.getHeatMap().subscribe({
+        next: (data) => {
+          try {
+            const realData = data.map((item: any) => ({
+              ...item,
+              type: "real",
+            }));
 
-        const dummyData = [
-          { sectionName: "Readywear", visitorCount: 1200, avgStaySeconds: 180, type: "dummy" },
-          { sectionName: "Unstitched", visitorCount: 950, avgStaySeconds: 240, type: "dummy" },
-          { sectionName: "Beauty", visitorCount: 560, avgStaySeconds: 160, type: "dummy" },
-          { sectionName: "Accessories", visitorCount: 480, avgStaySeconds: 120, type: "dummy" },
-          { sectionName: "Bags", visitorCount: 510, avgStaySeconds: 110, type: "dummy" },
-        ];
+            const dummyData = [
+              { sectionName: "Readywear", visitorCount: 1200, avgStaySeconds: 180, type: "dummy" },
+              { sectionName: "Unstitched", visitorCount: 950, avgStaySeconds: 240, type: "dummy" },
+              { sectionName: "Beauty", visitorCount: 560, avgStaySeconds: 160, type: "dummy" },
+              { sectionName: "Accessories", visitorCount: 480, avgStaySeconds: 120, type: "dummy" },
+              { sectionName: "Bags", visitorCount: 510, avgStaySeconds: 110, type: "dummy" },
+            ];
 
-        // 🧮 Normalize small values to avoid tiny invisible boxes
-        const allData = [...realData, ...dummyData];
-        const min = Math.min(...allData.map((d) => d.visitorCount));
-        const max = Math.max(...allData.map((d) => d.visitorCount));
+            const allData = [...realData, ...dummyData];
+            const min = Math.min(...allData.map((d) => d.visitorCount));
+            const max = Math.max(...allData.map((d) => d.visitorCount));
 
-        // Convert visitorCount -> weighted area size
-        const adjustedData = allData.map((item) => ({
-          ...item,
-          weightedY:
-            item.type === "real"
-              ? Math.log(item.visitorCount + 1) * 80 // emphasize real data
-              : Math.log(item.visitorCount + 1) * 50,
-        }));
+            const adjustedData = allData.map((item) => ({
+              ...item,
+              weightedY:
+                item.type === "real"
+                  ? Math.log(item.visitorCount + 1) * 80
+                  : Math.log(item.visitorCount + 1) * 50,
+            }));
 
-        this.initializeTreemap(adjustedData);
-      },
-      error: (err) => console.error("Error fetching heatmap data:", err),
-    });
+            this.initializeTreemap(adjustedData);
+          } catch (innerErr) {
+            console.error("🔥 Error processing heatmap data:", innerErr);
+            this.loadFallbackChart();
+          }
+        },
+        error: (err) => {
+          console.error("❌ API error fetching heatmap data:", err);
+          this.loadFallbackChart();
+        },
+      });
+    } catch (outerErr) {
+      console.error("💥 Unexpected error in loadHeatMapData:", outerErr);
+      this.loadFallbackChart();
+    }
+  }
+  private loadFallbackChart() {
+    const dummyData = [
+      { sectionName: "Readywear", visitorCount: 1200, avgStaySeconds: 180, type: "dummy" },
+      { sectionName: "Unstitched", visitorCount: 950, avgStaySeconds: 240, type: "dummy" },
+      { sectionName: "Beauty", visitorCount: 560, avgStaySeconds: 160, type: "dummy" },
+      { sectionName: "Accessories", visitorCount: 480, avgStaySeconds: 120, type: "dummy" },
+      { sectionName: "Bags", visitorCount: 510, avgStaySeconds: 110, type: "dummy" },
+    ];
+
+    const adjustedData = dummyData.map((item) => ({
+      ...item,
+      weightedY: Math.log(item.visitorCount + 1) * 50,
+    }));
+
+    this.initializeTreemap(adjustedData);
   }
 
-  initializeTreemap(data: any[]) {
-  // ✅ Professional dual-tone palette (Green for real, Red for dummy)
-  const realColors = [
-    "#2E7D32", // Deep green
-    "#388E3C", // Mid green
-    "#43A047", // Standard green
-    "#4CAF50", // Fresh green
-    "#66BB6A", // Light green
-  ];
 
-  const dummyColors = [
-    "#C62828", // Deep red
-    "#D32F2F", // Bold red
-    "#E53935", // Vibrant red
-    "#EF5350", // Soft red
-    "#FF7043", // Warm coral red
-    "#FF8A65", // Light tone
-  ];
+  initializeTreemap(data: any[]) {
+    // ✅ Professional dual-tone palette (Green for real, Red for dummy)
+    const realColors = [
+      "#2E7D32", // Deep green
+      "#388E3C", // Mid green
+      "#43A047", // Standard green
+      "#4CAF50", // Fresh green
+      "#66BB6A", // Light green
+    ];
+
+    const dummyColors = [
+      "#C62828", // Deep red
+      "#D32F2F", // Bold red
+      "#E53935", // Vibrant red
+      "#EF5350", // Soft red
+      "#FF7043", // Warm coral red
+      "#FF8A65", // Light tone
+    ];
 
     let realIndex = 0;
     let dummyIndex = 0;

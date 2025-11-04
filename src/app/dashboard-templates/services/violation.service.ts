@@ -111,13 +111,11 @@ export class ViolationService {
 
 
   getEmployeeEfficiency(): Observable<any[]> {
-    const dummyData = [
-      { employeeId: 101, employeeName: 'Ali Khan', customersServed: 45 },
-      { employeeId: 102, employeeName: 'Sara Ahmed', customersServed: 38 },
-      { employeeId: 103, employeeName: 'Hassan Raza', customersServed: 52 },
-      { employeeId: 104, employeeName: 'Ayesha Tariq', customersServed: 41 },
+    const dummyData  = [
+      { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: 98 },
+      { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: 95 },
+      { position: 3, employeeId: '6071', employeeName: 'Ahmed Iqbal', efficiency: 92 },
     ];
-
     // Simulate an async call with a short delay
     return of(dummyData).pipe(delay(800));
   }
@@ -128,14 +126,15 @@ export class ViolationService {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMap`);
   }
   getRealViolations(): Observable<any[]> {
+    debugger
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`);
   }
 
   searchOutlet(payload: any): Observable<any> {
-    return this.http.post(`${this.deploy_url}Vertical/SearchOutlet`, payload);
+    return this.http.post(`${this.local_apiUrl}Vertical/SearchOutlet`, payload);
   }
   getPlaceReviews(placeId: string): Observable<any> {
-    return this.http.get(`${this.deploy_url}Vertical/GetPlaceReviews?placeId=${placeId}`);
+    return this.http.get(`${this.local_apiUrl}Vertical/GetPlaceReviews?placeId=${placeId}`);
   }
 
 }

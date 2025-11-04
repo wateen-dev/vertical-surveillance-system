@@ -1,6 +1,9 @@
 <div class="incidents-container">
   <mat-card class="incidents-card mat-elevation-z4">
     <!-- Header -->
+    <div class="loading-overlay" *ngIf="isLoading">
+      <div class="spinner"></div>
+    </div>
     <div class="card-head">
       <div class="title-block">
         <h2>Live Security Incidents</h2>

@@ -1,5 +1,9 @@
 <div class="container-fluid lir-root py-4">
     <div class="row g-4">
+        <!-- Header -->
+        <div class="loading-overlay" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
         <!-- LEFT COLUMN -->
         <div class="col-lg-1"></div>
         <div class="col-lg-7 col-md-12 lir-main">
@@ -239,7 +243,7 @@
                         <div class="info-group two-col">
                             <div>
                                 <label>Date Assigned</label>
-                                <div class="value">{{violationDate}}</div>
+                                <div class="value">{{violationDate}} - {{ timestamp }}</div>
                             </div>
                             <div>
                                 <label>Due Date</label>

@@ -17,6 +17,7 @@ export class AnalyticsOverviewComponent implements OnInit {
   avgQueueData: any[] = []; // ✅ Added property
   employeeEfficiencyData: any[] = [];
   isLoading: boolean = false; // 🔹 Loading state
+  isLoadingNew: boolean = false; // 🔹 New loading state
   // ✅ Added dialog references for ng-template
   @ViewChild('avgQueueDialog') avgQueueDialog!: TemplateRef<any>;
   @ViewChild('employeeEfficiencyDialog') employeeEfficiencyDialog!: TemplateRef<any>;
@@ -107,60 +108,59 @@ export class AnalyticsOverviewComponent implements OnInit {
   }
 
 
-  onCardClick(cardKey: string, cardValue: any): void {
-    this.isLoading = true; // show spinner
-    this.dialogTitle = cardKey;
+onCardClick(cardKey: string, cardValue: any): void {
+  this.isLoading = true; // Show centered loading overlay
+  this.dialogTitle = cardKey;
 
-    if (cardKey === 'Avg Queue Time') {
-      this.violationService.getTodayAverageWaitTimeByQueue().subscribe({
-        next: (data) => {
-          this.avgQueueData = data || [];
-          this.isLoading = false; // stop spinner
-          const dialogRef = this.dialog.open(this.avgQueueDialog, {
-            width: '850px',
-            autoFocus: true,
-          });
-
-          // 🔹 Stop loading when dialog closes
-          dialogRef.afterClosed().subscribe(() => {
-            this.isLoading = false;
-          });
-        },
-        error: (err) => {
-          console.error('Error fetching Avg Queue Time:', err);
-          this.isLoading = false; // stop spinner on error
-        }
-      });
-    } else if (cardKey === 'Employee Efficiency') {
-      this.fetchEmployeeEfficiencyData();
-    } else if (cardKey === 'SOP Violations') {
-      this.router.navigate(['/live-incidents']);
-      this.isLoading = false; // stop spinner immediately as navigation occurs
-    } else {
-      this.isLoading = false; // stop spinner for other cards
-    }
+  if (cardKey === 'Avg Queue Time') {
+    this.violationService.getTodayAverageWaitTimeByQueue().subscribe({
+      next: (data) => {
+        this.avgQueueData = data || [];
+        this.openDialog(this.avgQueueDialog, '850px');
+      },
+      error: (err) => {
+        console.error('Error fetching Avg Queue Time:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
+  else if (cardKey === 'Employee Efficiency') {
+    this.violationService.getEmployeeEfficiency().subscribe({
+      next: (data) => {
+        this.employeeEfficiencyData = data || [];
+        this.openDialog(this.employeeEfficiencyDialog, '950px');
+      },
+      error: (err) => {
+        console.error('Error fetching Employee Efficiency:', err);
+        this.isLoading = false;
+      }
+    });
+  }
 
- fetchEmployeeEfficiencyData(): void {
-
-  setTimeout(() => {
-    this.employeeEfficiencyData = [
-      { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: 98 },
-      { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: 95 },
-      { position: 3, employeeId: '6071', employeeName: 'Ahmed Iqbal', efficiency: 92 },
-    ];
+  else if (cardKey === 'SOP Violations') {
+    this.router.navigate(['/live-incidents']);
     this.isLoading = false;
-    const dialogRef = this.dialog.open(this.employeeEfficiencyDialog, {
-      width: '950px',
-    });
+  } 
+  
+  else {
+    this.isLoading = false;
+  }
+}
 
-    // Stop spinner when dialog closes
-    dialogRef.afterClosed().subscribe(() => {
-      this.isLoading = false;
-    });
+// 🔹 Common dialog open method
+openDialog(template: TemplateRef<any>, width: string): void {
+  this.isLoading = false; // stop spinner before opening dialog
+  const dialogRef = this.dialog.open(template, {
+    width,
+    autoFocus: true,
+    disableClose: true, // prevent accidental background clicks
+    backdropClass: 'blur-dialog-backdrop'
+  });
 
-  }, 1500);
+  dialogRef.afterClosed().subscribe(() => {
+    this.isLoading = false;
+  });
 }
 
   fetchAvgQueueData(): void {

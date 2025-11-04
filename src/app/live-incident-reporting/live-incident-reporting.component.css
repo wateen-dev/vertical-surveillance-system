@@ -1617,3 +1617,44 @@ mat-progress-bar {
 .back-button:hover mat-icon {
   transform: translateX(-3px);
 }
+/* Fullscreen centered overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 7px solid #e0e0e0;
+  border-top: 7px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Optional subtle blur on dialog backdrop */
+.blur-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(3px);
+}
