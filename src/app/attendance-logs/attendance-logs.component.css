@@ -1,0 +1,477 @@
+.container {
+    padding: 20px;
+}
+
+h1 {
+    font-weight: 600;
+}
+.employee-info{
+    padding: 20px;
+}
+.infocontent{
+    display: ruby;
+}
+.field-row {
+    display: flex;
+    flex-direction: row; /* Stack label and value vertically */
+    margin-bottom: 15px; /* Add spacing between rows */
+}
+.custom-table .clickable-row {
+    cursor: pointer;
+  }
+  
+  /* Optional: Add hover effect */
+  .custom-table .clickable-row:hover {
+    background-color: #f5f5f5; /* Light gray background on hover */
+    transition: background-color 0.3s ease; /* Smooth transition */
+  }
+.paddStyle{
+    padding-left: 5px;
+    margin-bottom: 10px;
+}
+.check-in-log-card{
+margin-top: 20px;
+}
+.dots-button{
+    float: right;
+  }
+.logsHeading{
+    padding-top: 5px;
+    padding-left: 5px;
+}
+.header {
+    display: flex;
+    padding: 20px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h1 {
+        margin: 0;
+        font-family: 'Century Gothic', sans-serif;
+        font-weight: 500;
+    }
+
+    .header-controls {
+        display: flex;
+        gap: 10px;
+    }
+}
+.employee-photo {
+    width: 150px; /* Adjust size as needed */
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%; /* Circular image */
+    border: 2px solid #ddd; }
+.header-controls {
+    padding-top: 10px;
+}
+.infocontent mat-label {
+    display: block; /* Ensures labels are aligned properly */
+}
+.main-content {
+    display: flex;
+    padding-top: 5px;
+    gap: 20px;
+
+    .video-feed {
+        flex: 1;
+
+        img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+    }
+
+    .info-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .employee-info-card,
+        .check-in-log-card {
+            
+            padding: 20px;
+        }
+
+        .employee-photo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .status {
+            &.allowed {
+                color: green;
+            }
+
+            &.denied {
+                color: red;
+            }
+        }
+    }
+}
+.employee-photo {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.infocontent {
+    margin-bottom: 15px; /* Space between fields */
+}
+
+.infocontent strong {
+    display: block; /* Ensure label is on its own row */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.paddStyle {
+    margin: 0; /* Prevent extra margins */
+}
+.field-row {
+    display: flex;
+    align-items: center; /* Vertically center items */
+    gap: 5px; /* Add space between label and badge */
+  }
+  
+  .align-center {
+    justify-content: flex-start; /* Ensure alignment starts from the left */
+  }
+  
+  .badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+  }
+  
+  .badge-success {
+    background-color: green;
+  }
+  
+  .badge-danger {
+    background-color: red;
+  }
+  .text-success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .text-danger {
+    color: red;
+    font-weight: bold;
+  }
+  .position-absolute {
+    position: absolute; /* Position the buttons absolutely within the parent */
+    top: -10px; /* Adjust as needed */
+    right:10px; /* Align to the top-right corner */
+    display: flex;
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: flex-end; /* Align buttons to the right */
+}
+.custom-table .clickable-row {
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.custom-table .clickable-row:hover {
+  background-color: #f5f5f5;
+}
+
+.employee-photo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+}
+
+.field-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #fff;
+}
+.badge-success {
+  background-color: green;
+}
+.badge-danger {
+  background-color: red;
+}
+/* Container Styling */
+.filters-container {
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.filters-container:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Form Fields */
+.filter-field {
+  background-color: #fafafa;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-field:hover {
+  background-color: #f5f5f5;
+}
+
+/* Input field hover */
+.mat-input-element:hover {
+  border-bottom: 2px solid #3f51b5 !important; /* Material primary color */
+}
+
+/* Checkbox styling */
+.mat-checkbox:hover .mat-checkbox-frame {
+  border-color: #3f51b5;
+}
+.custom-table {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mat-header-cell {
+  font-weight: bold;
+  background: #f4f6f9;
+  color: #333;
+  padding: 12px;
+}
+
+.mat-cell {
+  padding: 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.clickable-row:hover {
+  background-color: #f0f8ff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+mat-paginator {
+  margin-top: 12px;
+  border-top: 1px solid #e0e0e0;
+}
+.check-in-card {
+  border-radius: 16px;
+  overflow: hidden;
+  .mat-card-header {
+    background: #f8f9fa;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e0e0e0;
+  }
+
+  .mat-card-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #2c3e50;
+  }
+
+  .custom-table {
+    width: 100%;
+    th.mat-header-cell {
+      font-weight: 600;
+      background: #f4f6f9;
+    }
+    td.mat-cell {
+      padding: 12px;
+    }
+    .clickable-row {
+      cursor: pointer;
+      transition: background 0.2s;
+      &:hover {
+        background: #f1f5ff;
+      }
+    }
+  }
+
+  mat-paginator {
+    border-top: 1px solid #e0e0e0;
+    padding-top: 8px;
+  }
+}
+.employee-info-card {
+  border-radius: 12px;
+  padding: 10px;
+}
+
+.employee-avatar img {
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+mat-chip {
+  font-weight: bold;
+  padding: 6px 12px;
+}
+.employee-header {
+  padding-bottom: 8px;
+}
+
+.employee-info h5 {
+  font-weight: 600;
+  margin: 0;
+}
+
+.employee-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.employee-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* keeps circle clean */
+}
+.text-muted
+{
+    color: #6c757d;
+    font-size: 14px;
+}
+
+.employee-photo {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.employee-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* keeps photo perfectly circular */
+}
+
+.employee-info h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+.logs-header {
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 8px;
+}
+
+.logs-header h2 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.logs-header .action-buttons .btn {
+  min-width: 150px;
+  border-radius: 20px;
+  font-weight: 500;
+  transition: all 0.2s ease-in-out;
+}
+
+.logs-header .action-buttons .btn-outline-success {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.logs-header .action-buttons .btn-outline-success:hover {
+  background-color: #28a745;
+  color: #fff;
+}
+
+.logs-header .action-buttons .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.logs-header .action-buttons .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #004085;
+}
+
+.logs-header .action-buttons .btn i {
+  font-size: 14px;
+}
+.log-card {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.logs-header h2 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.action-buttons .btn {
+  min-width: 120px;
+  transition: all 0.3s ease-in-out;
+}
+
+.action-buttons .btn-outline-success:hover {
+  background: #28a745;
+  color: #fff;
+}
+
+.action-buttons .btn-primary {
+  background: #007bff;
+  border: none;
+}
+
+.action-buttons .btn-primary:hover {
+  background: #0056b3;
+}
+
+.card-body {
+  padding: 1rem 0.5rem;
+}
+
+.mat-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.mat-header-cell {
+  font-weight: 600;
+  background-color: #f8f9fa;
+  color: #495057;
+}
+
+.mat-cell {
+  padding: 10px;
+  font-size: 0.9rem;
+  color: #333;
+}
+.filter-dropdown {
+  min-width: 160px;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: 1px solid #ced4da;
+  transition: all 0.2s ease-in-out;
+}
+
+.filter-dropdown:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  outline: none;
+}

@@ -1,0 +1,336 @@
+<div class="container-fluid lir-root py-4">
+    <div class="row g-4">
+        <!-- Header -->
+        <div class="loading-overlay" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
+        <!-- LEFT COLUMN -->
+        <div class="col-lg-1"></div>
+        <div class="col-lg-7 col-md-12 lir-main">
+            <div class="row">
+                <div class="col-sm-6">
+                    <!-- Header -->
+                    <button class="back-button" (click)="goBack()">
+                        <mat-icon>arrow_back</mat-icon>
+                        <span>Back to Live Incidents</span>
+                    </button>
+                    <div class="lir-header mb-3">
+                        <div class="lir-title">
+                            <h2>{{ incidentTitle }}</h2>
+                            <p class="sub mb-0">Real-time AI detection analysis</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="lir-top-right">
+                        <div class="text-end">
+                            <div class="small-muted">{{ location }} </div>
+                            <div class="small-muted textStyling">{{ timestamp }}</div>
+                        </div>
+                        <div class="violation-info">
+                            <div class="camera-name ms-2">{{ cameraName }}</div>
+                            <div class="priority-badge" [ngClass]="{
+                                   'priority-low': priority === 'Low',
+                                   'priority-high': priority === 'High',
+                                   'medium': priority === 'Medium',
+                                   'priority-critical': priority === 'Critical'
+                                 }">
+                                {{ priority }}
+                            </div>
+                            
+                            </div>
+
+                    </div>
+                </div>
+            </div>
+            <mat-card class="violation-card" *ngFor="let alert of alerts">
+                <div class="violation-content">
+                    <h3 class="violation-title">{{ alert.title }}</h3>
+                    <p class="violation-desc">{{ alert.description }}</p>
+                </div>
+            </mat-card>
+            <mat-card class="image-card shadow-sm">
+                <!--Add Mat Card Tabs-->
+                <mat-card class="tab-card">
+                    <mat-tab-group animationDuration="300ms">
+                        <mat-tab label="Evidence">
+                            <div class="tab-content">
+
+
+                                <div class="image-card-header">
+                                    <h3 class="image-card-title">AI Detection Screenshots and Video Evidence </h3>
+                                    <div class="image-card-actions">
+                                        <button mat-raised-button color="warn" (click)="alertSecurity()">Alert
+                                            Security</button>
+                                        <button mat-stroked-button color="primary" (click)="markResolved()">Mark
+                                            Resolved</button>
+                                        <button mat-icon-button aria-label="camera view">
+                                            <mat-icon>camera_alt</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Main Image Section -->
+                                <div class="image-stage">
+                                    <button mat-icon-button class="nav-btn left" (click)="prevImage()"
+                                        aria-label="previous image">
+                                        <mat-icon>chevron_left</mat-icon>
+                                    </button>
+
+                                    <div class="main-image-wrap">
+                                        <img [src]="images[selectedImageIndex]" alt="Incident" class="main-image" />
+                                        <div class="confidence-pill">Confidence: {{ confidence }}%</div>
+                                    </div>
+
+                                    <button mat-icon-button class="nav-btn right" (click)="nextImage()"
+                                        aria-label="next image">
+                                        <mat-icon>chevron_right</mat-icon>
+                                    </button>
+                                </div>
+
+                                <!-- Thumbnails Row -->
+                                <div class="thumbs-row">
+                                    <div class="thumb" *ngFor="let img of images; let i = index">
+                                        <img [src]="img" (click)="selectImage(i)"
+                                            [class.active]="selectedImageIndex === i" alt="thumbnail" />
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Comments">
+                            <div class="tab-content">
+                                <mat-card class="comments-card">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="header">
+                                                    <div>
+                                                        <h3>Comments & Activity</h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <span class="msg-count">3 Messages</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <mat-divider></mat-divider>
+
+                                    <div class="comment-list">
+                                        <div class="comment-item" *ngFor="let comment of comments">
+                                            <div class="avatar">{{ comment.initials }}</div>
+                                            <div class="comment-content">
+                                                <div class="comment-header">
+                                                    <strong>{{ comment.name }}</strong>
+                                                    <span class="timestamp">{{ comment.time }}</span>
+                                                </div>
+                                                <div class="comment-body">
+                                                    <span *ngIf="comment.tag" class="tag">{{ comment.tag }}</span>
+                                                    {{ comment.text }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <mat-divider></mat-divider>
+
+                                    <div class="comment-input">
+                                        <mat-form-field appearance="outline" class="input-field">
+                                            <textarea matInput placeholder="Add a comment..."
+                                                [(ngModel)]="newComment"></textarea>
+                                        </mat-form-field>
+
+                                        <button mat-flat-button color="primary" class="add-btn" (click)="addComment()"
+                                            [disabled]="!newComment.trim()">
+                                            Add Comment
+                                        </button>
+                                    </div>
+                                </mat-card>
+
+                            </div>
+                        </mat-tab>
+
+                        <mat-tab label="Timeline">
+                            <div class="tab-content">
+                                <!-- DETECTION TIMELINE -->
+                                <div class="timeline-card-style">
+                                    <mat-card class="timeline-card">
+                                        <div class="timeline-head">
+                                            <div class="title-wrap">
+                                                <mat-icon class="timeline-icon">timeline</mat-icon>
+                                                <h3>Detection Timeline</h3>
+                                            </div>
+                                            <div class="live-label">Live Tracking</div>
+                                        </div>
+
+                                        <div class="timeline-list">
+                                            <div class="timeline-item" *ngFor="let t of timeline"
+                                                [ngStyle]="{'--dot-color': t.color}">
+                                                <div class="timeline-dot"></div>
+                                                <div class="timeline-content">
+                                                    <div class="timeline-title">{{ t.title }}</div>
+                                                    <div class="timeline-desc">{{ t.description }}</div>
+                                                </div>
+                                                <div class="timeline-time">{{ t.time }}</div>
+                                            </div>
+                                        </div>
+                                    </mat-card>
+                                </div>
+
+                            </div>
+                        </mat-tab>
+                    </mat-tab-group>
+                </mat-card>
+
+            </mat-card>
+        </div>
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-lg-3 col-md-12">
+            <div class="lir-side d-flex flex-column gap-3">
+                <div class="ticket-container">
+                    <!-- Ticket Information Card -->
+                    <mat-card class="ticket-card mat-elevation-z2">
+                        <div class="ticket-header">
+                            <h2>Ticket Information</h2>
+                            <span class="ticket-id">TKT - {{violationId}}</span>
+                        </div>
+
+                        <div class="ticket-info">
+
+                            <div class="info-group">
+                                <label>Assigned To</label>
+                                <div class="assigned">
+                                    <div class="avatar">AK</div>
+                                    <div class="assignee">
+                                        <div class="name-row">
+                                            <div class="name-role">
+                                                <div class="name">Ahmed Khan</div>
+                                                <div class="role">(Store Manager)</div>
+                                            </div>
+                                            <i class="fab fa-whatsapp whatsapp-icon" (click)="openWhatsApp()"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            <div class="info-group two-col">
+                                <div>
+                                    <label>Status</label>
+                                    <div class="value status">In Progress</div>
+                                </div>
+                                <div>
+                                    <label>Priority</label>
+                                    <div class="value critical">{{ priority }}</div>
+                                </div>
+                            </div>
+
+                            <div class="info-group">
+                                <label>Queue</label>
+                                <div class="value">Store Manager</div>
+                            </div>
+
+                        </div>
+
+                        <div class="time-tracking">
+                            <div class="time-header">
+                                <label>Time Tracking</label>
+                                <mat-icon class="info-icon"
+                                    matTooltip="Tracks progress based on time spent vs estimated.">info</mat-icon>
+                            </div>
+
+                            <div class="time-row">
+                                <span class="label">Time Spent</span>
+                                <span class="value">0h 45m</span>
+                            </div>
+
+                            <div class="time-row">
+                                <span class="label">Estimated</span>
+                                <span class="value">2h 0m</span>
+                            </div>
+
+                            <mat-progress-bar mode="determinate" value="25" color="purple"
+                                matTooltip="25% completed (0h 45m of 2h 0m)">
+                            </mat-progress-bar>
+                        </div>
+
+                        <div class="info-group two-col">
+                            <div>
+                                <label>Date Assigned</label>
+                                <div class="value">{{violationDate}} - {{ timestamp }}</div>
+                            </div>
+                            <div>
+                                <label>Due Date</label>
+                                <div class="value muted">Set Due Date</div>
+                            </div>
+                        </div>
+                    </mat-card>
+
+                    <!-- Attachments Card -->
+                    <mat-card class="ticket-card attachments-card mat-elevation-z3">
+                        <div class="attachments-grid">
+                            <div class="attachment-item">
+                                <div class="icon-box image-bg">
+                                    <mat-icon>image</mat-icon>
+                                </div>
+                                <div class="text-box">
+                                    <span class="label">Screenshots</span>
+                                    <span class="value">3</span>
+                                </div>
+                            </div>
+
+                            <div class="attachment-item">
+                                <div class="icon-box video-bg">
+                                    <mat-icon>videocam</mat-icon>
+                                </div>
+                                <div class="text-box">
+                                    <span class="label">Video Clips</span>
+                                    <span class="value">1</span>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-card>
+
+                </div>
+
+
+                <!-- <mat-card class="ai-card mat-elevation-z4">
+                    <div class="ai-header">
+                        <mat-icon class="ai-icon">psychology</mat-icon>
+                        <h3>AI Analysis</h3>
+                    </div>
+
+                    <div class="ai-content">
+                        <p class="ai-paragraph" *ngFor="let p of aiAnalysis">{{ p }}</p>
+                    </div>
+                </mat-card> -->
+                <!-- Case Management -->
+                <mat-card class="case-card">
+                    <h3 class="case-title">Case Management</h3>
+                    <div class="case-actions">
+                        <button mat-flat-button color="primary" class="btn-green" (click)="generateIncidentReport()">
+                            <mat-icon>description</mat-icon>
+                            Generate Incident Report
+                        </button>
+
+                        <button mat-flat-button color="accent" class="btn-blue" (click)="exportEvidence()">
+                            <mat-icon>file_download</mat-icon>
+                            Export Evidence Package
+                        </button>
+
+                        <button mat-stroked-button class="btn-grey" (click)="shareWithTeam()">
+                            <mat-icon>share</mat-icon>
+                            Share with Team
+                        </button>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>

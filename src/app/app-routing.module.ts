@@ -67,9 +67,29 @@ const routes: Routes = [
     path: 'visitor-registration', 
     loadChildren: () => import('./visitorregistration/visitorregistration.module').then(m => m.VisitorregistrationModule)
   },
-   {
-    path: 'uniform-violations', 
+  {
+    path: 'uniform-violations',
     loadChildren: () => import('./uniform-violations/uniform-violations.module').then(m => m.UniformViolationsModule)
+  },
+  {
+    path: 'admin-dashboard',
+    loadChildren: () => import('./admin-dashboard/admin-dashboard.module').then(m => m.AdminDashboardModule)
+  },
+  {
+    path: 'live-incidents',
+    loadChildren: () => import('./live-incidents/live-incident.module').then(m => m.LiveIncidentModule)
+  },
+  {
+    path: 'live-incident-reporting',
+    loadChildren: () => import('./live-incident-reporting/live-incident-reporting.module').then(m => m.LiveIncidentReportingModule)
+  },
+  {
+    path: 'staff-perfomance',
+    loadChildren: () => import('./staff-perfomance/staff-perfomance.module').then(m => m.StaffPerfomanceModule)
+  },
+  {
+    path: 'attendance-logs',
+    loadChildren: () => import('./attendance-logs/attendance-logs.module').then(m => m.AttendanceLogsModule)
   },
   {
     path: 'reset-password/:id', 

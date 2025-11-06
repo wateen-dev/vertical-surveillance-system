@@ -1,0 +1,40 @@
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-sm-12">
+            <mat-card class="system-health-card mat-elevation-z4">
+                <!-- Header (optional) -->
+                <!--
+        <div class="header">
+          <div>
+            <h3 class="title">System Health Overview</h3>
+            <p class="subtitle">Network & infrastructure status</p>
+          </div>
+          <div class="status" [class.online]="status === 'Online'">
+            ● {{ status }}
+          </div>
+        </div>
+        -->
+
+                <div class="items-scroll">
+                    <ng-container *ngIf="systemHealthData$ | async as items">
+                        <div *ngFor="let item of items" class="health-item">
+                            <div class="left">
+                                <!-- [ngStyle]="{ 'background-color': item.color + '20' }" -->
+                                <div class="icon-wrapper" >
+                                    <mat-icon [ngStyle]="{ color: item.color }">{{ item.icon }}</mat-icon>
+                                </div>
+                                <p class="label">{{ item.label }}</p>
+                            </div>
+
+                            <div class="right">
+                                <span class="value" [ngStyle]="{ color: item.color }">{{ item.value }}</span>
+                                <span class="sub subright">{{ item.subValue }}</span>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+
+            </mat-card>
+        </div>
+    </div>
+</div>

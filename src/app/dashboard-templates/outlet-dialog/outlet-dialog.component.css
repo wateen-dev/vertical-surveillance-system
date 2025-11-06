@@ -1,0 +1,536 @@
+/* ===== Full-Screen Modal Overlay ===== */
+::ng-deep .cdk-overlay-container,
+::ng-deep .cdk-global-overlay-wrapper {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.modal-container {
+  width: 100%;
+  height: 100%;
+  background: #f5f6fa;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+/* ===== Header ===== */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 64px;
+  padding: 0 20px;
+  background: #1976d2;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.close-btn {
+  color: #fff;
+}
+
+/* ===== Body ===== */
+.modal-body {
+  padding: 24px 36px;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  scroll-behavior: smooth;
+}
+
+/* ===== Cards ===== */
+mat-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: #333;
+}
+
+mat-card-subtitle {
+  font-size: 15px;
+  color: #777;
+}
+
+/* ===== Outlet Info ===== */
+.outlet-info p {
+  font-size: 16px;
+  color: #444;
+  margin: 8px 0;
+}
+
+.outlet-info strong {
+  color: #222;
+  font-weight: 600;
+}
+
+.open {
+  color: #28a745;
+  font-weight: 600;
+}
+
+.closed {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+/* ===== Hours Section ===== */
+.hours-section h4 {
+  margin: 16px 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+.hours-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.hours-list li {
+  font-size: 15px;
+  color: #555;
+  padding: 4px 0;
+}
+
+/* ===== Reviews Table ===== */
+.review-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+.review-table th {
+  text-align: left;
+  padding: 10px;
+  font-size: 15px;
+  color: #555;
+  font-weight: 600;
+}
+
+.review-table td {
+  padding: 10px;
+  font-size: 15px;
+  color: #444;
+}
+
+.review-table tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* ===== No Reviews Text ===== */
+.no-reviews-text {
+  text-align: center;
+  padding: 16px;
+  color: #777;
+  font-style: italic;
+}
+
+/* ===== Scrollbar Styling ===== */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 8px;
+}
+/* ===== Opening Hours Section ===== */
+.hours-section {
+  margin-top: 24px;
+  background: rgba(255, 255, 255, 0.85);
+  border-radius: 12px;
+  padding: 16px 20px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(4px);
+}
+
+.hours-section h4 {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e88e5;
+  margin-bottom: 16px;
+  border-left: 4px solid #1e88e5;
+  padding-left: 10px;
+}
+
+/* Grid for 2 Columns */
+.hours-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px 24px;
+}
+
+/* Individual Day Item */
+.hour-item {
+  display: flex;
+  align-items: center;
+  background: #f3f6fb;
+  padding: 10px 14px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease-in-out;
+}
+
+.hour-item:hover {
+  transform: translateY(-2px);
+  background: #e8f0fe;
+}
+
+.clock-icon {
+  color: #1e88e5;
+  margin-right: 8px;
+  font-size: 22px;
+}
+
+.hour-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  letter-spacing: 0.3px;
+  font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+}
+/* ===== Outlet Info Section ===== */
+.outlet-info-container {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(5px);
+}
+
+.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e88e5;
+  margin-bottom: 20px;
+  border-left: 4px solid #1e88e5;
+  padding-left: 10px;
+}
+
+/* Grid Layout: 3 Columns */
+.outlet-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px 24px;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  background: #f3f6fb;
+  padding: 14px 16px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  background: #e8f0fe;
+}
+
+/* Icon + Text */
+.info-icon {
+  color: #1e88e5;
+  font-size: 26px;
+  margin-right: 10px;
+}
+
+.info-content label {
+  font-weight: 600;
+  color: #444;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.info-content span {
+  font-size: 16px;
+  color: #222;
+  font-weight: 500;
+}
+
+.info-content a {
+  color: #1565c0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.info-content a:hover {
+  text-decoration: underline;
+}
+
+/* Open/Closed Styles */
+.open {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.closed {
+  color: #c62828;
+  font-weight: 700;
+}
+
+/* Responsive Font */
+@media (max-width: 600px) {
+  .info-content span {
+    font-size: 14px;
+  }
+  .info-icon {
+    font-size: 22px;
+  }
+}
+/* ===== Outlet Info Section ===== */
+.outlet-info-container {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 20px 24px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.04);
+  backdrop-filter: blur(5px);
+}
+
+.section-heading {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1e88e5;
+  margin-bottom: 20px;
+  border-left: 4px solid #1e88e5;
+  padding-left: 10px;
+}
+
+/* Grid Layout: 3 Columns */
+.outlet-info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* ✅ exactly 3 per row */
+  gap: 20px 24px;
+}
+
+/* Individual Info Item */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  background: #f3f6fb;
+  padding: 14px 16px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+  background: #e8f0fe;
+}
+
+/* Icon + Text */
+.info-icon {
+  color: #1e88e5;
+  font-size: 26px;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.info-content label {
+  font-weight: 600;
+  color: #444;
+  font-size: 15px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.info-content span {
+  font-size: 16px;
+  color: #222;
+  font-weight: 500;
+}
+
+.info-content a {
+  color: #1565c0;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.info-content a:hover {
+  text-decoration: underline;
+}
+
+/* Open/Closed Styles */
+.open {
+  color: #2e7d32;
+  font-weight: 700;
+}
+
+.closed {
+  color: #c62828;
+  font-weight: 700;
+}
+
+/* Responsive Layout */
+@media (max-width: 900px) {
+  .outlet-info-grid {
+    grid-template-columns: repeat(2, 1fr); /* 2 per row */
+  }
+}
+
+@media (max-width: 600px) {
+  .outlet-info-grid {
+    grid-template-columns: 1fr; /* 1 per row */
+  }
+
+  .info-content span {
+    font-size: 14px;
+  }
+
+  .info-icon {
+    font-size: 22px;
+  }
+}
+/* ===== Reviews Section ===== */
+.reviews-card {
+  margin-top: 30px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.review-heading {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1e88e5;
+  margin-left: 8px;
+}
+
+.review-icon {
+  color: #1e88e5;
+  font-size: 24px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* ===== Table Styling ===== */
+.review-table {
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin-top: 14px;
+ font-family: "Roboto", "Segoe UI", Arial, sans-serif;
+  font-size: 15px;
+}
+
+.review-table th {
+  background-color: #e3f2fd;
+  color: #1565c0;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 14px 16px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.review-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e0e0e0;
+  color: #333;
+  vertical-align: middle;
+}
+
+/* Icons & Text */
+.user-icon {
+  font-size: 20px;
+  color: #1976d2;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+/* Comment styling */
+.comment-cell {
+  font-style: italic;
+  color: #555;
+}
+
+/* Stars styling */
+.stars-cell .stars {
+  color: #fbc02d;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+
+/* Paginator styling */
+.mat-paginator {
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* No reviews text */
+.no-reviews-text {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin-top: 20px;
+  font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .review-heading {
+    font-size: 20px;
+  }
+
+  .review-icon {
+    font-size: 20px;
+  }
+
+  .review-table th,
+  .review-table td {
+    font-size: 13px;
+    padding: 10px;
+  }
+}
+.outlet-card,.reviews-card{
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* Subtle default shadow */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+.outlet-card:hover, .reviews-card:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12); /* Enhanced shadow on hover */
+    transform: translateY(-3px); /* Slight lift effect */
+    cursor: pointer; /* Indicate interactivity */
+}
+.star-rating mat-icon {
+  font-size: 20px;
+  vertical-align: middle;
+  color: #fbc02d; /* yellow for full/half */
+}
+
+.star-empty {
+  color: #ccc; /* gray for empty */
+}
+
+.rating-number {
+  margin-left: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  vertical-align: middle;
+}
+::-webkit-scrollbar-thumb {
+  background: #1976d2 !important
+
+}

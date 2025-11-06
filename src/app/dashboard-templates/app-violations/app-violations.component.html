@@ -1,0 +1,78 @@
+<mat-card class="violations-wrapper mat-elevation-z8">
+  <div class="violations-scroll">
+    <mat-card
+  *ngFor="let violation of topViolations"
+  class="violation-card"
+  [ngClass]="getViolationClass(violation.violationType)"
+  role="button"
+  tabindex="0"
+  (click)="openViolationDialog(violation)"
+  (keydown.enter)="openViolationDialog(violation)"
+  [attr.aria-label]="'Open violation details for ' + violation.violationId"
+  [ngStyle]="{ 'background': getAccentColorWithOpacity(violation.violationType, 0.15),
+    'border-left-color': getAccentColorGradient(violation.violationType)
+   }"
+>
+  <div class="violation-inner">
+    <div class="violation-body">
+      <div class="top-row">
+        <div class="title-block">
+          <h3 class="violation-title">{{ violation.violationType }}</h3>
+        </div>
+        <div
+          *ngIf="violation.confidence !== undefined"
+          class="badge-percent"
+          [ngClass]="getBadgeClass(violation.confidence)"
+        >
+          {{ violation.confidence }}%
+        </div>
+        <div class="time-ago">
+          {{ timeAgo(violation.date, violation.violationTime) }}
+        </div>
+      </div>
+
+      <p class="violation-description">{{ violation.description }}</p>
+
+      <div class="meta-row">
+        <div class="location">{{ violation.location || 'Unknown location' }}</div>
+        <a
+          class="view-details"
+          (click)="$event.stopPropagation(); openViolationDialog(violation)"
+          >View Details →</a
+        >
+      </div>
+    </div>
+  </div>
+</mat-card>
+
+
+  </div>
+</mat-card>
+
+<!-- Dialog -->
+<ng-template #violationDialog let-dialogRef="dialogRef">
+  <div class="dialog-header">
+    <h2>Violation Details</h2>
+    <div class="dialog-subtitle">Violation ID: {{ selectedViolation?.violationId }}</div>
+  </div>
+
+  <mat-dialog-content class="dialog-content" *ngIf="selectedViolation">
+    <p><strong>Type:</strong> {{ selectedViolation.violationType }}</p>
+    <p><strong>Description:</strong> {{ selectedViolation.description }}</p>
+    <p><strong>Location:</strong> {{ selectedViolation.location || '—' }}</p>
+    <p><strong>Date:</strong> {{ selectedViolation.date }}</p>
+    <p><strong>Time:</strong> {{ selectedViolation.violationTime }}</p>
+    <p *ngIf="selectedViolation.confidence"><strong>Confidence:</strong> {{ selectedViolation.confidence }}%</p>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+      <button 
+    mat-flat-button 
+    color="primary" 
+    (click)="resolveViolation(selectedViolation?.violationId, dialogRef)" 
+    class="btnResolve">
+    Mark as Resolved
+  </button>
+    <button mat-stroked-button (click)="dialogRef.close()" class="btnClose">Close</button>
+  </mat-dialog-actions>
+</ng-template>

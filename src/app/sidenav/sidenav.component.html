@@ -5,11 +5,18 @@
                 <mat-icon>{{ isSidenavOpened ? 'menu_open' : 'menu' }}</mat-icon>
             </button>
         </div>
-        <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()"><b>Building Management System</b> </h2>
+        <div class="imgsec">
+            <div class="img-styling">
+                <img src="assets/WDS.png" class="img-class" alt="Company Logo" width="120" height="auto"
+                    (click)="navigateToDashboard()" />
+            </div>
+            <h2 class="sideNavHeading mb-0" (click)="navigateToDashboard()">Ai Vision Analytics </h2>
+        </div>
     </div>
     <div class="right-icons d-flex align-items-center">
         <mat-icon class="username-icon" aria-label="User" (click)="toggleInfo()">account_circle</mat-icon>
-        <span class="username mx-2" (click)="toggleInfo()">{{ this.employee?.firstName }} {{ this.employee?.lastName }}</span>
+        <span class="username mx-2" (click)="toggleInfo()">{{ this.employee?.firstName }} {{ this.employee?.lastName
+            }}</span>
         <mat-icon class="logout-icon" (click)="logout()" aria-label="Logout">logout</mat-icon>
     </div>
     <div class="info-slider" [class.open]="isInfoOpen">
@@ -18,22 +25,22 @@
                 <mat-icon>close</mat-icon> <!-- Use Material Icon for close -->
             </button>
             <h3 class="info-heading">Employee Information</h3>
-        
+
             <div class="info-item">
                 <mat-label><b>Name: </b></mat-label>
-                <span >{{ this.employee?.firstName }} {{ this.employee?.lastName }}</span>
+                <span>{{ this.employee?.firstName }} {{ this.employee?.lastName }}</span>
             </div>
-    
+
             <div class="info-item">
                 <mat-label><b>Email: </b></mat-label>
                 <span>{{this.employee?.email}}</span>
             </div>
-    
+
             <div class="info-item">
                 <mat-label><b>Employee Number: </b></mat-label>
                 <span>{{this.employee?.userId}}</span>
             </div>
-    
+
             <div class="info-item">
                 <mat-label><b>Department: </b></mat-label>
                 <span>{{this.employee?.department}}</span>
@@ -48,7 +55,7 @@
 </mat-toolbar>
 
 <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpened"  class="sidenav-scroll">
+    <mat-sidenav #sidenav mode="side" [opened]="isSidenavOpened" class="sidenav-scroll">
         <ng-container *ngFor="let item of sidenavItems; let i = index">
             <button mat-button (click)="toggleSubmenu(i)" class="ul-submenu">
                 <mat-icon class="left-icon">{{ item.icon }}</mat-icon>

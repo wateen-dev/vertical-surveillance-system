@@ -1,0 +1,340 @@
+.overview-card {
+  padding: 20px;
+  border-radius: 12px;
+  background: #f9fafc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.overview-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #222;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.card-content {
+  text-align: left;
+}
+
+.stat-change.positive {
+  color: #0a9b5f;
+}
+
+.stat-change.negative {
+  color: #d93025;
+}
+
+.stat-note {
+  font-size: 13px;
+  color: #444;
+}
+.loading-spinner {
+  position: fixed;       /* stays centered on screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;         /* use flexbox */
+  align-items: center;   /* vertical center */
+  justify-content: center; /* horizontal center */
+  background: rgba(255, 255, 255, 0.6); /* optional overlay */
+  z-index: 1000;         /* keep on top */
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.stat-card {
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  cursor:pointer;
+}
+
+.card-content {
+  display: flex;
+  justify-content: space-between; /* keeps text left and icon right */
+  align-items: center;
+  width: 100%;
+}
+
+.stat-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* take available space */
+}
+
+.stat-label {
+  font-size: 20px;
+  font-weight: 400;
+  color: #000;
+  margin: 0 0 4px;
+}
+
+.stat-value {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 4px;
+  color: #444;
+}
+
+.stat-change {
+  margin-top: 2px;
+  font-size: 16px;
+  color: #388e3c;
+}
+.stat-note {
+  margin-top: 2px;
+  font-size: 16px;
+  color: red;
+}
+
+.icon-wrapper {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: auto;
+  margin-top:-10px;
+}
+
+/* Keep SVG inside but trimmed softly */
+.icon-bg {
+  position: absolute;
+    transform: scale(0.90);
+    /* shrink SVG so it stays within circular edge */
+    pointer-events: none;
+    position: absolute;
+    top: -27px;
+    left: -24px;
+
+}
+
+.stat-icon {
+  position: relative;
+  z-index: 1;
+  font-size: 24px;
+  color: white;
+}
+.mat-dialog-container {
+  position: fixed;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  padding: 24px;
+  min-width: 320px;
+  z-index: 1000;
+}
+
+.mat-dialog-content {
+  margin: 12px 0;
+}
+
+button[mat-button] {
+  color: #1976d2;
+  font-weight: 600;
+}
+.dialog-header {
+    display: flex;
+  justify-content: space-between;
+  background-color: #11508e;
+  color: white;
+  padding: 4px 8px;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+.live-text {
+  font-size: 16px;
+  color:black;
+  font-weight: 400;
+  position: relative;
+  top:2px;
+}
+
+.realtime-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  color: #1976d2;
+  font-size: 16px;
+  position: relative;
+  top:-10px;
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background-color: #a02d14;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.3;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+}
+
+
+.mat-title {
+  margin: 0 !important;
+  font-weight: 500 !important;
+  font-size: 22px !important;
+  color:white !important;
+}
+
+.dialog-content {
+  padding: 10px 14px;
+  background-color: #ffffff;
+}
+
+.dialog-subtitle {
+  font-size: 15px;
+  color: #0a0909;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+.queue-table {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.header-cell {
+  background-color: #f3f6fb;
+  font-weight: 600;
+  color: #333;
+  padding: 10px;
+}
+
+.data-cell {
+  color: #444;
+  font-size: 14px;
+  padding: 10px;
+}
+
+.no-data {
+  text-align: center;
+  margin-top: 16px;
+  font-size: 14px;
+  color: #888;
+}
+
+.dialog-actions {
+  padding: 10px 24px 18px;
+  background-color: #f9f9f9;
+  border-top: 1px solid #eee;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  color: #666;
+
+  p {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+}
+/* ===== Full Page Loading Overlay ===== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7); /* semi-transparent white */
+  backdrop-filter: blur(3px); /* slight blur for background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* high value to overlay everything */
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+/* Fullscreen centered overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 7px solid #e0e0e0;
+  border-top: 7px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Optional subtle blur on dialog backdrop */
+.blur-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(3px);
+}
+.para-details {
+  display: flex;
+  justify-content: space-between; /* Left and right alignment */
+  align-items: center; /* Vertically center both items */
+  width: 100%;
+
+}

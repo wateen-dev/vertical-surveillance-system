@@ -1,0 +1,59 @@
+<div class="container-fluid py-4">
+  <!-- Scrollable vertical container -->
+  <div class="scroll-container">
+    <div class="row g-3">
+      <div *ngFor="let city of cityData" class="col-md-4">
+        <div class="performance-card rounded-3 shadow-sm bg-white position-relative h-100">
+          <!-- City Header -->
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h6 class="fw-semibold city-title mb-0">{{ city.name }}</h6>
+              <small class="text-muted">{{ city.outlets }} Outlets</small>
+            </div>
+            <div class="text-end">
+              <h6 class="fw-bold text-primary-link mb-0">{{ city.revenue }}</h6>
+              <small
+                [ngClass]="{
+                  'text-success': city.conversion >= 40,
+                  'text-warning': city.conversion >= 20 && city.conversion < 40,
+                  'text-danger': city.conversion < 20
+                }">{{ city.conversion }}% conversion</small>
+            </div>
+          </div>
+
+          <!-- Details Section -->
+          <div class="small text-muted details">
+            <div class="d-flex justify-content-between mb-1">
+              <span class="heading-span">Footfall</span>
+              <span class="fw-semibold text-dark">{{ city.footfall | number }}</span>
+            </div>
+            <div class="d-flex justify-content-between mb-1">
+              <span class="heading-span">Avg Transaction</span>
+              <span class="fw-semibold text-dark">PKR {{ city.avgTransaction }}</span>
+            </div>
+            <div class="d-flex justify-content-between">
+              <span class="heading-span">Satisfaction</span>
+              <span class="fw-semibold text-dark">{{ city.satisfaction }}/5.0</span>
+            </div>
+          </div>
+
+          <!-- Footer -->
+          <div class="d-flex justify-content-between align-items-center mt-3 small">
+            <div class="d-flex align-items-center">
+              <span
+                class="dot me-1"
+                [ngClass]="{
+                  'bg-success': city.violations === 0,
+                  'bg-warning': city.violations > 0 && city.violations <= 10,
+                  'bg-danger': city.violations > 10
+                }"></span>
+              <span>{{ city.violations }} Violations</span>
+            </div>
+            <a class="text-primary fw-semibold text-decoration-none"
+              >View Details →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../service/DataService';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from '../service/auth.service';
-import { SidenavItem } from './sidenav-data';
+import { SidenavItem, SubMenuItem } from './sidenav-data';
 import { Employee } from '../models/EmployeeModel'; // Import the Employee model
 import { ScreenService } from '../create-screen/service/screenService';
 import { Subscription } from 'rxjs';
@@ -49,17 +49,50 @@ export class SidenavComponent implements OnInit {
     // Logic to refresh or update the sidenav
     this.GetScreenDetails();
   }
-  GetScreenDetails(){
-    this.screenService.getScreenDetails().subscribe(
-      (data) => {
-        this.sidenavItems = data; 
-        this.setActiveSubmenu(this.router.url);
-      },
-      (error) => {
-        this.toastService.showError('Failed to fetch sidenav items ' + error.error.toString());
+  GetScreenDetails() {
+  this.screenService.getScreenDetails().subscribe(
+    (data: SidenavItem[]) => {
+      this.sidenavItems = data; 
+      
+      const desiredOrder = [
+        'Dashboard',
+        'Registration Center',
+        'Administration',
+        'System Integration'
+      ];
+
+      // Sort parent menu
+      this.sidenavItems = this.sidenavItems.sort(
+        (a: SidenavItem, b: SidenavItem) =>
+          desiredOrder.indexOf(a.title) - desiredOrder.indexOf(b.title)
+      );
+
+      // ✅ Sort Dashboard submenu items
+      const dashboard = this.sidenavItems.find(x => x.title === 'Dashboard');
+
+      if (dashboard && dashboard.submenu && dashboard.submenu.length > 0) {
+
+        const dashboardSubmenuOrder = [
+          'Overview',
+          'SOP Violations',
+          'Attendance Logs'
+        ];
+
+        dashboard.submenu = dashboard.submenu.sort(
+          (a: SubMenuItem, b: SubMenuItem) =>
+            dashboardSubmenuOrder.indexOf(a.title) -
+            dashboardSubmenuOrder.indexOf(b.title)
+        );
       }
-    );
-  }
+
+      this.setActiveSubmenu(this.router.url);
+    },
+    (error) => {
+      this.toastService.showError('Failed to fetch sidenav items ' + error.error.toString());
+    }
+  );
+}
+
   toggleSubmenu(index: number) {
     this.openSubmenuIndex = this.openSubmenuIndex === index ? null : index;
   }
@@ -81,7 +114,7 @@ export class SidenavComponent implements OnInit {
     });
   }
   navigateToDashboard() {
-    this.router.navigate(['/dashboard']).then(() => {
+    this.router.navigate(['/admin-dashboard']).then(() => {
       this.isSidenavOpened = false; // Close the sidenav after navigation
     });
   }

@@ -1,0 +1,143 @@
+.metrics-container {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1f2937;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.status {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.status.online {
+  color: #10b981;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.chart {
+  margin: 0 auto;
+}
+
+.card-body {
+  margin-top: -10px;
+}
+
+.metric-title {
+  font-weight: 500;
+  color: #111827;
+  margin: 10px 0 4px;
+}
+
+.change {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #10b981;
+  margin-bottom: 10px;
+}
+
+.change .dot {
+  width: 6px;
+  height: 6px;
+  background: #10b981;
+  border-radius: 50%;
+}
+
+.progress-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.progress-line .label {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.progress-line .bar {
+  flex: 1;
+  height: 6px;
+  background: #f3f4f6;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-line .fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.progress-line .percent {
+  font-size: 12px;
+  color: #6b7280;
+}
+.metric-card {
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s;
+}
+
+.metric-card:hover {
+  transform: translateY(-3px);
+}
+
+.metric-title {
+  font-weight: 600;
+  font-size:16px;
+  color: #111827;
+}
+
+.change {
+  font-size: 14px;
+  color: #22c55e;
+}
+.progress-title{
+    font-size: 14px;
+}
+.progress-percentage{
+    font-weight: 600;
+    font-size: 14px;
+}
+.mat-mdc-card{
+  padding:10px;
+}

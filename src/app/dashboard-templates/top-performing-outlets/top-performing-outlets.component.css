@@ -1,0 +1,374 @@
+/* Scroll Container */
+.scroll-container {
+  max-height: 350px; /* requested height */
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-right: 8px;
+}
+
+/* Outlet Card */
+.outlet-card {
+  position: relative;          /* required for absolute badge */
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  padding: 36px 20px 20px 20px; /* extra top padding so badge won't overlap */
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  overflow: hidden;
+  min-height: 300px; /* kept as you wanted */
+  border-left:2px rgba(0, 0, 0, 0.08);
+}
+
+/* Decorative gradient arc (top-right) */
+/* .outlet-card::before {
+  content: "";
+  position: absolute;
+  top: -30%;
+  right: -40%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(
+    circle at 85% 25%,
+    rgba(20, 96, 170, 0.12) 0%,
+    rgba(20, 96, 170, 0.03) 50%,
+    rgba(20, 96, 170, 0) 90%
+  );
+  z-index: 0;
+  pointer-events: none;
+} */
+
+/* ensure card content renders above gradient */
+.outlet-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover */
+.outlet-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Rank Badge: absolute so it sits over top-right without affecting layout */
+.rank-badge {
+  position: absolute;
+  top: -20px;
+  right: 12px;
+  float: right;
+  background: #1460aa !important;/*In case of multi color just remove important so it will get the color from database*/
+  color: #ffffff;
+  font-weight: 700;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  box-shadow: 0 2px 6px rgba(20, 96, 170, 0.28);
+  z-index: 3;
+}
+
+/* Optional: distinct coloring for top ranks (add more if desired) */
+.rank-1 { background: linear-gradient(180deg,#f59e0b,#f97316); } /* golden/orange */
+.rank-2 { background: linear-gradient(180deg,#6b21a8,#7c3aed); } /* purple */
+.rank-3 { background: linear-gradient(180deg,#10b981,#059669); } /* green */
+
+/* Header centered */
+.card-header {
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 6px;
+}
+
+.outlet-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.outlet-location {
+  font-size: 13px;
+  color: #6b7280;
+  margin-bottom: 0;
+}
+
+/* Stats area (pill rows) */
+.outlet-stats {
+  margin-top: 8px;
+}
+
+/* each stat row looks like a little pill with spaced content */
+.stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: #ffffff; /* white pills on subtle card arc */
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.03);
+  margin-bottom: 8px;
+}
+
+.stat-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #475569; /* slightly dark muted */
+  font-size: 13px;
+}
+
+.stat-left i {
+  color: #1460aa;
+  font-size: 14px;
+}
+
+.stat-value {
+  font-weight: 700;
+  color: #111827;
+  font-size: 13px;
+}
+
+/* small color helpers */
+.text-primary { color: #1460aa !important; }
+.text-success { color: #16a34a !important; }
+.text-danger { color: #dc2626 !important; }
+
+/* Footer Tag (status badge) centered */
+.status-badge {
+  display: inline-block;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+/* Status Colors */
+.status-excellent { background: #dcfce7; color: #16a34a; }
+.status-great     { background: #e0f2fe; color: #2563eb; }
+.status-good      { background: #fef9c3; color: #ca8a04; }
+.status-attention { background: #fee2e2; color: #dc2626; }
+
+/* Responsive grid: 4 columns on >= 992 (col-sm-3); 2 columns on tablet, 1 on mobile */
+@media (max-width: 992px) {
+  .col-sm-3 { flex: 0 0 50%; max-width: 50%; }
+}
+@media (max-width: 576px) {
+  .col-sm-3 { flex: 0 0 100%; max-width: 100%; }
+}
+/* Color-tinted stat backgrounds */
+.stat-blue {
+  background: rgba(20, 96, 170, 0.08);
+}
+
+.stat-green {
+  background: rgba(22, 163, 74, 0.08);
+}
+
+.stat-yellow {
+  background: rgba(234, 179, 8, 0.08);
+}
+
+/* Icon color per row */
+.stat-blue .stat-left i {
+  color: #1460aa;
+}
+
+.stat-green .stat-left i {
+  color: #16a34a;
+}
+
+.stat-yellow .stat-left i {
+  color: #eab308;
+}
+
+/* --- Dots Spinner (for Rating) --- */
+.dots-spinner {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.dots-spinner span {
+  width: 5px;
+  height: 5px;
+  background-color: #16a34a; /* same as text-success green */
+  border-radius: 50%;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+.dots-spinner span:nth-child(1) {
+  animation-delay: 0s;
+}
+.dots-spinner span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dots-spinner span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.6);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* Mat icon color classes */
+.icon-blue {
+  color: #1460aa !important;
+}
+
+.icon-green {
+  color: #16a34a !important;
+}
+
+.icon-yellow {
+  color: #eab308 !important;
+}
+
+.icon-location {
+  color: #6b7280;
+  font-size: 16px;
+  vertical-align: middle;
+}
+
+/* Stat row backgrounds */
+.stat-blue {
+  background-color: rgba(20, 96, 170, 0.08);
+}
+
+.stat-green {
+  background-color: rgba(22, 163, 74, 0.08);
+}
+
+.stat-yellow {
+  background-color: rgba(234, 179, 8, 0.1);
+}
+
+/* Mat icon general style */
+mat-icon {
+  font-size: 18px;
+  vertical-align: middle;
+}
+
+
+.dialog-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 998;
+}
+
+.outlet-dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1200;
+}
+
+.outlet-dialog {
+  background: #fff;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dialog-header,
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.outlet-card,
+.reviews-card {
+  margin: 1rem;
+  border-radius: 10px;
+}
+
+.outlet-info p {
+  margin: 4px 0;
+}
+
+.hours-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.review-table {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+mat-toolbar.dialog-footer {
+  justify-content: center;
+  font-size: 13px;
+  color: #f0f0f0;
+}
+.full-screen-dialog .mat-mdc-dialog-container {
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+.outlet-card:hover {
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  transform: translateY(-3px);
+  cursor: pointer;
+}
+/* ===== Full Page Loading Overlay ===== */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.7); /* semi-transparent white */
+  backdrop-filter: blur(3px); /* slight blur for background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000; /* high value to overlay everything */
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Spinner styling */
+.loading-overlay .spinner {
+  border: 6px solid #f3f3f3; /* Light grey */
+  border-top: 6px solid #1e88e5; /* Primary color */
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spinner Animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+

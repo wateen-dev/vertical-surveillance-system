@@ -1,0 +1,253 @@
+h2 {
+  text-align: left;              /* Align text to the left */
+  font-family: 'Segoe UI', Arial, sans-serif; /* Clean modern font */         /* Make it bold */
+  font-size: 22px;               /* Adjust size for readability */
+  color: #1f2937;                /* Dark gray for contrast */
+  margin-bottom: 15px;           /* Add spacing below */
+}
+.incidents-container {
+  display: flex;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.incidents-card {
+  width: 100%;
+
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.incidents-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.52);
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.realtime-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #e53935;
+  animation: blink 1.2s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.filter-field {
+  flex: 1 1 180px;
+  min-width: 160px;
+}
+
+.filter-actions {
+  display: flex;
+  align-items: center;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.incidents-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.incidents-table th {
+  font-weight: 600;
+}
+
+.outlet-link {
+  color: #1a73e8;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.outlet-link:hover {
+  text-decoration: underline;
+}
+
+.conf-cell {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.conf-bar {
+  width: 60px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #e0e0e0;
+  overflow: hidden;
+}
+
+.conf-fill {
+  height: 100%;
+  background-color: #1a73e8;
+  border-radius: 3px;
+  transition: width 0.4s ease-in-out;
+}
+
+.conf-label {
+  font-size: 13px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+@media (max-width: 768px) {
+  .filters {
+    flex-direction: column;
+  }
+
+  .filter-field {
+    width: 100%;
+  }
+
+  .incidents-card {
+    padding: 16px;
+  }
+
+  .action-btn .btn-text {
+    display: none;
+  }
+}
+::ng-deep .mat-mdc-chip {
+  background-color: transparent !important;
+  color: inherit !important;
+}
+
+/* ✅ Status colors */
+mat-chip.chip-active {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+mat-chip.chip-investigating {
+  background-color: #fff7ed !important;
+  color: #d97706 !important;
+}
+
+mat-chip.chip-monitoring {
+  background-color: #e0f2fe !important;
+  color: #0369a1 !important;
+}
+
+mat-chip.chip-prevented {
+  background-color: #dcfce7 !important;
+  color: #166534 !important;
+}
+
+mat-chip.chip-resolved {
+  background-color: #f3f4f6 !important;
+  color: #4b5563 !important;
+}
+
+/* ✅ Severity colors */
+mat-chip.chip-high {
+  background-color: #fee2e2 !important;
+  color: #b91c1c !important;
+}
+
+mat-chip.chip-medium {
+  background-color: #fef9c3 !important;
+  color: #a16207 !important;
+}
+
+mat-chip.chip-low {
+  background-color: #ecfdf5 !important;
+  color: #047857 !important;
+}
+/*Adding Duration Colors*/
+/* ====== Duration Progress Bar ====== */
+
+
+.duration-bar {
+  flex: 1;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 6px;
+  overflow: hidden;
+  position: relative;
+}
+
+.duration-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.4s ease, background 0.4s ease;
+}
+/* Fullscreen centered overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(5px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 7px solid #e0e0e0;
+  border-top: 7px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* Smooth rotation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Optional subtle blur on dialog backdrop */
+.blur-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(3px);
+}
+
+
+

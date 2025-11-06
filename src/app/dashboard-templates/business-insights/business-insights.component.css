@@ -1,0 +1,232 @@
+.business-insights-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    max-height: 400px;
+    overflow: hidden;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #111827;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .status {
+            font-size: 0.9rem;
+            color: #6b7280;
+
+            &.active {
+                color: #16a34a;
+                font-weight: 500;
+            }
+        }
+    }
+
+    .insights-scroll {
+        overflow-y: auto;
+        flex-grow: 1;
+    }
+
+    .insights-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        /* exactly 2 per row */
+        gap: 16px;
+        padding-right: 4px;
+    }
+
+    .insight-box {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 16px;
+        background-color: #fafafa;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        .box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            h4 {
+                margin: 0;
+                font-weight: 600;
+                font-size: 1rem;
+                color: #111827;
+            }
+
+            .tag {
+                padding: 2px 8px;
+                border-radius: 10px;
+                font-size: 0.75rem;
+                font-weight: 500;
+            }
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin: 8px 0 12px;
+        }
+
+        .value-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .value {
+                font-weight: 600;
+            }
+
+            .confidence {
+                display: flex;
+                align-items: center;
+                font-size: 0.85rem;
+
+                .confidence-icon {
+                    font-size: 16px;
+                    margin-right: 4px;
+                }
+            }
+        }
+    .details {
+        display: inline-flex;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #2563eb;
+        margin-top: 10px;
+        text-decoration: none;
+        font-weight: 500;
+        cursor: pointer;
+        text-transform: none;
+        float: right;
+        background: transparent;
+        /* prevent highlight */
+        border: none;
+        outline: none;
+        position: relative;
+        z-index: 2;
+        /* stay above card hover layer */
+    }
+    .details:hover {
+        text-decoration: underline;
+        color: #1e40af;
+        /* darker blue on hover */
+        cursor: pointer;
+    }
+
+}
+    @media (max-width: 768px) {
+        .insights-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+}
+/* --- Dialog Container --- */
+.custom-dialog-container .mat-mdc-dialog-container {
+  border-radius: 16px !important;
+  background: #ffffff;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+  overflow: hidden; /* ensures rounded corners */
+}
+
+/* --- Header --- */
+.dialog-header {
+  padding: 16px 24px;
+  background: #2563eb; /* default blue */
+  color: white;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+}
+
+.dialog-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+/* --- Content --- */
+.dialog-content {
+  padding: 20px 24px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.dialog-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.dialog-section h3 {
+  margin-bottom: 8px;
+  color: #1e293b;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.dialog-section p {
+  margin: 4px 0;
+  font-size: 0.95rem;
+}
+
+.highlight {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+/* --- Footer --- */
+.dialog-footer {
+  background: #f9fafb;
+  border-top: 1px solid #e2e8f0;
+  padding: 12px 24px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+}
+
+button[mat-stroked-button] {
+  border-radius: 8px;
+  padding: 6px 18px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+button[mat-stroked-button]:hover {
+  background-color: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .dialog-content {
+    padding: 16px;
+  }
+
+  .dialog-title {
+    font-size: 1.1rem;
+  }
+
+  .dialog-section h3 {
+    font-size: 1rem;
+  }
+}
