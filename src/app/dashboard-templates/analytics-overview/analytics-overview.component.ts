@@ -72,8 +72,8 @@ customOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
   "Today's Footfall": { value: todayFootfall, change: "+22.3% vs Yesterday", icon: "groups", color: "#1976d2" },
   "SOP Violations": { value: violationCount, note: violationCount === 0 ? "No violations today 🎉" : violationCount > 5 ? "High-priority detected 🚨" : `${violationCount} Active Violations`, icon: "security", color: violationCount > 5 ? "#ef111c" : "#ff9800" },
   "Revenue Today": { value: "PKR 28.5M", change: "+18.4% vs Target", icon: "attach_money", color: "#00ba48" },
-  "Conversion Rate": { value: "44.2%", change: "+4.1% Improvement", icon: "trending_up", color: "#a632fe" },
-  "Employee Efficiency": { value: 89.2, change: "+6.1% This Week", icon: "insights", color: "#1976d2" },
+  "Conversion Rate": { value: "TBD", change: "+4.1% Improvement", icon: "trending_up", color: "#a632fe" },
+  "Employee Efficiency": { value: "TBD", change: "+6.1% This Week", icon: "insights", color: "#1976d2" },
   "Receipt Count": { value: `${receiptValue}`, note: "Total Receipts Generated - POS 2", icon: "inventory", color: "#767cff" },
   "Avg Queue Time": { value: `${avgQueue.avgWaitTimeMinutes?.toFixed(2)} min`, change: "-24s Improvement", icon: "timer", color: "#01c5b0" },
   "Camera Health": { value: "100%", note: "13/13 Cameras Active", icon: "camera_alt", color: "#00cbeb" }

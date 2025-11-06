@@ -112,8 +112,8 @@ export class ViolationService {
 
   getEmployeeEfficiency(): Observable<any[]> {
     const dummyData  = [
-      { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: 98 },
-      { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: 95 },
+      { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: null },
+      { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: null },
 
     ];
     // Simulate an async call with a short delay
