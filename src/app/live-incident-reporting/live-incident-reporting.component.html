@@ -27,7 +27,19 @@
                             <div class="small-muted">{{ location }} </div>
                             <div class="small-muted textStyling">{{ timestamp }}</div>
                         </div>
-                        <div class="priority-badge ms-2">{{ priority }}</div>
+                        <div class="violation-info">
+                            <div class="camera-name ms-2">{{ cameraName }}</div>
+                            <div class="priority-badge" [ngClass]="{
+                                   'priority-low': priority === 'Low',
+                                   'priority-high': priority === 'High',
+                                   'medium': priority === 'Medium',
+                                   'priority-critical': priority === 'Critical'
+                                 }">
+                                {{ priority }}
+                            </div>
+                            
+                            </div>
+
                     </div>
                 </div>
             </div>
@@ -184,7 +196,7 @@
                     <mat-card class="ticket-card mat-elevation-z2">
                         <div class="ticket-header">
                             <h2>Ticket Information</h2>
-                            <span class="ticket-id">VId - {{violationId}}</span>
+                            <span class="ticket-id">TKT - {{violationId}}</span>
                         </div>
 
                         <div class="ticket-info">
@@ -194,11 +206,18 @@
                                 <div class="assigned">
                                     <div class="avatar">AK</div>
                                     <div class="assignee">
-                                        <div class="name">Ahmed Khan</div>
-                                        <div class="role">(Security Lead)</div>
+                                        <div class="name-row">
+                                            <div class="name-role">
+                                                <div class="name">Ahmed Khan</div>
+                                                <div class="role">(Store Manager)</div>
+                                            </div>
+                                            <i class="fab fa-whatsapp whatsapp-icon" (click)="openWhatsApp()"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+
 
                             <div class="info-group two-col">
                                 <div>
@@ -207,13 +226,13 @@
                                 </div>
                                 <div>
                                     <label>Priority</label>
-                                    <div class="value critical">Critical</div>
+                                    <div class="value critical">{{ priority }}</div>
                                 </div>
                             </div>
 
                             <div class="info-group">
                                 <label>Queue</label>
-                                <div class="value">Security Team</div>
+                                <div class="value">Store Manager</div>
                             </div>
 
                         </div>

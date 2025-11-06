@@ -34,13 +34,33 @@ h2{
   font-weight: 550;
 }
 .priority-badge {
-  background: rgba(239,68,68,0.08);
   color: #ef4444;
   padding: 6px 12px;
   font-weight: 600;
   font-size: 14px;
 }
+/* Low Priority */
+.priority-low {
+  background: rgba(34,197,94,0.15); /* green light */
+  color: #22c55e; /* green */
+}
 
+/* High Priority */
+.priority-high {
+  background: rgba(234,179,8,0.15); /* yellow light */
+  color: #eab308; /* yellow */
+}
+
+/* Critical Priority */
+.priority-critical {
+  background: rgba(239,68,68,0.15); /* red light */
+  color: #ef4444; /* red */
+}
+/* Medium */
+.priority-badge.medium {
+  background: rgba(234, 179, 8, 0.15); /* yellow light */
+  color: #eab308; /* yellow */
+}
 /* IMAGE CARD */
 .image-card {
   border-radius: 12px;
@@ -1657,4 +1677,75 @@ mat-progress-bar {
 .blur-dialog-backdrop {
   background-color: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(3px);
+}
+.name-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.whatsapp-icon {
+  font-size: 20px;
+  color: #25d366; /* WhatsApp green */
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.whatsapp-icon:hover {
+  transform: scale(1.1);
+}
+.assigned {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.assignee {
+  flex: 1;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.name-role {
+  display: flex;
+  flex-direction: column;
+}
+
+.whatsapp-icon {
+  font-size: 26px; /* Increased size */
+  color: #25d366;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.whatsapp-icon:hover {
+  transform: scale(1.2);
+  color: #20ba5a;
+}
+.violation-info {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* space between priority and camera */
+}
+
+.priority-badge {
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.camera-name {
+  background-color: #1976d2; /* blue tag for camera */
+  color: white;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 13px;
 }

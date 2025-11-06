@@ -16,10 +16,28 @@
             <div class="col-sm-12">
                 <!-- <div #analyticsSection class="admin-dashboard fade-in"> -->
                 <div class="admin-dashboard">
-                    <div class="analytics-header">
-                        <h2 class="analytics-title">Retail AI Analytics Overview</h2>
-                        <p class="analytics-subtitle">Real-time insights across retail outlets</p>
+                    <div class="analytics-header analyticsdetails">
+                        <div class="header-left">
+                            <h2 class="analytics-title">Retail AI Analytics Overview</h2>
+                            <p class="analytics-subtitle">Real-time insights across retail outlets</p>
+                        </div>
+
+                        <div class="header-right">
+                            <div class="time-card">
+                                <div class="time-row">
+                                    <span class="label">Opening Time:</span>
+                                    <span class="value">{{ openTime }}</span>
+                                </div>
+                                <div class="time-row">
+                                    <span class="label">Closing Time:</span>
+                                    <span class="value">{{ closeTime }}</span>
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
+
                     <app-analytics-overview></app-analytics-overview>
                 </div>
             </div>
@@ -28,25 +46,25 @@
             <div class="col-sm-8">
                 <div class="admin-dashboard">
                     <div class="analytics-header">
-                        <h2 class="analytics-title">Live Footfall & Revenue Tracking</h2>
+                        <h2 class="analytics-title">Footfall & Revenue Tracking</h2>
                         <p class="analytics-subtitle">Real-time data from all outlets</p>
                     </div>
                     <!-- <app-floor-heatmap></app-floor-heatmap> -->
-                     <app-live-footfall-chart></app-live-footfall-chart>
+                    <app-live-footfall-chart></app-live-footfall-chart>
                 </div>
             </div>
             <div class="col-sm-4">
                 <div class="admin-dashboard">
                     <div class="violations-header">
                         <div class="violations-title">
-                            <span>Live Security Feed</span>
+                            <span>Alerts & Notifications</span>
                             <span class="status-dot" title="Live"></span>
                         </div>
-                        <div class="cameras-count">258 Cameras</div>
+                        <!-- <div class="cameras-count">258 Cameras</div> -->
                     </div>
                     <app-app-violations></app-app-violations>
                 </div>
-            </div>  
+            </div>
         </div>
         <!-- <div class="row salescharts">
             <div class="col-sm-12">
@@ -78,11 +96,11 @@
             <div class="col-sm-6">
                 <div class="admin-dashboard">
                     <div class="analytics-header">
-                        <h2 class="analytics-title">Weekly Trends</h2>
-                        <p class="analytics-subtitle">Sales perfomance & security monitoring</p>
+                        <h2 class="analytics-title">Daily Footfall Heatmap</h2>
+                        <p class="analytics-subtitle">Sales perfomance & Security monitoring</p>
                     </div>
                     <!-- <app-sales-category-weekly-chart></app-sales-category-weekly-chart> -->
-                     <app-heatmap-chart></app-heatmap-chart>
+                    <app-heatmap-chart></app-heatmap-chart>
                 </div>
             </div>
         </div>

@@ -38,7 +38,7 @@ export class BusinessInsightsComponent implements OnInit {
         detailsLink: '#'
       },
       {
-        title: 'Loss Prevention Alert',
+        title: 'Theft Prevention Alert',
         tag: 'Security',
         tagColor: '#ef4444',
         description: 'Unusual activity patterns detected in Karachi Dolmen Mall jewelry section',

@@ -6,17 +6,17 @@ interface TimelineItem {
   title: string;
   description: string;
   color:
-    | 'blue'
-    | 'orange'
-    | 'red'
-    | 'green'
-    | 'purple'
-    | 'cyan'
-    | 'yellow'
-    | 'lime'
-    | 'teal'
-    | 'indigo'
-    | 'gray';
+  | 'blue'
+  | 'orange'
+  | 'red'
+  | 'green'
+  | 'purple'
+  | 'cyan'
+  | 'yellow'
+  | 'lime'
+  | 'teal'
+  | 'indigo'
+  | 'gray';
 }
 
 @Component({
@@ -31,7 +31,11 @@ export class LiveIncidentReportingComponent implements OnInit {
   timestamp = 'Feb 2, 2025 at 2:22 p.m.';
   priority = 'High';
   confidence = 96;
+  cameraName = 'POS 2';
+
   isLoading: boolean = false; // 🔹 Loading state
+   alerts: { title: string; description: string }[] = [];
+
   // new — query params
   violationId: string | null = null;
   violationDate: string | null = null;
@@ -60,13 +64,14 @@ export class LiveIncidentReportingComponent implements OnInit {
     },
   ];
 
-  alerts = [
-    {
-      title: 'Shoplifting Attempt',
-      description:
-        'Individual concealing smartphone in bag near Samsung display. Customer exhibited suspicious behavior patterns including looking around frequently and attempting to block camera view.',
-    },
-  ];
+  // alerts = [
+  //   {
+  //     title: 'Shoplifting Attempt',
+  //     description:
+  //       'Individual concealing smartphone in bag near Samsung display. Customer exhibited suspicious behavior patterns including looking around frequently and attempting to block camera view.',
+  //   },
+  // ];
+
 
   // images — will be updated dynamically based on violationId
   images: string[] = [];
@@ -82,7 +87,7 @@ export class LiveIncidentReportingComponent implements OnInit {
   ];
 
   // list of real violationIds that have matching images
-  realViolationIds = ['79016544', '41920645', '83460247','24942603','78255929','95822412'];
+  realViolationIds = ['79016544', '41920645', '83460247', '24942603', '78255929', '95822412'];
 
   // violation info
   violation = {
@@ -113,58 +118,73 @@ export class LiveIncidentReportingComponent implements OnInit {
     'Model confidence high (96%). Recommended immediate security intervention and evidence capture for case management.',
     'Suggested follow-ups: review contiguous video segments, preserve until case is closed, and attach to incident report.',
   ];
+ 
+  constructor(private route: ActivatedRoute, private router: Router) { }
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  ngOnInit(): void {
+    // 🔹 Start spinner at the beginning
+    this.isLoading = true;
 
-ngOnInit(): void {
-  // 🔹 Start spinner at the beginning
-  this.isLoading = true;
+    this.route.queryParams.subscribe({
+      next: (params) => {
+        debugger;
 
-  this.route.queryParams.subscribe({
-    next: (params) => {
-      debugger;
+        this.violationId = params['violationId'] || null;
+        this.isRealData = this.violationId
+          ? this.realViolationIds.includes(this.violationId)
+          : false;
 
-      this.violationId = params['violationId'] || null;
-      this.isRealData = this.violationId
-        ? this.realViolationIds.includes(this.violationId)
-        : false;
+        // ✅ Existing logic — don't touch
+        this.configureImages();
 
-      // ✅ Existing logic — don't touch
-      this.configureImages();
+        // ✅ Dynamic field mapping
+        const outlet = params['outlet'] || 'Unknown Location';
+        const rawType = (params['type'] || 'unknown').toString().trim().toLowerCase();
+        const status = params['status'] || 'N/A';
+        const severity = params['severity'] || 'N/A';
+        const violationId = params['violationId'] || 'N/A';
+        const violationDate = params['violationDate'] || null;
+        const time = params['time'] || 'N/A';
 
-      // ✅ Dynamic field mapping
-      const outlet = params['outlet'] || 'Unknown Location';
-      const type = params['type'] || 'Unknown Type';
-      const status = params['status'] || 'N/A';
-      const severity = params['severity'] || 'N/A';
-      const violationId = params['violationId'] || 'N/A';
-      const violationDate = params['violationDate'] || null;
-      const time = params['time'] || 'N/A';
+        // ✅ Populate your data dynamically from URL
+        this.incidentTitle = `${params['type'] || 'Unknown Type'} - ${status}`;
+        this.location = outlet;
+        this.timestamp = time;
+        this.priority = severity;
+        this.confidence = this.isRealData ? 98 : 90; // Example: real vs dummy confidence
+        this.violationId = violationId;
+        this.violationDate = violationDate
+          ? violationDate.split('T')[0] // take only the date part
+          : 'N/A';
 
-      // ✅ Populate your data dynamically from URL
-      this.incidentTitle = `${type} - ${status}`;
-      this.location = outlet;
-      this.timestamp = time;
-      this.priority = severity;
-      this.confidence = this.isRealData ? 98 : 90; // Example: real vs dummy confidence
-      this.violationId = violationId;
-      this.violationDate = violationDate
-        ? violationDate.split('T')[0] // take only the date part
-        : 'N/A';
+        // 🧠 NEW: Handle violation alert content (mapped automatically)
+        try {
+          this.alerts = [this.getViolationAlert(rawType)];
+        } catch (error) {
+          console.error('Error mapping violation details:', error);
+          this.alerts = [
+            {
+              title: 'Violation Data Error',
+              description:
+                'Unable to load violation details at the moment. Please review the event data manually.',
+            },
+          ];
+        }
 
-      // 🔹 Stop spinner after processing
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Error while loading route params:', err);
-      this.isLoading = false; // stop spinner on error
-    },
-    complete: () => {
-      // (optional) stop loading in case observable completes early
-      this.isLoading = false;
-    }
-  });
-}
+        // 🔹 Stop spinner after processing
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error while loading route params:', err);
+        this.isLoading = false; // stop spinner on error
+      },
+      complete: () => {
+        // (optional) stop loading in case observable completes early
+        this.isLoading = false;
+      }
+    });
+  }
+
 
   // 🔧 dynamic image setup
   configureImages() {
@@ -187,29 +207,29 @@ ngOnInit(): void {
     console.log('Alert security clicked');
   }
 
- markResolved() {
-  // ✅ 1. Update local incident status
-  this.incidentTitle = `${this.incidentTitle.split(' - ')[0]} - Resolved`;
-  this.priority = 'Low'; // optional — you can set based on your logic
+  markResolved() {
+    // ✅ 1. Update local incident status
+    this.incidentTitle = `${this.incidentTitle.split(' - ')[0]} - Resolved`;
+    this.priority = 'Low'; // optional — you can set based on your logic
 
-  // ✅ 2. Add a system comment automatically
-  this.comments.push({
-    initials: 'SYS',
-    name: 'System',
-    tag: 'System',
-    text: 'Incident has been marked as resolved.',
-    time: new Date().toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    }),
-  });
+    // ✅ 2. Add a system comment automatically
+    this.comments.push({
+      initials: 'SYS',
+      name: 'System',
+      tag: 'System',
+      text: 'Incident has been marked as resolved.',
+      time: new Date().toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      }),
+    });
 
-  // ✅ 3. Optional — if you have Angular Material, show a snackbar
-  alert('✅ Incident successfully marked as resolved.');
+    // ✅ 3. Optional — if you have Angular Material, show a snackbar
+    alert('✅ Incident successfully marked as resolved.');
 
-  // ✅ 4. Optional — you can also trigger API call here to persist to backend
-  // this.http.post('/api/incidents/resolve', { violationId: this.violationId }).subscribe(...)
-}
+    // ✅ 4. Optional — you can also trigger API call here to persist to backend
+    // this.http.post('/api/incidents/resolve', { violationId: this.violationId }).subscribe(...)
+  }
 
 
   generateIncidentReport() {
@@ -251,4 +271,64 @@ ngOnInit(): void {
   goBack() {
     this.router.navigate(['live-incidents']);
   }
+
+  getViolationAlert(type: string) {
+    const key = (type || '').toLowerCase().trim();
+
+    switch (key) {
+      case 'counter is empty':
+        return {
+          title: 'Counter Unattended',
+          description:
+            'Detected an empty counter for an extended duration during active business hours. This may indicate staff unavailability or operational negligence requiring immediate attention.',
+        };
+
+      case 'receipt not cut in time':
+        return {
+          title: 'Receipt Delay Alert',
+          description:
+            'Transaction completed but receipt was not generated within the expected timeframe. This may suggest a delay in POS operation or manual intervention bypassing standard billing flow.',
+        };
+
+      case 'warehouse not clean':
+        return {
+          title: 'Warehouse Cleanliness Issue',
+          description:
+            'Visual inspection detected untidy or cluttered warehouse conditions. This may violate standard hygiene or safety protocols and should be reviewed by operations staff.',
+        };
+
+      case 'pos anomaly':
+        return {
+          title: 'POS System Anomaly',
+          description:
+            'Unusual transaction or behavior detected at POS terminal. Possible causes include double scanning, irregular refunds, or prolonged inactivity requiring supervisor verification.',
+        };
+
+      case 'loitering alert':
+        return {
+          title: 'Loitering Detected',
+          description:
+            'Prolonged presence detected near restricted or low-traffic zones. Subject exhibited non-transactional behavior indicating potential security or safety concern.',
+        };
+
+      case 'shoplifting detection':
+        return {
+          title: 'Shoplifting Attempt',
+          description:
+            'Individual detected concealing items without payment near the display area. Subject behavior matches theft pattern — frequent scanning of surroundings and obstructing camera visibility.',
+        };
+
+      default:
+        return {
+          title: 'Unidentified Violation',
+          description:
+            'A system alert was triggered but the violation type could not be classified. Please review surveillance footage or logs for further details.',
+        };
+    }
+  }
+  openWhatsApp() {
+    const phone = '+923249457836'; // Replace with actual number or dynamic field
+    window.open(`https://wa.me/${phone}`, '_blank');
+  }
+
 }

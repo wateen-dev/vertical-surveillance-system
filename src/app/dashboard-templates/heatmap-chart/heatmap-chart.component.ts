@@ -166,7 +166,7 @@ export class HeatmapChartComponent implements OnInit {
             displayLabel = `${label.substring(0, half)}\n${label.substring(half)}`;
           }
 
-          return `${displayLabel}\n${value} visitors`;
+          return `${displayLabel}\n${value}`;
         },
       },
       legend: { show: false },

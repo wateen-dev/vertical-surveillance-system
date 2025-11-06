@@ -6,12 +6,14 @@ import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
   styleUrl: './admin-dashboard.component.css'
 })
 export class AdminDashboardComponent {
-     @ViewChild('performanceSection', { static: true }) performanceSection!: ElementRef;
+  @ViewChild('performanceSection', { static: true }) performanceSection!: ElementRef;
   @ViewChild('analyticsSection', { static: true }) analyticsSection!: ElementRef;
   @ViewChild('realTimeSection', { static: true }) realTimeSection!: ElementRef; // ✅ added
   @ViewChild('performanceOverviewSection', { static: true }) performanceOverviewSection!: ElementRef; // ✅ NEW
 
-  constructor(private renderer: Renderer2) {}
+  constructor(private renderer: Renderer2) { }
+  openTime = '02:00 PM';
+  closeTime = '';
 
   //  ngAfterViewInit() {
   //   const sections = [

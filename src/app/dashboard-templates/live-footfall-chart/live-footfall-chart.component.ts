@@ -36,9 +36,10 @@ export type ChartOptions = {
   styleUrls: ['./live-footfall-chart.component.css']
 })
 export class LiveFootfallChartComponent implements OnInit{
-    @ViewChild("chart") chart: any;
+  @ViewChild("chart") chart: any;
   public chartOptions: Partial<ChartOptions> = {};
   footfallData: number[] = [];
+  xLabels: string[] = [];
 
   constructor(private violationService: ViolationService) {}
 
@@ -50,11 +51,32 @@ export class LiveFootfallChartComponent implements OnInit{
     this.violationService.getHourlyFootfall()
       .pipe(catchError(() => of([])))
       .subscribe((data: any[]) => {
-        // ✅ Extract visit counts and fill missing hours (09:00–20:00)
-        const hours = ['09:00','10:00','11:00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00'];
-        const hourMap = new Map(data.map(item => [item.hourOfDay, item.visitCount]));
+        // configure start/end hours (inclusive)
+        const startHour = 11;
+        const endHour = 22;
 
-        this.footfallData = hours.map((h, i) => hourMap.get(i + 9) || 0);
+        // Build x-axis labels dynamically: ["11:00", "12:00", ...]
+        this.xLabels = Array.from({ length: endHour - startHour + 1 }, (_, i) =>
+          `${String(startHour + i).padStart(2, '0')}:00`
+        );
+
+        // Build map of hour -> visitCount (summing if duplicates)
+        const hourMap = new Map<number, number>();
+        data.forEach(item => {
+          const h = Number(item.hourOfDay);
+          const visits = Number(item.visitCount) || 0;
+
+          // If your API returns hourOfDay in UTC and you want Asia/Karachi (UTC+5),
+          // uncomment the next line to convert:
+          // const localHour = (h + 5) % 24;
+          // use localHour instead of h if conversion is required.
+
+          const key = h; // or use localHour if converting
+          hourMap.set(key, (hourMap.get(key) || 0) + visits);
+        });
+
+        // Map xLabels to their corresponding hours (startHour + idx) and fill missing with 0
+        this.footfallData = this.xLabels.map((_, idx) => hourMap.get(startHour + idx) ?? 0);
 
         this.setupChart();
       });
@@ -66,17 +88,17 @@ export class LiveFootfallChartComponent implements OnInit{
         {
           name: 'Footfall',
           type: 'area',
-          data: this.footfallData // ✅ Real API data
+          data: this.footfallData
         },
         {
           name: 'Revenue',
           type: 'area',
-          data: [40, 80, 150, 260, 400, 520, 680, 750, 720, 630, 520, 410] // 🧩 Dummy
+          data: [40, 80, 150, 260, 400, 520, 680, 750, 720, 630, 520, 410] // dummy
         },
         {
           name: 'Conversions',
           type: 'line',
-          data: [180, 280, 380, 520, 1050, 1280, 1600, 1850, 1750, 1500, 1200, 900] // 🧩 Dummy
+          data: [10, 20, 30, 60, 80, 90, 100, 110, 120, 130, 140, 150] // dummy
         }
       ],
       chart: {
@@ -102,7 +124,7 @@ export class LiveFootfallChartComponent implements OnInit{
       },
       markers: { size: 4 },
       xaxis: {
-        categories: ['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
+        categories: this.xLabels,
         labels: { style: { fontSize: '12px' } }
       },
       yaxis: [
@@ -122,7 +144,6 @@ export class LiveFootfallChartComponent implements OnInit{
         fontSize: '13px'
       },
       title: {
-        text: 'Live Footfall & Revenue Tracking',
         align: 'left',
         style: { fontSize: '16px', fontWeight: '600' }
       }

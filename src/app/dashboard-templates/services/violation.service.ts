@@ -114,7 +114,7 @@ export class ViolationService {
     const dummyData  = [
       { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: 98 },
       { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: 95 },
-      { position: 3, employeeId: '6071', employeeName: 'Ahmed Iqbal', efficiency: 92 },
+
     ];
     // Simulate an async call with a short delay
     return of(dummyData).pipe(delay(800));
@@ -135,6 +135,9 @@ export class ViolationService {
   }
   getPlaceReviews(placeId: string): Observable<any> {
     return this.http.get(`${this.local_apiUrl}Vertical/GetPlaceReviews?placeId=${placeId}`);
+  }
+  getReceiptCount(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCount`);
   }
 
 }
