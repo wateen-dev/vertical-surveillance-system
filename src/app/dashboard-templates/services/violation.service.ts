@@ -54,48 +54,45 @@ export class ViolationService {
   constructor(private http: HttpClient) { }
 
   getViolations(): Observable<Violation[]> {
-    // return this.http.get<Violation[]>(this.apiUrl).pipe(
-    //   catchError(err => {
-    //     console.error('API failed, returning dummy data', err);
     const fallback: Violation[] = [
       { violationId: 101, violationType: 'PPE Non-Compliance', description: 'Worker not wearing helmet', date: '2025-09-25', violationTime: '09:15 AM', confidence: 92, location: 'Karachi Plant' },
       { violationId: 102, violationType: 'Fire Safety', description: 'Fire exit blocked by equipment', date: '2025-09-26', violationTime: '11:45 AM', confidence: 87, location: 'Lahore Warehouse' },
       { violationId: 103, violationType: 'Unauthorized Access', description: 'Unregistered person in restricted zone', date: '2025-09-27', violationTime: '02:30 PM', confidence: 95, location: 'Islamabad Office' },
       { violationId: 104, violationType: 'Suspicious Behavior', description: 'Crowd detected in restricted area', date: '2025-09-27', violationTime: '04:10 PM', confidence: 78, location: 'Faisalabad Factory' },
-      {
-        violationId: 105,
-        violationType: 'POS Anomaly',
-        description: 'Unusual transaction pattern detected at billing counter',
-        date: '2025-09-28',
-        violationTime: '08:55 AM',
-        confidence: 89,
-        location: 'Multan Refinery'
-      },
-      {
-        violationId: 106,
-        violationType: 'Shoplifting Detection',
-        description: 'Individual detected leaving premises without completing checkout',
-        date: '2025-09-28',
-        violationTime: '06:20 PM',
-        confidence: 91,
-        location: 'Rawalpindi Depot'
-      },
-      {
-        violationId: 107,
-        violationType: 'Billing Irregularity',
-        description: 'Transaction completed but receipt was not generated or printed',
-        date: '2025-09-28',
-        violationTime: '03:45 PM',
-        confidence: 87,
-        location: 'Lahore Sales Terminal'
-      }
-
+      { violationId: 105, violationType: 'POS Anomaly', description: 'Unusual transaction pattern detected at billing counter', date: '2025-09-28', violationTime: '08:55 AM', confidence: 89, location: 'Multan Refinery' },
+      { violationId: 106, violationType: 'Shoplifting Detection', description: 'Individual detected leaving premises without completing checkout', date: '2025-09-28', violationTime: '06:20 PM', confidence: 91, location: 'Rawalpindi Depot' },
+      { violationId: 107, violationType: 'Billing Irregularity', description: 'Transaction completed but receipt was not generated or printed', date: '2025-09-28', violationTime: '03:45 PM', confidence: 87, location: 'Lahore Sales Terminal' }
     ];
 
-    return of(fallback);
-    //   })
-    // );
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`).pipe(
+      map(apiData => {
+        if (!apiData || apiData.length === 0) {
+          return fallback; // fallback only
+        }
+
+        // Convert real API data to match Violation structure
+        const realViolations: Violation[] = apiData.map(v => ({
+          violationId: v.violationId,
+          violationType: v.violationName || 'General Surveillance Event',
+          description: v.violationName || 'No Description',
+          date: v.violationDate ? v.violationDate.split('T')[0] : '',
+          violationTime: v.violationTime || '',
+          confidence: v.violationDuration
+            ? Math.min(100, Math.max(90, parseFloat(v.violationDuration)))
+            : this.estimateConfidence({ violationId: v.violationId } as Violation),
+          location: v.cameraId || 'Unknown Location'
+        }));
+
+        // Merge real violations first, fallback last
+        return [...realViolations, ...fallback];
+      }),
+      catchError(err => {
+        console.error('API failed, returning dummy data', err);
+        return of(fallback);
+      })
+    );
   }
+
   getTodayAverageWaitTime(): Observable<any> {
     return this.http.get<any>(this.local_apiUrl + 'Vertical/GetTodayAverageWaitTime');
   }
@@ -111,7 +108,7 @@ export class ViolationService {
 
 
   getEmployeeEfficiency(): Observable<any[]> {
-    const dummyData  = [
+    const dummyData = [
       { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: null },
       { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: null },
 
@@ -121,6 +118,9 @@ export class ViolationService {
   }
   getHourlyFootfall(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyVisits`);
+  }
+  getHourlyConversionRate(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/Get_hourly_Conversion_rate`);
   }
   getHeatMap(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMap`);
@@ -138,6 +138,17 @@ export class ViolationService {
   }
   getReceiptCount(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCount`);
+  }
+  getHourlyFootfallAllAreas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyFootfallAllAreas`);
+  }
+  getReceiptCountDetails(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCountDetails`);
+  }
+  private estimateConfidence(v: { violationId: number, description?: string }): number {
+    // Generate a pseudo-random value between 90 and 100 based on violationId & description
+    const base = ((v.violationId % 10) + ((v.description?.length || 10) % 10)); // 0–18
+    return Math.min(100, 90 + base); // ensures range 90–100
   }
 
 }

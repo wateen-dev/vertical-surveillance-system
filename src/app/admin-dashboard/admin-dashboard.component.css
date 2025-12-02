@@ -20,12 +20,12 @@
   background-color: #ffffff; /* Light background */
   border-radius: 12px;       /* Rounded corners */
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  transition: all 0.3s ease-in-out; /* Smooth transitions */
+  /*transition: all 0.3s ease-in-out; Smooth transitions */
 }
 
 .admin-dashboard:hover {
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
-  transform: translateY(-5px); /* Slight lift effect */
+ /* transform: translateY(-5px);  Slight lift effect */
   background-color: #ffffff;   /* Brighter background on hover */
 }
 h2 {

@@ -30,3 +30,45 @@ app-heatmap-chart {
   transition: all 0.2s ease-in-out;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
+.blur-background {
+  backdrop-filter: blur(6px) !important;
+  background: rgba(0, 0, 0, 0.35) !important;
+}.component-wrapper {
+  position: relative; /* makes loader fit this box only */
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;     /* matches your col-sm-6 container width */
+  height: 100%;    /* matches full component height */
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;     /* enough to overlay component */
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Spinner */
+.loading-overlay .spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #1e88e5;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+/* Spin animation */
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

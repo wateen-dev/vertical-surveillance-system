@@ -1,0 +1,86 @@
+.dialog-card {
+  padding: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  background: #fff;
+}
+
+.dialog-header {
+  background: linear-gradient(90deg, #1976d2, #4da3ff);
+  padding: 14px 20px;
+  color: white;
+}
+
+.dialog-header mat-card-title {
+  font-size: 22px;
+  font-weight: 400;
+  font-family: 'Segoe UI', Arial, sans-serif; /* Clean modern font */
+}
+
+.chart-container {
+  padding: 20px;
+  transition: 0.3s ease-in-out;
+}
+
+.chart-container:hover {
+  transform: scale(1.01);
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 14px 20px;
+  border-top: 1px solid #e5e5e5;
+}
+
+/* Fade-in animation */
+.animate-fade {
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+/*For chart cintainer*/
+/* Chart Card Container */
+mat-card-content {
+  padding: 0 !important; /* Remove Material default padding */
+}
+
+.chart-container {
+  padding: 18px 20px; /* This now works */
+  background: #ffffff;
+  border-radius: 25px;
+  box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.18);
+  transition: box-shadow 0.35s ease, transform 0.35s ease, background 0.3s ease;
+  transform: translateY(8px);
+}
+
+/* Hover lift effect */
+.chart-container:hover {
+  transform: translateY(0);
+  box-shadow: 0px 8px 26px rgba(0, 0, 0, 0.3);
+}
+
+/* Ensure chart properly fits container */
+.chart-container apx-chart {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fade-in animation */
+.chart-container {
+  opacity: 0;
+  animation: fadeInSlide 0.4s ease forwards;
+}
+
+@keyframes fadeInSlide {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(8px); }
+}
+.chart-hourly-container{
+  padding:20px;
+}

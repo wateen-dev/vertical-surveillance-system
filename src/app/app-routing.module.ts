@@ -95,7 +95,22 @@ const routes: Routes = [
     path: 'reset-password/:id', 
     loadChildren: () => import('./reset-password/reset-password.module').then(m => m.ResetPasswordModule)
   },
-  
+  {
+    path: 'add-branch',
+    loadChildren: () => import('./add-branch/add-branch.module').then(m => m.AddBranchModule)
+  },
+  {
+    path: 'branch-list',
+    loadChildren: () => import('./branch-list/branch-list.module').then(m => m.BranchListModule)
+  },
+  {
+    path: 'add-camera',
+    loadChildren: () => import('./add-camera/add-camera.module').then(m => m.AddCameraModule)
+  },
+  {
+    path: 'camera-list',
+    loadChildren: () => import('./camera-list/camera-list.module').then(m => m.CameraListModule)
+  },
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
  

@@ -1,0 +1,28 @@
+<mat-card class="dialog-card animate-fade">
+  <mat-card-header class="dialog-header">
+    <mat-card-title>All Areas — Hourly Footfall Trends</mat-card-title>
+  </mat-card-header>
+  <div class="container chart-hourly-container">
+    <div class="col-sm-12">
+<mat-card-content class="chart-container">
+    <apx-chart
+      [series]="chartOptions.series"
+      [chart]="chartOptions.chart"
+      [stroke]="chartOptions.stroke"
+      [colors]="chartOptions.colors"
+      [markers]="chartOptions.markers"
+      [xaxis]="chartOptions.xaxis"
+      [tooltip]="chartOptions.tooltip"
+      [title]="chartOptions.title">
+    </apx-chart>
+  </mat-card-content>
+    </div>
+  </div>
+  
+
+  <mat-card-actions class="dialog-footer">
+    <button mat-raised-button color="primary" mat-dialog-close>
+      Close
+    </button>
+  </mat-card-actions>
+</mat-card>

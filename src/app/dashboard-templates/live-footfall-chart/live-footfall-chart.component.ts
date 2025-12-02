@@ -35,53 +35,84 @@ export type ChartOptions = {
   templateUrl: './live-footfall-chart.component.html',
   styleUrls: ['./live-footfall-chart.component.css']
 })
-export class LiveFootfallChartComponent implements OnInit{
+export class LiveFootfallChartComponent implements OnInit {
   @ViewChild("chart") chart: any;
   public chartOptions: Partial<ChartOptions> = {};
+
   footfallData: number[] = [];
+  conversionData: number[] = [];
   xLabels: string[] = [];
 
   constructor(private violationService: ViolationService) {}
 
   ngOnInit(): void {
     this.loadFootfallData();
+    this.loadConversionRate();
   }
 
+  // ---------------------------
+  // Load Footfall Data
+  // ---------------------------
   loadFootfallData(): void {
     this.violationService.getHourlyFootfall()
       .pipe(catchError(() => of([])))
       .subscribe((data: any[]) => {
-        // configure start/end hours (inclusive)
+
         const startHour = 11;
         const endHour = 22;
 
-        // Build x-axis labels dynamically: ["11:00", "12:00", ...]
         this.xLabels = Array.from({ length: endHour - startHour + 1 }, (_, i) =>
           `${String(startHour + i).padStart(2, '0')}:00`
         );
 
-        // Build map of hour -> visitCount (summing if duplicates)
         const hourMap = new Map<number, number>();
         data.forEach(item => {
           const h = Number(item.hourOfDay);
           const visits = Number(item.visitCount) || 0;
-
-          // If your API returns hourOfDay in UTC and you want Asia/Karachi (UTC+5),
-          // uncomment the next line to convert:
-          // const localHour = (h + 5) % 24;
-          // use localHour instead of h if conversion is required.
-
-          const key = h; // or use localHour if converting
-          hourMap.set(key, (hourMap.get(key) || 0) + visits);
+          hourMap.set(h, (hourMap.get(h) || 0) + visits);
         });
 
-        // Map xLabels to their corresponding hours (startHour + idx) and fill missing with 0
-        this.footfallData = this.xLabels.map((_, idx) => hourMap.get(startHour + idx) ?? 0);
+        this.footfallData = this.xLabels.map((_, idx) =>
+          hourMap.get(startHour + idx) ?? 0
+        );
 
         this.setupChart();
       });
   }
 
+  // ---------------------------
+  // Load Conversion Rate (ROUNDED + %)
+  // ---------------------------
+  loadConversionRate(): void {
+    this.violationService.getHourlyConversionRate()
+      .pipe(catchError(() => of({})))
+      .subscribe((data: any) => {
+
+        const startHour = 11;
+        const endHour = 22;
+
+        const convMap = new Map<number, number>();
+
+        Object.keys(data).forEach(key => {
+          const hour = Number(key);
+          const rate = data[key]?.[0]?.conversionRate ?? 0;
+
+          const rounded = Math.round(rate);  // 🟢 Round into integer
+          convMap.set(hour, rounded);
+        });
+
+        this.conversionData = [];
+        for (let hr = startHour; hr <= endHour; hr++) {
+          this.conversionData.push(convMap.get(hr) ?? 0);
+        }
+
+        this.setupChart();
+      });
+  }
+
+  // ---------------------------
+  // Setup Chart
+  // ---------------------------
   setupChart(): void {
     this.chartOptions = {
       series: [
@@ -93,12 +124,12 @@ export class LiveFootfallChartComponent implements OnInit{
         {
           name: 'Revenue',
           type: 'area',
-          data: [40, 80, 150, 260, 400, 520, 680, 750, 720, 630, 520, 410] // dummy
+          data: [40, 80, 150, 260, 400, 520, 680, 750, 720, 630, 520, 410]
         },
         {
-          name: 'Conversions',
+          name: 'Conversion Rate',
           type: 'line',
-          data: [10, 20, 30, 60, 80, 90, 100, 110, 120, 130, 140, 150] // dummy
+          data: this.conversionData
         }
       ],
       chart: {
@@ -127,17 +158,44 @@ export class LiveFootfallChartComponent implements OnInit{
         categories: this.xLabels,
         labels: { style: { fontSize: '12px' } }
       },
+
+      // -----------------------------
+      // Y-Axis: Show integer + %
+      // -----------------------------
       yaxis: [
         {
           title: { text: '' },
-          labels: { style: { fontSize: '12px' } }
+          labels: {
+            style: { fontSize: '12px' },
+            formatter: (val) => val.toString()
+          }
         },
         {
           opposite: true,
-          title: { text: '' }
+          title: { text: '' },
+          labels: {
+            formatter: (val) => val + " %"
+          }
         }
       ],
-      tooltip: { shared: true, intersect: false },
+
+      // -----------------------------
+      // Tooltip Formatter (add % only for conversion)
+      // -----------------------------
+      tooltip: {
+  shared: true,
+  intersect: false,
+  y: {
+    formatter: (value, { seriesIndex }) => {
+      if (seriesIndex === 2) {
+        return value + "%";
+      }
+      return value.toString();
+    }
+  }
+},
+
+
       legend: {
         position: 'top',
         horizontalAlign: 'left',
