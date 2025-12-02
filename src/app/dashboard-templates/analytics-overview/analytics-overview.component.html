@@ -154,7 +154,7 @@
 
   <ng-template #employeeEfficiencyDialog>
     <div class="dialog-header">
-      <h2 mat-dialog-title class="mat-title">Employee Efficiency (Top Performers)</h2>
+      <h2 mat-dialog-title class="mat-title">Employee Efficiency Leaderboard</h2>
     </div>
   
     <mat-dialog-content class="dialog-content">
@@ -192,16 +192,16 @@
           </ng-container>
   
           <!-- Efficiency -->
-          <ng-container matColumnDef="efficiency">
+          <!-- <ng-container matColumnDef="efficiency">
             <th mat-header-cell *matHeaderCellDef class="header-cell">Efficiency (%)</th>
             <td mat-cell *matCellDef="let element" class="data-cell">
               {{ element.efficiency }}
             </td>
-          </ng-container>
+          </ng-container> -->
   
           <!-- Avg Wait Time (min) -->
           <ng-container matColumnDef="avgWaitTimeMinutes">
-            <th mat-header-cell *matHeaderCellDef class="header-cell">Avg Wait (min)</th>
+            <th mat-header-cell *matHeaderCellDef class="header-cell">CDT (min)</th>
             <td mat-cell *matCellDef="let element" class="data-cell">
               {{ element.avgWaitTimeMinutes }}
             </td>
@@ -233,6 +233,56 @@
       </button>
     </mat-dialog-actions>
   </ng-template>
+
+  <ng-template #receiptCountDialog>
+  <div class="dialog-header">
+    <h2 mat-dialog-title class="mat-title">Receipt Count by POS</h2>
+  </div>
+
+  <mat-dialog-content class="dialog-content">
+    <div *ngIf="!isLoading">
+      <table
+        mat-table
+        [dataSource]="receiptCountData"
+        class="mat-elevation-z8 w-100 queue-table"
+        *ngIf="(receiptCountData?.length || 0) > 0; else noReceiptData"
+      >
+        <!-- POS Number -->
+        <ng-container matColumnDef="posNumber">
+          <th mat-header-cell *matHeaderCellDef class="header-cell">POS #</th>
+          <td mat-cell *matCellDef="let element" class="data-cell">
+            {{ element.posNumber }}
+          </td>
+        </ng-container>
+
+        <!-- Receipt Count -->
+        <ng-container matColumnDef="receiptCount">
+          <th mat-header-cell *matHeaderCellDef class="header-cell">
+            Receipts
+          </th>
+          <td mat-cell *matCellDef="let element" class="data-cell">
+            {{ element.receiptCount }}
+          </td>
+        </ng-container>
+
+        <!-- Header & Row Definitions -->
+        <tr mat-header-row *matHeaderRowDef="['posNumber', 'receiptCount']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['posNumber', 'receiptCount']"></tr>
+      </table>
+
+      <!-- No Data Fallback -->
+      <ng-template #noReceiptData>
+        <div class="no-data">No receipt data available at the moment.</div>
+      </ng-template>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-raised-button color="primary" (click)="closeAllDialogs()">
+      Close
+    </button>
+  </mat-dialog-actions>
+</ng-template>
 
 
 </div>

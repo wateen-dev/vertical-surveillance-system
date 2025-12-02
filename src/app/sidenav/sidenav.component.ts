@@ -57,6 +57,8 @@ export class SidenavComponent implements OnInit {
       const desiredOrder = [
         'Dashboard',
         'Registration Center',
+        'Branch Management',
+        'Camera Management',
         'Administration',
         'System Integration'
       ];

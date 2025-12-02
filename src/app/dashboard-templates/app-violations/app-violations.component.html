@@ -64,15 +64,14 @@
     <p><strong>Time:</strong> {{ selectedViolation.violationTime }}</p>
     <p *ngIf="selectedViolation.confidence"><strong>Confidence:</strong> {{ selectedViolation.confidence }}%</p>
   </mat-dialog-content>
-
-  <mat-dialog-actions align="end" class="dialog-actions">
-      <button 
-    mat-flat-button 
-    color="primary" 
-    (click)="resolveViolation(selectedViolation?.violationId, dialogRef)" 
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-flat-button color="accent" (click)="goToAllViolations(dialogRef)" class="btnViewAll">
+    View All Violations
+  </button>
+  <button mat-flat-button color="primary" (click)="resolveViolation(selectedViolation?.violationId, dialogRef)"
     class="btnResolve">
     Mark as Resolved
   </button>
-    <button mat-stroked-button (click)="dialogRef.close()" class="btnClose">Close</button>
-  </mat-dialog-actions>
+  <button mat-stroked-button (click)="dialogRef.close()" class="btnClose">Close</button>
+</mat-dialog-actions>
 </ng-template>

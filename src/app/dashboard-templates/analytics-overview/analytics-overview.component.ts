@@ -19,14 +19,17 @@ export class AnalyticsOverviewComponent implements OnInit {
   employeeEfficiencyData: any[] = [];
   isLoading: boolean = false; // 🔹 Loading state
   isLoadingNew: boolean = false; // 🔹 New loading state
+  receiptCountData: any[] = [];
   // ✅ Added dialog references for ng-template
   @ViewChild('avgQueueDialog') avgQueueDialog!: TemplateRef<any>;
   @ViewChild('employeeEfficiencyDialog') employeeEfficiencyDialog!: TemplateRef<any>;
+  @ViewChild('receiptCountDialog') receiptCountDialog!: TemplateRef<any>;
+
   displayedEmployeeColumns = [
   'position',
   'employeeId',
   'employeeName',
-  'efficiency',
+  // 'efficiency',
   'avgWaitTimeMinutes',
   'customersServed'
 ];
@@ -34,7 +37,7 @@ export class AnalyticsOverviewComponent implements OnInit {
 customOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
   const order = [
     "Today's Footfall",
-    "Avg Queue Time",
+    "Customer Dealing Time",
     "Employee Efficiency",
     "Conversion Rate",
     "Receipt Count",
@@ -50,7 +53,7 @@ customOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
   ngOnInit(): void {
     this.loadAnalyticsData();
   }
- loadAnalyticsData(): void {
+  loadAnalyticsData(): void {
   forkJoin({
     avgQueue: this.violationService.getTodayAverageWaitTime().pipe(
       catchError(() => of({ avgWaitTimeMinutes: 0 }))
@@ -65,32 +68,89 @@ customOrder = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
       catchError(() => of([{ receiptCount: 0 }]))
     )
   }).subscribe(({ avgQueue, todayFootfall, violations, receiptCount }) => {
+
     const violationCount = violations?.length || 0;
-    const receiptValue = receiptCount?.[0]?.receiptCount || 0; // 🧠 Extract receiptCount safely
+    const receiptValue = receiptCount?.[0]?.receiptCount || 0;
+    const footfallValue = todayFootfall || 0;
 
-  this.analyticsData = {
-  "Today's Footfall": { value: todayFootfall, change: "+22.3% vs Yesterday", icon: "groups", color: "#1976d2" },
-  "SOP Violations": { value: violationCount, note: violationCount === 0 ? "No violations today 🎉" : violationCount > 5 ? "High-priority detected 🚨" : `${violationCount} Active Violations`, icon: "security", color: violationCount > 5 ? "#ef111c" : "#ff9800" },
-  "Revenue Today": { value: "PKR 28.5M", change: "+18.4% vs Target", icon: "attach_money", color: "#00ba48" },
-  "Conversion Rate": { value: "TBD", change: "+4.1% Improvement", icon: "trending_up", color: "#a632fe" },
-  "Employee Efficiency": { value: "TBD", change: "+6.1% This Week", icon: "insights", color: "#1976d2" },
-  "Receipt Count": { value: `${receiptValue}`, note: "Total Receipts Generated - POS 2", icon: "inventory", color: "#767cff" },
-  "Avg Queue Time": { value: `${avgQueue.avgWaitTimeMinutes?.toFixed(2)} min`, change: "-24s Improvement", icon: "timer", color: "#01c5b0" },
-  "Camera Health": { value: "100%", note: "13/13 Cameras Active", icon: "camera_alt", color: "#00cbeb" }
-};
+    // ✅ Conversion Rate Calculation
+    const conversionRate = footfallValue > 0
+      ? ((receiptValue / footfallValue) * 100).toFixed(2)
+      : "0.00";
 
+    this.analyticsData = {
+      "Today's Footfall": {
+        value: footfallValue,
+        change: "+22.3% vs Yesterday",
+        icon: "groups",
+        color: "#1976d2"
+      },
+
+      "SOP Violations": {
+        value: violationCount,
+        note:
+          violationCount === 0
+            ? "No violations today 🎉"
+            : violationCount > 5
+            ? "High-priority detected 🚨"
+            : `${violationCount} Active Violations`,
+        icon: "security",
+        color: violationCount > 5 ? "#ef111c" : "#ff9800"
+      },
+
+      "Revenue Today": {
+        value: "From ERP",
+        change: "+18.4% vs Target",
+        icon: "attach_money",
+        color: "#00ba48"
+      },
+
+      // ✅ Updated Conversion Rate
+      "Conversion Rate": {
+        value: `${conversionRate}%`,
+        change: "+4.1% Improvement",
+        icon: "trending_up",
+        color: "#a632fe"
+      },
+
+      "Employee Efficiency": {
+        value: "Leaderboard",
+        change: "",
+        icon: "insights",
+        color: "#1976d2"
+      },
+
+      "Receipt Count": {
+        value: `${receiptValue}`,
+        note: "Total Receipts Generated",
+        icon: "inventory",
+        color: "#767cff"
+      },
+
+      "Customer Dealing Time": {
+        value: `${avgQueue.avgWaitTimeMinutes?.toFixed(2)} min`,
+        change: "-24s Improvement",
+        icon: "timer",
+        color: "#01c5b0"
+      },
+
+      "Camera Health": {
+        value: "100%",
+        note: "13/13 Cameras Active",
+        icon: "camera_alt",
+        color: "#00cbeb"
+      }
+    };
 
     this.isLoading = false;
   });
 }
 
-
-
 onCardClick(cardKey: string, cardValue: any): void {
   this.isLoading = true; // Show centered loading overlay
   this.dialogTitle = cardKey;
 
-  if (cardKey === 'Avg Queue Time') {
+  if (cardKey === 'Customer Dealing Time') {
     this.violationService.getTodayAverageWaitTimeByQueue().subscribe({
       next: (data) => {
         this.avgQueueData = data || [];
@@ -119,7 +179,11 @@ onCardClick(cardKey: string, cardValue: any): void {
           customersServed: queueData?.customersServed ?? 'N/A'
         };
       });
-
+      this.employeeEfficiencyData.sort((a, b) => {
+        const aTime = a.avgWaitTimeMinutes === 'N/A' ? Infinity : a.avgWaitTimeMinutes;
+        const bTime = b.avgWaitTimeMinutes === 'N/A' ? Infinity : b.avgWaitTimeMinutes;
+        return aTime - bTime;
+      });
       // Open dialog with increased width
       this.openDialog(this.employeeEfficiencyDialog, '1200px');
     },
@@ -128,12 +192,24 @@ onCardClick(cardKey: string, cardValue: any): void {
       this.isLoading = false;
     }
   });
-}
+  }
   else if (cardKey === 'SOP Violations') {
     this.router.navigate(['/live-incidents']);
     this.isLoading = false;
-  } 
-  
+  }
+  else if (cardKey === 'Receipt Count') {
+    this.isLoading = true;
+    this.violationService.getReceiptCountDetails().subscribe({
+      next: (data: any[]) => {
+        this.receiptCountData = data || [];
+        this.openDialog(this.receiptCountDialog, '1200px');
+      },
+      error: (err) => {
+        console.error('Error fetching Receipt Count:', err);
+        this.isLoading = false;
+      }
+    });
+  }
   else {
     this.isLoading = false;
   }
@@ -162,7 +238,7 @@ openDialog(template: TemplateRef<any>, width: string): void {
           width: '600px',
         });
       },
-      error: (err) => console.error('Error fetching Avg Queue Time:', err),
+      error: (err) => console.error('Error fetching Customer Dealing Time:', err),
     });
   }
   closeDialog(): void {

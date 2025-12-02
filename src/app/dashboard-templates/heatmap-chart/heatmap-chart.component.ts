@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit,NgZone } from "@angular/core";
 import {
   ApexChart,
   ApexAxisChartSeries,
@@ -8,7 +8,8 @@ import {
   ApexTitleSubtitle,
 } from "ng-apexcharts";
 import { ViolationService } from "../services/violation.service";
-
+import { SectionHourlyDialogComponent } from "../section-hourly-dialog/section-hourly-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -26,59 +27,66 @@ export type ChartOptions = {
 })
 export class HeatmapChartComponent implements OnInit {
   public chartOptions!: Partial<ChartOptions>;
+  isLoading: boolean = false; // 🔹 Loading state
 
-  constructor(private violationService: ViolationService) { }
+  constructor(private ngZone: NgZone,private violationService: ViolationService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadHeatMapData();
   }
+ loadHeatMapData() {
+  this.violationService.getHeatMap().subscribe({
+    next: (data) => {
+      try {
+        const realData = data.map((item: any) => ({
+          ...item,
+          type: "real",
+        }));
 
-  loadHeatMapData() {
-    try {
-      this.violationService.getHeatMap().subscribe({
-        next: (data) => {
-          try {
-            const realData = data.map((item: any) => ({
-              ...item,
-              type: "real",
-            }));
+        // ✅ Sort descending: biggest first
+        const sorted = [...realData].sort((a, b) => b.visitorCount - a.visitorCount);
 
-            const dummyData = [
-              { sectionName: "Readywear", visitorCount: 1200, avgStaySeconds: 180, type: "dummy" },
-              { sectionName: "Unstitched", visitorCount: 950, avgStaySeconds: 240, type: "dummy" },
-              { sectionName: "Beauty", visitorCount: 560, avgStaySeconds: 160, type: "dummy" },
-              { sectionName: "Accessories", visitorCount: 480, avgStaySeconds: 120, type: "dummy" },
-              { sectionName: "Bags", visitorCount: 510, avgStaySeconds: 110, type: "dummy" },
-            ];
+        const largest = sorted[0];
+        const others = sorted.slice(1);
 
-            const allData = [...realData, ...dummyData];
-            const min = Math.min(...allData.map((d) => d.visitorCount));
-            const max = Math.max(...allData.map((d) => d.visitorCount));
+        const visitorCounts = realData.map(d => d.visitorCount);
+        const min = Math.min(...visitorCounts);
+        const max = Math.max(...visitorCounts);
 
-            const adjustedData = allData.map((item) => ({
-              ...item,
-              weightedY:
-                item.type === "real"
-                  ? Math.log(item.visitorCount + 1) * 80
-                  : Math.log(item.visitorCount + 1) * 50,
-            }));
+        // ✅ Scaling function for treemap area
+        const scale = (value: number, min: number, max: number, newMin: number, newMax: number) => {
+          if (max === min) return (newMin + newMax) / 2;
+          return ((value - min) / (max - min)) * (newMax - newMin) + newMin;
+        };
 
-            this.initializeTreemap(adjustedData);
-          } catch (innerErr) {
-            console.error("🔥 Error processing heatmap data:", innerErr);
-            this.loadFallbackChart();
-          }
-        },
-        error: (err) => {
-          console.error("❌ API error fetching heatmap data:", err);
-          this.loadFallbackChart();
-        },
-      });
-    } catch (outerErr) {
-      console.error("💥 Unexpected error in loadHeatMapData:", outerErr);
+        // ✅ Largest section gets bigger dominant square (area value 60–100)
+        const largestMapped = {
+          ...largest,
+          weightedY: scale(largest.visitorCount, min, max, 60, 100),
+        };
+
+        // ✅ Others get smaller squares (area value 20–60)
+        const othersMapped = others.map((item) => ({
+          ...item,
+          weightedY: scale(item.visitorCount, min, max, 20, 60),
+        }));
+
+        const finalData = [largestMapped, ...othersMapped];
+
+        this.initializeTreemap(finalData);
+      } catch (err) {
+        console.error("🔥 Error processing heatmap data:", err);
+        this.loadFallbackChart();
+      }
+    },
+    error: (err) => {
+      console.error("❌ API error fetching heatmap data:", err);
       this.loadFallbackChart();
-    }
-  }
+    },
+  });
+}
+
+
   private loadFallbackChart() {
     const dummyData = [
       { sectionName: "Readywear", visitorCount: 1200, avgStaySeconds: 180, type: "dummy" },
@@ -142,9 +150,20 @@ export class HeatmapChartComponent implements OnInit {
         },
       ],
       chart: {
-        height: 300,
+        height: 290,
         type: "treemap",
         toolbar: { show: true },
+        offsetX: 0,
+        offsetY: 25, // Push treemap down so toolbar is clear
+        events: {
+          dataPointSelection: (event, chartContext, config) => {
+            const point = config.w.config.series[0].data[config.dataPointIndex];
+
+            this.ngZone.run(() => {
+              this.openSectionDialog(point);
+            });
+          },
+        },
       },
       colors: [],
       dataLabels: {
@@ -193,4 +212,38 @@ export class HeatmapChartComponent implements OnInit {
       },
     };
   }
+  openSectionDialog(sectionName: string) {
+  this.isLoading = true;
+
+  this.violationService.getHourlyFootfallAllAreas().subscribe((data) => {
+    setTimeout(() => { this.isLoading = false; }, 100); // ensures repaint
+
+    const dialogRef = this.dialog.open(SectionHourlyDialogComponent, {
+      width: "1200px",
+      maxHeight: "90vh",
+      autoFocus: false,
+      panelClass: "hourly-dialog-panel",
+      backdropClass: "blur-background",
+      data: { section: sectionName, allAreas: data }
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      document.body.classList.remove("dialog-open-blur");
+    });
+  });
+}
+
+  private generateDummyData(realData: any[]) {
+    const avg = realData.reduce((sum, x) => sum + x.visitorCount, 0) / realData.length;
+
+    return [
+      { sectionName: "Readywear", visitorCount: avg * 1.25, avgStaySeconds: 180, type: "dummy" },
+      { sectionName: "Unstitched", visitorCount: avg * 1.1, avgStaySeconds: 240, type: "dummy" },
+      { sectionName: "Beauty", visitorCount: avg * 0.7, avgStaySeconds: 160, type: "dummy" },
+      { sectionName: "Accessories", visitorCount: avg * 0.6, avgStaySeconds: 120, type: "dummy" },
+      { sectionName: "Bags", visitorCount: avg * 0.65, avgStaySeconds: 110, type: "dummy" },
+    ];
+  }
+
+
 }

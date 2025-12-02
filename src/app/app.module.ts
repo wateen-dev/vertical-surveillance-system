@@ -87,6 +87,11 @@ import { RealTimeViolationComponent } from './dashboard-templates/real-time-viol
 import { HeatmapChartComponent } from './dashboard-templates/heatmap-chart/heatmap-chart.component';
 import { DashboardFiltersComponent } from './dashboard-templates/dashboard-filters/dashboard-filters.component';
 import { OutletDialogComponent } from './dashboard-templates/outlet-dialog/outlet-dialog.component';
+import { SectionHourlyDialogComponent } from './dashboard-templates/section-hourly-dialog/section-hourly-dialog.component';
+import { AddBranchComponent } from './add-branch/add-branch.component';
+import { AddCameraComponent } from './add-camera/add-camera.component';
+import { BranchListComponent } from './branch-list/branch-list.component';
+import { CameraListComponent } from './camera-list/camera-list.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -141,7 +146,12 @@ import { OutletDialogComponent } from './dashboard-templates/outlet-dialog/outle
         RealTimeViolationComponent,
         HeatmapChartComponent,
         DashboardFiltersComponent,
-        OutletDialogComponent
+        OutletDialogComponent,
+        SectionHourlyDialogComponent,
+        AddBranchComponent,
+        AddCameraComponent,
+        BranchListComponent,
+        CameraListComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,
