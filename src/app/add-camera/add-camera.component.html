@@ -1,1 +1,87 @@
-<p>add-camera works!</p>
+<form [formGroup]="cameraForm" (ngSubmit)="addCamera()" class="container mt-5">
+
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Camera Registration Form</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+
+                        <!-- Branch Dropdown -->
+                        <div class="col-md-4 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Branch</mat-label>
+                                <mat-select formControlName="branchId">
+                                    <mat-option *ngFor="let b of branches" [value]="b.branchId">
+                                        {{ b.branchName }}
+                                    </mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="
+                  cameraForm.get('branchId')?.hasError('required') &&
+                  (cameraForm.get('branchId')?.touched || cameraForm.get('branchId')?.dirty)
+                ">
+                                    Branch is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Camera Name -->
+                        <div class="col-md-4 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Camera Name</mat-label>
+                                <input matInput formControlName="cameraName">
+
+                                <mat-error *ngIf="
+                  cameraForm.get('cameraName')?.hasError('required') &&
+                  (cameraForm.get('cameraName')?.touched || cameraForm.get('cameraName')?.dirty)
+                ">
+                                    Camera Name is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- Status -->
+                        <div class="col-md-4 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="status">
+                                    <mat-option value="Active">Active</mat-option>
+                                    <mat-option value="Inactive">Inactive</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <!-- RTSP URL -->
+                        <div class="col-md-12 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>RTSP Stream URL</mat-label>
+                                <textarea matInput formControlName="rtspStreamUrl"></textarea>
+
+                                <!-- <mat-error *ngIf="
+                  cameraForm.get('rtspStreamUrl')?.hasError('required') &&
+                  (cameraForm.get('rtspStreamUrl')?.touched || cameraForm.get('rtspStreamUrl')?.dirty)
+                ">
+                                    RTSP URL is required.
+                                </mat-error> -->
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="cameraForm.invalid">
+                            Save Camera
+                        </button>
+                    </div>
+
+                </mat-expansion-panel>
+
+            </div>
+        </div>
+    </div>
+
+</form>

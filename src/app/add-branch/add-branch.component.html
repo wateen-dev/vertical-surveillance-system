@@ -1,1 +1,93 @@
-<p>add-branch works!</p>
+<form [formGroup]="branchForm" (ngSubmit)="addBranch()" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="registration-container">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="sideNavHeading mb-0">Branch Registration Form</h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+
+            <!-- Branch Name -->
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Branch Name</mat-label>
+                <input matInput formControlName="branchName" />
+                <mat-error *ngIf="
+                    branchForm.get('branchName')?.hasError('required') &&
+                    (branchForm.get('branchName')?.touched || branchForm.get('branchName')?.dirty)
+                  ">
+                  Branch Name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- City Dropdown -->
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>City</mat-label>
+                <mat-select formControlName="city">
+                  <mat-option value="Lahore">Lahore</mat-option>
+                  <mat-option value="Islamabad">Islamabad</mat-option>
+                  <mat-option value="Karachi">Karachi</mat-option>
+                  <mat-option value="Rawalpindi">Rawalpindi</mat-option>
+                  <mat-option value="Peshawar">Peshawar</mat-option>
+                  <mat-option value="Quetta">Quetta</mat-option>
+                  <mat-option value="Multan">Multan</mat-option>
+                  <mat-option value="Faisalabad">Faisalabad</mat-option>
+                </mat-select>
+
+                <mat-error *ngIf="
+                    branchForm.get('city')?.hasError('required') &&
+                    (branchForm.get('city')?.touched || branchForm.get('city')?.dirty)
+                  ">
+                  City is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Status (isDeleted) -->
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="isDeleted">
+                  <mat-option [value]="false">Active</mat-option>
+                  <mat-option [value]="true">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <!-- Address -->
+            <div class="col-md-12 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="address"></textarea>
+                <mat-error *ngIf="
+                    branchForm.get('address')?.hasError('required') &&
+                    (branchForm.get('address')?.touched || branchForm.get('address')?.dirty)
+                  ">
+                  Address is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row justify-content-center">
+            <button 
+              mat-raised-button 
+              color="primary" 
+              type="submit"
+              [disabled]="branchForm.invalid">
+              Save Branch
+            </button>
+          </div>
+
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</form>
