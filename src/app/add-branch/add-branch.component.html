@@ -24,6 +24,19 @@
                 </mat-error>
               </mat-form-field>
             </div>
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Company</mat-label>
+                <mat-select formControlName="companyId">
+                  <mat-option *ngFor="let company of companies" [value]="company.companyId">
+                    {{ company.companyName }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="branchForm.get('companyId')?.hasError('required')">
+                  Company is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
 
             <!-- City Dropdown -->
             <div class="col-md-4 mb-3">

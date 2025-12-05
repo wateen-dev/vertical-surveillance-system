@@ -11,6 +11,8 @@ export interface ApiResponse<T> {
 interface Branch {
     branchId: number;
     branchName: string;
+    companyId: number;
+    companyName: string;
     address: string;
     city: string;
     isDeleted: boolean;
@@ -41,5 +43,8 @@ export class BranchService {
             `${this.local_apiUrl}Branch/update-branch-status/${branchId}`,
             {}
         );
+    }
+    getAllCompanies(): Observable<any> {
+        return this.http.get(`${this.local_apiUrl}Company/get-all-companies`);
     }
 }

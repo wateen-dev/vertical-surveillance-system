@@ -8,6 +8,8 @@ interface Branch {
   branchId: number;
   branchName: string;
   address: string;
+  companyId: number;
+  companyName: string;
   city: string;
   isDeleted: boolean;
   createdOn: string;
@@ -22,7 +24,7 @@ export class AddBranchComponent implements OnInit {
   isEditMode = false;
   branchIdToEdit: number | null = null;
   branchForm: FormGroup;
-
+  companies: any[] = [];
   constructor(
     private fb: FormBuilder,
     private branchService: BranchService,
@@ -33,7 +35,8 @@ export class AddBranchComponent implements OnInit {
       branchName: ['', Validators.required],
       address: ['', Validators.required],
       city: ['', Validators.required],
-      isDeleted: [false]
+      isDeleted: [false],
+      companyId: [null, Validators.required]
     });
   }
 
@@ -42,6 +45,12 @@ export class AddBranchComponent implements OnInit {
     if (branch) {
       this.loadBranchForEdit(branch);
     }
+
+    this.branchService.getAllCompanies().subscribe((res: any) => {
+    if (res.success) {
+      this.companies = res.data;
+    }
+  });
   }
   addBranch() {
     if (this.branchForm.valid) {
@@ -92,7 +101,8 @@ export class AddBranchComponent implements OnInit {
       branchName: branch.branchName,
       address: branch.address,
       city: branch.city,
-      isDeleted: branch.isDeleted
+      isDeleted: branch.isDeleted,
+      companyId: branch.companyId
     });
   }
 }
