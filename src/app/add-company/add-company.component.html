@@ -1,0 +1,73 @@
+<form [formGroup]="companyForm" (ngSubmit)="saveCompany()" class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="registration-container">
+                <mat-expansion-panel expanded="true">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <h2 class="sideNavHeading mb-0">Company Registration Form</h2>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+
+                    <div class="row">
+
+                        <!-- Company Name -->
+                        <div class="col-md-6 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Company Name</mat-label>
+                                <input matInput formControlName="companyName" />
+                                <mat-error *ngIf="companyForm.get('companyName')?.hasError('required')">
+                                    Company Name is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Industry Type -->
+                        <!-- Industry Type -->
+                        <div class="col-md-6 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Industry Type</mat-label>
+                                <mat-select formControlName="industryType">
+                                    <mat-option value="Food & Beverage">Food & Beverage</mat-option>
+                                    <mat-option value="Restaurant">Restaurant</mat-option>
+                                    <mat-option value="Clothing">Clothing</mat-option>
+                                    <mat-option value="Technology">Technology</mat-option>
+                                    <mat-option value="Healthcare">Healthcare</mat-option>
+                                    <mat-option value="Education">Education</mat-option>
+                                    <mat-option value="Finance">Finance</mat-option>
+                                    <mat-option value="Real Estate">Real Estate</mat-option>
+                                    <mat-option value="Retail">Retail</mat-option>
+                                    <mat-option value="Entertainment">Entertainment</mat-option>
+                                </mat-select>
+
+                                <mat-error *ngIf="companyForm.get('industryType')?.hasError('required')">
+                                    Industry Type is required.
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+
+
+                        <!-- Status -->
+                        <div class="col-md-6 mb-3">
+                            <mat-form-field class="w-100">
+                                <mat-label>Status</mat-label>
+                                <mat-select formControlName="isDeleted">
+                                    <mat-option [value]="false">Active</mat-option>
+                                    <mat-option [value]="true">Inactive</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <button mat-raised-button color="primary" type="submit" [disabled]="companyForm.invalid">
+                            {{ isEditMode ? 'Update Company' : 'Save Company' }}
+                        </button>
+                    </div>
+
+                </mat-expansion-panel>
+            </div>
+        </div>
+    </div>
+</form>

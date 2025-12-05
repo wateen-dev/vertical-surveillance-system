@@ -24,6 +24,7 @@ export class LoginComponent {
   ) {}
 
   onSubmit(form: NgForm) {
+    debugger
     if (form.valid) {
       this.isLoading = true;
       const loginData = new UserLoginModel(form.value.username, form.value.password);

@@ -111,6 +111,14 @@ const routes: Routes = [
     path: 'camera-list',
     loadChildren: () => import('./camera-list/camera-list.module').then(m => m.CameraListModule)
   },
+  {
+    path: 'add-company',
+    loadChildren: () => import('./add-company/add-company.module').then(m => m.AddCompanyModule)
+  },
+  {
+    path: 'company-list',
+    loadChildren: () => import('./company-list/company-list.module').then(m => m.CompanyListModule)
+  },
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
  

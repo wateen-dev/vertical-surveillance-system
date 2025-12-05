@@ -10,6 +10,8 @@ import { Router } from '@angular/router';
 interface Branch {
   branchId: number;
   branchName: string;
+  companyId: number;
+  companyName: string;
   address: string;
   city: string;
   isDeleted: boolean;
@@ -33,6 +35,8 @@ export class BranchListComponent implements OnInit {
     'branchName',
     'address',
     'city',
+    'companyId',
+    'companyName',
     'status',
     'createdOn',
     'createdBy',
@@ -77,6 +81,7 @@ export class BranchListComponent implements OnInit {
   }
 
   editBranch(branch: Branch) {
+    debugger
      this.router.navigate(['/add-branch'], { state: { branch } });
   }
  openDeleteDialog(branch: Branch) {

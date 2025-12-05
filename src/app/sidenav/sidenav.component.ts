@@ -59,6 +59,7 @@ export class SidenavComponent implements OnInit {
         'Registration Center',
         'Branch Management',
         'Camera Management',
+        'Company Management',
         'Administration',
         'System Integration'
       ];
