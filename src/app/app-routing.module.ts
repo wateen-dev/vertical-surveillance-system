@@ -119,6 +119,14 @@ const routes: Routes = [
     path: 'company-list',
     loadChildren: () => import('./company-list/company-list.module').then(m => m.CompanyListModule)
   },
+  {
+    path: 'add-violation',
+    loadChildren: () => import('./add-violation/add-violation.module').then(m => m.AddViolationModule)
+  },
+  {
+    path: 'violation-list',
+    loadChildren: () => import('./violation-list/violation-list.module').then(m => m.ViolationListModule)
+  },
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
  

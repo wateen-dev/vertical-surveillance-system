@@ -1,0 +1,56 @@
+<form [formGroup]="categoryForm" (ngSubmit)="saveCategory()" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="registration-container">
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="sideNavHeading mb-0">
+                {{ isEditMode ? "Update Violation Category" : "Add Violation Category" }}
+              </h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+
+            <!-- Category Name -->
+            <div class="col-md-6 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Category Name</mat-label>
+                <input matInput formControlName="categoryName" />
+
+                <mat-error *ngIf="categoryForm.get('categoryName')?.hasError('required') &&
+                                  (categoryForm.get('categoryName')?.touched || categoryForm.get('categoryName')?.dirty)">
+                  Category name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="isDeleted">
+                  <mat-option [value]="false">Active</mat-option>
+                  <mat-option [value]="true">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row justify-content-center">
+            <button 
+              mat-raised-button 
+              color="primary"
+              type="submit"
+              [disabled]="categoryForm.invalid">
+              {{ isEditMode ? "Update Category" : "Save Category" }}
+            </button>
+          </div>
+
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</form>

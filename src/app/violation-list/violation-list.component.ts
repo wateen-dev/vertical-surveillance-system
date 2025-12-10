@@ -3,77 +3,72 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ToastService } from '../service/toast.service';
-import { CameraService } from '../add-camera/service/camera-service';
 import { Router } from '@angular/router';
+import { ToastService } from '../service/toast.service';
+import { ViolationService } from '../add-violation/service/violation-service';
 import * as XLSX from 'xlsx';
 
-interface Camera {
-  cameraId: number;
-  branchId: number;
-  branchName: string;
-  cameraName: string;
-  rtspStreamUrl: string | null;
-  status: string;
+interface ViolationCategory {
+  categoryId: number;
+  categoryName: string;
   createdOn: string;
   createdBy: string;
+  modifiedOn: string | null;
+  modifiedBy: string | null;
   isDeleted: boolean;
 }
+
 @Component({
-  selector: 'app-camera-list',
-  templateUrl: './camera-list.component.html',
-  styleUrl: './camera-list.component.css'
+  selector: 'app-violation-list',
+  templateUrl: './violation-list.component.html',
+  styleUrl: './violation-list.component.css'
 })
-export class CameraListComponent implements OnInit {
-  @ViewChild('deleteDialog') deleteDialog!: TemplateRef<any>;
-  dialogRef!: MatDialogRef<any>;
-  selectedCameraId!: number;
-  selectedCameraName!: string;
-  cameras: Camera[] = [];
-  isLoading = false;
-
-  displayedColumns: string[] = [
-    'cameraId',
-    'cameraName',
-    'branchId',
-    'branchName',
-    'rtspStreamUrl',
-    'status',
-    'createdOn',
-    'createdBy',
-    'actions'
-  ];
-
-  dataSource = new MatTableDataSource<Camera>([]);
+export class ViolationListComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('deleteDialog') deleteDialog!: TemplateRef<any>;
+  categories: ViolationCategory[] = [];
+  dataSource = new MatTableDataSource<ViolationCategory>([]);
+  isLoading = false;
+
+  dialogRef!: MatDialogRef<any>;
+  selectedCategoryId!: number;
+  selectedCategoryName!: string;
+
+  displayedColumns = [
+    'categoryId',
+    'categoryName',
+    'createdOn',
+    'createdBy',
+    'isDeleted',
+    'actions'
+  ];
 
   constructor(
-    private cameraService: CameraService,
+    private categoryService: ViolationService,
     private toast: ToastService,
     private dialog: MatDialog,
     private router: Router
   ) { }
 
   ngOnInit() {
-    this.loadCameras();
+    this.loadCategories();
   }
 
-  loadCameras() {
+  loadCategories() {
     this.isLoading = true;
-    this.cameraService.getAllCameras().subscribe({
-      next: (res) => {
-        debugger
+
+    this.categoryService.getAllCategories().subscribe({
+      next: (res: any) => {
         this.dataSource.data = res.data;
-        this.cameras = res.data;
+        this.categories = res.data;
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.isLoading = false;
       },
       error: () => {
-        this.toast.showError("Failed to load cameras");
-        this.isLoading = false;
+        this.toast.showError("Failed to load categories");
       }
     });
   }
@@ -83,53 +78,52 @@ export class CameraListComponent implements OnInit {
     this.dataSource.filter = value;
   }
 
-  openDeleteDialog(camera: Camera) {
-    this.selectedCameraId = camera.cameraId;
-    this.selectedCameraName = camera.cameraName;
+  editCategory(category: ViolationCategory) {
+    this.router.navigate(['/add-violation'], { state: { category } });
+  }
 
+  openDeleteDialog(category: ViolationCategory) {
+    this.selectedCategoryId = category.categoryId;
+    this.selectedCategoryName = category.categoryName;
     this.dialogRef = this.dialog.open(this.deleteDialog, {
-      width: '900px',
+      width: '1000px',
       panelClass: 'rounded-dialog'
     });
   }
 
   confirmDelete() {
-    this.cameraService.deleteCamera(this.selectedCameraId).subscribe({
+    this.categoryService.deleteCategoryStatus(this.selectedCategoryId).subscribe({
       next: () => {
-        this.toast.showSuccess("Camera deleted successfully!");
+        this.toast.showSuccess("Category deleted successfully!");
         this.dialogRef.close();
-        this.loadCameras();
+        this.loadCategories();
       },
       error: () => {
-        this.toast.showError("Failed to delete camera!");
+        this.toast.showError("Failed to delete category");
         this.dialogRef.close();
       }
     });
   }
-  editCamera(camera: Camera) {
-    this.router.navigate(['/add-camera'], { state: { camera } });
-  }
-  AddCamera() {
-    this.router.navigate(['/add-camera']);
+  AddViolations() {
+    this.router.navigate(['/add-violation']);
   }
   exportAsExcel() {
 
-  if (!this.cameras || this.cameras.length === 0) {
+  if (!this.categories || this.categories.length === 0) {
     this.toast.showError("No data available to export!");
     return;
   }
 
   type ExportRow = Record<string, any>;
 
-  const exportData: ExportRow[] = this.cameras.map((cam: Camera) => ({
-    CameraID: cam.cameraId,
-    BranchID: cam.branchId,
-    BranchName: cam.branchName,
-    CameraName: cam.cameraName,
-    StreamURL: cam.rtspStreamUrl || "N/A",
-    Status: cam.isDeleted ? "Inactive" : "Active",
-    CreatedOn: cam.createdOn,
-    CreatedBy: cam.createdBy
+  const exportData: ExportRow[] = this.categories.map((cat: any) => ({
+    CategoryID: cat.categoryId,
+    CategoryName: cat.categoryName,
+    CreatedOn: cat.createdOn,
+    CreatedBy: cat.createdBy,
+    ModifiedOn: cat.modifiedOn,
+    ModifiedBy: cat.modifiedBy,
+    Status: cat.isDeleted ? "Inactive" : "Active"
   }));
 
   // Create worksheet
@@ -153,7 +147,7 @@ export class CameraListComponent implements OnInit {
     };
   });
 
-  // Auto column width
+  // Auto adjust column width
   worksheet["!cols"] = headerKeys.map(key => ({
     wch: Math.max(
       key.length,
@@ -165,9 +159,9 @@ export class CameraListComponent implements OnInit {
 
   // Create workbook
   const workbook: XLSX.WorkBook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Camera List");
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Violation Categories");
 
-  // Export
+  // Export file
   const excelBuffer = XLSX.write(workbook, {
     bookType: "xlsx",
     type: "array",
@@ -181,10 +175,9 @@ export class CameraListComponent implements OnInit {
   const url = window.URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
-  link.download = "CameraList.xlsx";
+  link.download = "ViolationCategories.xlsx";
   link.click();
   window.URL.revokeObjectURL(url);
 }
 
 }
-

@@ -94,6 +94,8 @@ import { BranchListComponent } from './branch-list/branch-list.component';
 import { CameraListComponent } from './camera-list/camera-list.component';
 import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompanyListComponent } from './company-list/company-list.component';
+import { AddViolationComponent } from './add-violation/add-violation.component';
+import { ViolationListComponent } from './violation-list/violation-list.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -155,7 +157,9 @@ import { CompanyListComponent } from './company-list/company-list.component';
         BranchListComponent,
         CameraListComponent,
         AddCompanyComponent,
-        CompanyListComponent
+        CompanyListComponent,
+        AddViolationComponent,
+        ViolationListComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,
