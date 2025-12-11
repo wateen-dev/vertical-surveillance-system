@@ -21,7 +21,7 @@ export class LoginComponent {
     private cdr: ChangeDetectorRef,
     private router: Router,
     private dataService: DataService
-  ) {}
+  ) { }
 
   onSubmit(form: NgForm) {
     debugger
@@ -37,19 +37,27 @@ export class LoginComponent {
 
           if (response && response.message === 'Login successful.') {
             this.toastService.showSuccess('Login Successful');
-            // Save user data for further use if needed
-            this.dataService.setContent(response.user);
+
+            // Save user data and token in DataService
+            const userContent = {
+              ...response.user,
+              token: response.token // Save JWT token here
+            };
+            this.dataService.setContent(userContent);
+
+            // Navigate to dashboard
             this.router.navigate(['/admin-dashboard']);
           } else {
             this.toastService.showError(response.message || 'Login Failed');
           }
         },
-        (error: any) => {
-          const errorMessage = error.error?.message || 'An unexpected error occurred.';
-          this.toastService.showError(errorMessage);
+        (error) => {
           this.isLoading = false;
+          this.toastService.showError(error?.error?.message || 'Login Failed');
         }
       );
+
+
     }
   }
 }

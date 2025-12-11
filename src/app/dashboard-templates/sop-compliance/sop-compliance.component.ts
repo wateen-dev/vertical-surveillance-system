@@ -59,7 +59,7 @@ export class SopComplianceComponent implements OnInit, OnDestroy {
 
   fetchChartData(): void {
     this.analyticsService
-      .getsopCompliance()
+      .getSopCompliance()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (data: any[]) => {

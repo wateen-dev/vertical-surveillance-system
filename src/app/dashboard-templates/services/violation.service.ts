@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { catchError, delay, map } from 'rxjs/operators';
 import { environment } from '../../../environment/environment';
+import { AuthService } from '../../service/auth.service';
 
 export interface Violation {
   violationId: number;
@@ -13,6 +14,7 @@ export interface Violation {
   confidence?: number;
   location?: string;
 }
+
 export interface AnalyticsCard {
   value: string | number;
   change?: string;
@@ -47,11 +49,14 @@ export interface OutletDetails {
   providedIn: 'root'
 })
 export class ViolationService {
-  private apiKey = "5b0e0c4d7c4035aea2f0a25a17ff4a4c552e4126acc153ba9e0d20e08368565f";
   private apiUrl = environment.apiUrl;
   private local_apiUrl = environment.localApiUrl;
-  private deploy_url = "https://localhost:44315/api/"
-  constructor(private http: HttpClient) { }
+
+  constructor(private http: HttpClient, private authService: AuthService) { }
+
+  private getHeaders() {
+    return this.authService.getAuthHeaders(); // Automatically adds Bearer token
+  }
 
   getViolations(): Observable<Violation[]> {
     const fallback: Violation[] = [
@@ -64,13 +69,11 @@ export class ViolationService {
       { violationId: 107, violationType: 'Billing Irregularity', description: 'Transaction completed but receipt was not generated or printed', date: '2025-09-28', violationTime: '03:45 PM', confidence: 87, location: 'Lahore Sales Terminal' }
     ];
 
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`).pipe(
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`, this.getHeaders()).pipe(
       map(apiData => {
         if (!apiData || apiData.length === 0) {
-          return fallback; // fallback only
+          return fallback;
         }
-
-        // Convert real API data to match Violation structure
         const realViolations: Violation[] = apiData.map(v => ({
           violationId: v.violationId,
           violationType: v.violationName || 'General Surveillance Event',
@@ -82,8 +85,6 @@ export class ViolationService {
             : this.estimateConfidence({ violationId: v.violationId } as Violation),
           location: v.cameraId || 'Unknown Location'
         }));
-
-        // Merge real violations first, fallback last
         return [...realViolations, ...fallback];
       }),
       catchError(err => {
@@ -94,61 +95,66 @@ export class ViolationService {
   }
 
   getTodayAverageWaitTime(): Observable<any> {
-    return this.http.get<any>(this.local_apiUrl + 'Vertical/GetTodayAverageWaitTime');
+    return this.http.get<any>(`${this.local_apiUrl}Vertical/GetTodayAverageWaitTime`, this.getHeaders());
   }
+
   getTodayAverageWaitTimeByQueue(): Observable<any> {
-    return this.http.get<any>(this.local_apiUrl + 'Vertical/GetTodayAverageWaitTimeByQueue');
+    return this.http.get<any>(`${this.local_apiUrl}Vertical/GetTodayAverageWaitTimeByQueue`, this.getHeaders());
   }
+
   getTodayFootfall(): Observable<number> {
-    return this.http.get<any[]>(this.local_apiUrl + 'Vertical/GetHourlyVisits').pipe(
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyVisits`, this.getHeaders()).pipe(
       map((data) => data.reduce((sum, item) => sum + (item.visitCount || 0), 0)),
       catchError(() => of(0))
     );
   }
 
-
   getEmployeeEfficiency(): Observable<any[]> {
     const dummyData = [
       { position: 1, employeeId: '280744', employeeName: 'Ali Raza', efficiency: null },
       { position: 2, employeeId: '6137', employeeName: 'Sara Khan', efficiency: null },
-
     ];
-    // Simulate an async call with a short delay
     return of(dummyData).pipe(delay(800));
   }
+
   getHourlyFootfall(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyVisits`);
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyVisits`, this.getHeaders());
   }
+
   getHourlyConversionRate(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/Get_hourly_Conversion_rate`);
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/Get_hourly_Conversion_rate`, this.getHeaders());
   }
+
   getHeatMap(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMap`);
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMap`, this.getHeaders());
   }
+
   getRealViolations(): Observable<any[]> {
-    debugger
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`);
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`, this.getHeaders());
   }
 
   searchOutlet(payload: any): Observable<any> {
-    return this.http.post(`${this.local_apiUrl}Vertical/SearchOutlet`, payload);
-  }
-  getPlaceReviews(placeId: string): Observable<any> {
-    return this.http.get(`${this.local_apiUrl}Vertical/GetPlaceReviews?placeId=${placeId}`);
-  }
-  getReceiptCount(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCount`);
-  }
-  getHourlyFootfallAllAreas(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyFootfallAllAreas`);
-  }
-  getReceiptCountDetails(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCountDetails`);
-  }
-  private estimateConfidence(v: { violationId: number, description?: string }): number {
-    // Generate a pseudo-random value between 90 and 100 based on violationId & description
-    const base = ((v.violationId % 10) + ((v.description?.length || 10) % 10)); // 0–18
-    return Math.min(100, 90 + base); // ensures range 90–100
+    return this.http.post(`${this.local_apiUrl}Vertical/SearchOutlet`, payload, this.getHeaders());
   }
 
+  getPlaceReviews(placeId: string): Observable<any> {
+    return this.http.get(`${this.local_apiUrl}Vertical/GetPlaceReviews?placeId=${placeId}`, this.getHeaders());
+  }
+
+  getReceiptCount(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCount`, this.getHeaders());
+  }
+
+  getHourlyFootfallAllAreas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHourlyFootfallAllAreas`, this.getHeaders());
+  }
+
+  getReceiptCountDetails(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCountDetails`, this.getHeaders());
+  }
+
+  private estimateConfidence(v: { violationId: number, description?: string }): number {
+    const base = ((v.violationId % 10) + ((v.description?.length || 10) % 10));
+    return Math.min(100, 90 + base);
+  }
 }

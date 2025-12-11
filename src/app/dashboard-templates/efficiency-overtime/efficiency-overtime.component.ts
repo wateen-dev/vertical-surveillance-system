@@ -57,7 +57,7 @@ export class EfficiencyOvertimeComponent implements OnInit, OnDestroy {
   }
 
   fetchChartData(): void {
-    this.analyticsService.getefficiencyOvertime()
+    this.analyticsService.getEfficiencyOvertime()
       .pipe(takeUntil(this.destroy$))
       .subscribe(
         (data: any[]) => {
