@@ -57,11 +57,12 @@ export class SidenavComponent implements OnInit {
       const desiredOrder = [
         'Dashboard',
         'Registration Center',
+        'Company Management',
         'Branch Management',
         'Camera Management',
-        'Company Management',
+        'Violation Management',
         'Administration',
-        'System Integration'
+        'System Integration',
       ];
 
       // Sort parent menu

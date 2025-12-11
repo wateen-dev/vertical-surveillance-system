@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environment/environment';
-import { Camera } from 'plotly.js-dist-min';
+import { AuthService } from '../../service/auth.service'; // adjust path as needed
 
 interface Company {
   companyId: number;
@@ -19,21 +19,36 @@ export class CompanyService {
   private apiUrl = environment.apiUrl;
   private local_apiUrl = environment.localApiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  addCompany(company: any): Observable<any> {
-    return this.http.post(`${this.local_apiUrl}Company/add-company`, company);
+   addCompany(company: any): Observable<any> {
+    return this.http.post(
+      `${this.local_apiUrl}Company/add-company`,
+      company,
+      this.authService.getAuthHeaders()
+    );
   }
+
   updateCompany(company: Company): Observable<any> {
-    return this.http.put(`${this.local_apiUrl}Company/update-company`, company);
+    return this.http.put(
+      `${this.local_apiUrl}Company/update-company`,
+      company,
+      this.authService.getAuthHeaders()
+    );
   }
 
   getAllCompanies(): Observable<any> {  
-    return this.http.get(`${this.local_apiUrl}Company/get-all-companies`);
+    return this.http.get(
+      `${this.local_apiUrl}Company/get-all-companies`,
+      this.authService.getAuthHeaders()
+    );
   }
 
   deleteCompanyStatus(companyId: number): Observable<any> {
-    return this.http.put(`${this.local_apiUrl}Company/update-company-status/${companyId}`,{});
+    return this.http.put(
+      `${this.local_apiUrl}Company/update-company-status/${companyId}`,
+      {},
+      this.authService.getAuthHeaders()
+    );
   }
-  
 }

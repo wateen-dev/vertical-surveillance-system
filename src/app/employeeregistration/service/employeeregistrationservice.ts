@@ -8,6 +8,7 @@ import { of } from 'rxjs';
 import { debug } from 'console';
 import Hls from 'hls.js';
  // Adjust the path as needed
+import { AuthService } from '../../service/auth.service'; // Adjust path as needed
 
 @Injectable({
   providedIn: 'root'
@@ -15,41 +16,50 @@ import Hls from 'hls.js';
 export class EmployeeRegistrationService {
     private apiUrl = environment.apiUrl;           
     private local_apiUrl = environment.localApiUrl;
-
-  constructor(private http: HttpClient) {}
+    private emsApiUrl = environment.emsApiUrl;
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   
   getEmployeeRegistrationDetails(): Observable<any> {
-    return this.http.get(this.apiUrl+"SalesTrax/GetEmployeeRegistration"); // Adjust the endpoint as needed
+    return this.http.get(this.emsApiUrl+"SalesTrax/GetEmployeeRegistration"); // Adjust the endpoint as needed
   }
-  postEmployeeRegistration(moduleModel:any): Observable<any> {
-    return this.http.post(this.local_apiUrl+"Vertical/add-employee",moduleModel); // Adjust the endpoint as needed
+ postEmployeeRegistration(moduleModel: any): Observable<any> {
+    return this.http.post(`${this.local_apiUrl}Vertical/add-employee`, moduleModel, this.authService.getAuthHeaders());
   }
+
   getTenantDetails(): Observable<any> {
-    return this.http.get(this.local_apiUrl+"Vertical/fetch-tenant"); // Adjust the endpoint as needed
+    return this.http.get(`${this.local_apiUrl}Vertical/fetch-tenant`, this.authService.getAuthHeaders());
   }
+
   verifyOtp(otpCode: string): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/VerifyOtp?otpCode=${otpCode}`);
+    return this.http.get(`${this.local_apiUrl}Vertical/VerifyOtp?otpCode=${otpCode}`, this.authService.getAuthHeaders());
   }
+
   fetchAllData(): Observable<any> {
-    return this.http.get(this.local_apiUrl+`Vertical/fetch-combined-data`);
+    return this.http.get(`${this.local_apiUrl}Vertical/fetch-combined-data`, this.authService.getAuthHeaders());
   }
+
   fetchCheckInLogs(employeeId: string): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogs?employeeId=${employeeId}`);
+    return this.http.get(`${this.local_apiUrl}Vertical/GetEmployeeLogs?employeeId=${employeeId}`, this.authService.getAuthHeaders());
   }
+
   fetchTimestampLogs(employeeId: string): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/GetTimeStampLogs?employeeId=${employeeId}`);
+    return this.http.get(`${this.local_apiUrl}Vertical/GetTimeStampLogs?employeeId=${employeeId}`, this.authService.getAuthHeaders());
   }
+
   fetchCheckInLogsVisitors(employeeId: string): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/GetEmployeeLogsVisitors?employeeId=${employeeId}`);
+    return this.http.get(`${this.local_apiUrl}Vertical/GetEmployeeLogsVisitors?employeeId=${employeeId}`, this.authService.getAuthHeaders());
   }
+
   getEmployeeCheckIns(): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/check-ins`);
+    return this.http.get(`${this.local_apiUrl}Vertical/check-ins`, this.authService.getAuthHeaders());
   }
-  getefficiencyOvertime(): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/average-wait-time`);
+
+  getEfficiencyOvertime(): Observable<any> {
+    return this.http.get(`${this.local_apiUrl}Vertical/average-wait-time`, this.authService.getAuthHeaders());
   }
-  getsopCompliance(): Observable<any> {
-    return this.http.get(this.local_apiUrl + `Vertical/sop-compliance`);
+
+  getSopCompliance(): Observable<any> {
+    return this.http.get(`${this.local_apiUrl}Vertical/sop-compliance`, this.authService.getAuthHeaders());
   }
 }
