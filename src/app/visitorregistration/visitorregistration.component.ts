@@ -22,16 +22,16 @@ export class VisitorregistrationComponent {
 
   customerFormState: CreateVisitorRegistrationModel = {
     visitorName: '',
-    companyName:'',
-    tenant_id:0,
-    tenant_name:'',
+    companyName: '',
+    tenant_id: 0,
+    tenant_name: '',
     ContactNumber: '',
     Email: '',
     CNIC: '',
   };
 
   ngOnInit(): void {
-    
+
     // this.fetchTenantNames();
   }
   fetchTenantNames() {
@@ -46,7 +46,7 @@ export class VisitorregistrationComponent {
       }
     );
   }
-  
+
   onFileSelect(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
@@ -68,38 +68,37 @@ export class VisitorregistrationComponent {
       this.customerFormState.CNIC = `${input.slice(0, 5)}-${input.slice(5, 12)}-${input.slice(12, 13)}`;
     }
   }
-  onSubmit(form: any): void {
-    if (form.valid) {
-      this.isLoading = true;
-      // Simulate a form submission
-      const formData = {
-        visitorName: form.value.visitorName,
-        CompanyName:form.value.companyName,
-        TenantId: form.value.app.tenant_id,
-        tenant_name: form.value.app.tenant_name,
-        ContactNumber: form.value.contactNumber,
-        EmailAddress: form.value.email,
-        CNIC: form.value.cnic,
-      };
-      this.visitorService.postVisitorRegistration(formData).subscribe(
-        (response) => {
-          if (response) {
-            setTimeout(() => {
-              this.isLoading = false;
-            }, 2000);
-            this.toastService.showSuccess('Employee registered successfully!');
-            form.resetForm(); // Reset the form after success
-            this.isLoading = false;
-            this.cnicImageFile = null;
-            this.employeePictureFile = null;
-          }
-        },
-        (error) => {
-          this.isLoading = false;
-          this.toastService.showSuccess('Visitor registered successfully!');
-          form.resetForm();
-        }
-      );
-    }
+ onSubmit(form: any): void {
+  if (form.valid) {
+    this.isLoading = true;
+
+    const payload = {
+      VisitorId: 0, // new visitor
+      VisitorName: form.value.visitorName,
+      CompanyName: form.value.companyName,
+      ContactNumber: form.value.contactNumber,
+      EmailAddress: form.value.email,
+      CNIC: form.value.cnic,
+      TenantId: form.value.app.tenant_id
+    };
+
+    this.visitorService.postVisitorRegistration(payload).subscribe(
+      (response) => {
+        this.isLoading = false;
+        this.toastService.showSuccess('Visitor registered successfully!');
+        form.resetForm();
+        this.cnicImageFile = null;
+        this.employeePictureFile = null;
+      },
+      (error) => {
+        this.isLoading = false;
+        this.toastService.showError(error?.error?.message || 'Something went wrong!');
+      }
+    );
+  } else {
+    this.toastService.showError('Please fill all required fields.');
   }
+}
+
+
 }

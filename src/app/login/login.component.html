@@ -1,8 +1,9 @@
+<div class="loading-overlay" *ngIf="isLoading">
+  <div class="spinner"></div>
+</div>
 <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" class="login-wrapper">
   <mat-card class="login-card-modern">
-
     <div class="login-grid">
-
       <!-- LEFT SIDE VECTOR / IMAGE -->
       <div class="login-left">
         <img src="assets/aivision4.jpg" class="login-vector" alt="AI Vision Vector" />
@@ -39,11 +40,7 @@
         <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid" class="login-btn">
           Login
         </button>
-
       </div>
-
-
     </div>
-
   </mat-card>
 </form>
