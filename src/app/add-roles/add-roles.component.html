@@ -1,0 +1,54 @@
+<form [formGroup]="roleForm" (ngSubmit)="saveRole()" class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-12">
+      <div class="registration-container">
+
+        <mat-expansion-panel expanded="true">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <h2 class="sideNavHeading mb-0">
+                {{ isEditMode ? 'Edit Role' : 'Add New Role' }}
+              </h2>
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="row">
+
+            <!-- Role Name -->
+            <div class="col-md-6 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Role Name</mat-label>
+                <input matInput formControlName="roleName" />
+
+                <mat-error *ngIf="roleForm.get('roleName')?.hasError('required')">
+                  Role Name is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Status</mat-label>
+                <mat-select formControlName="isDeleted">
+                  <mat-option [value]="false">Active</mat-option>
+                  <mat-option [value]="true">Inactive</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <!-- Submit Button -->
+          <div class="row justify-content-center">
+            <button mat-raised-button color="primary" type="submit" [disabled]="roleForm.invalid">
+              {{ isEditMode ? 'Update Role' : 'Save Role' }}
+            </button>
+          </div>
+
+        </mat-expansion-panel>
+
+      </div>
+    </div>
+  </div>
+</form>

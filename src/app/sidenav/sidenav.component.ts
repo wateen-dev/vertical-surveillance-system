@@ -61,6 +61,7 @@ export class SidenavComponent implements OnInit {
         'Branch Management',
         'Camera Management',
         'Violation Management',
+        'Role Management',
         'Administration',
         'System Integration',
       ];
