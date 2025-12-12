@@ -86,73 +86,79 @@ export class EmployeeregistrationComponent {
       this.customerFormState.CNIC = `${input.slice(0, 5)}-${input.slice(5, 12)}-${input.slice(12, 13)}`;
     }
   }
-  onSubmit(form: any): void {
-    debugger
-    if (form.valid) {
-      if(!form.value.startDate || !form.value.startDate)
-      {
-        console.log(form.value.startDate)
-        this.toastService.showError('Please Select Date ranges field.')
-        return;
-      }
-      this.isLoading = true;
-      
-      const formData = new FormData();
-
-      // Append each field to the FormData object
-      formData.append('EmployeeName', form.value.employeeName);
-      formData.append('ContactNumber', form.value.contactNumber);
-      formData.append('OfficialEmailAddress', form.value.email); // Matches the C# property
-      formData.append('CNIC', form.value.cnic);
-      formData.append('PermanentAddress', form.value.permanentAddress);
-      
-      // Use DatePipe to format dates before appending
-      const datePipe = new DatePipe('en-US');
-      formData.append('StartDate', datePipe.transform(form.value.startDate, 'yyyy-MM-dd') || '');
-      formData.append('EndDate', datePipe.transform(form.value.endDate, 'yyyy-MM-dd') || '');
-      
-      // Append files if present
-      if (this.cnicImageFile) {
-        formData.append('CNICImage', this.cnicImageFile);
-      }
-      formData.append('CNICPath', form.value.cnicImage);
-      
-      if (this.employeePictureFile) {
-        formData.append('EmployeePicture', this.employeePictureFile);
-      }
-      formData.append('EmployeePath', form.value.employeePicture);
-      
-      if (this.miscFile) {
-        formData.append('MiscImage', this.miscFile);
-      }
-      formData.append('MiscPath', form.value.miscImage);
-      
-      // Append TenantId with a default value
-      formData.append('TenantId', '1');
-      debugger;
-      this.employeeService.postEmployeeRegistration(formData).subscribe(
-        (response) => {
-          if (response) {
-            setTimeout(() => {
-             
-            }, 2000);
-            this.toastService.showSuccess('Employee registered successfully!');
-            form.resetForm(); // Reset the form after success
-          
-            this.cnicImageFile = null;
-            this.employeePictureFile = null;
-            this.isLoading = false;
-          }
-        },
-        (error) => {
-          this.isLoading = false;
-          this.toastService.showSuccess('Employee registered successfully!');
-          form.resetForm();
-          this.cnicImageFile = null;
-          this.employeePictureFile = null;
-          
-        }
-      );
-    }
+onSubmit(form: any): void {
+  if (!form.valid) {
+    this.toastService.showError('Please fill all required fields.');
+    return;
   }
+
+  this.isLoading = true;
+  const formData = new FormData();
+
+  // Required fields
+  formData.append('EmployeeId', '0');
+  formData.append('EmployeeName', form.value.employeeName || '');
+  formData.append('TenantId', form.value.tenantId?.toString() || '1');
+  formData.append('ContactNumber', form.value.contactNumber || '');
+  formData.append('OfficialEmailAddress', form.value.email || '');
+  formData.append('CNIC', form.value.cnic || '');
+  formData.append('PermanentAddress', form.value.permanentAddress || '');
+
+  // Dates
+  const datePipe = new DatePipe('en-US');
+  formData.append('StartDate', datePipe.transform(form.value.startDate, 'yyyy-MM-dd') || '');
+  formData.append('EndDate', datePipe.transform(form.value.endDate, 'yyyy-MM-dd') || '');
+
+  // Status default
+  formData.append('Status', 'false');
+
+  // Files
+  if (this.cnicImageFile) {
+    formData.append('CNICImage', this.cnicImageFile, this.cnicImageFile.name);
+    formData.append('CNICPath', this.cnicImageFile.name);
+  } else {
+    formData.append('CNICPath', form.value.cnicImage || '');
+  }
+
+  if (this.employeePictureFile) {
+    formData.append('EmployeePicture', this.employeePictureFile, this.employeePictureFile.name);
+    formData.append('EmployeePath', this.employeePictureFile.name);
+  } else {
+    formData.append('EmployeePath', form.value.employeePicture || '');
+  }
+
+  if (this.miscFile) {
+    formData.append('MiscImage', this.miscFile, this.miscFile.name);
+    formData.append('MiscPath', this.miscFile.name);
+  } else {
+    formData.append('MiscPath', form.value.miscImage || '');
+  }
+
+  // Send to API
+  this.employeeService.postEmployeeRegistration(formData).subscribe(
+    (response: any) => {
+      this.isLoading = false;
+      if (response?.success) {
+        this.toastService.showSuccess(response.message || 'Employee registered successfully!');
+        console.log('Employee ID:', response.data?.employeeId);
+        form.resetForm();
+        this.cnicImageFile = null;
+        this.employeePictureFile = null;
+        this.miscFile = null;
+      } else {
+        this.toastService.showError(response?.message || 'Registration failed.');
+      }
+    },
+    (error) => {
+      this.isLoading = false;
+      if (error.status === 400 && error.error?.errors) {
+        const messages = Object.values(error.error.errors).flat().join('\n');
+        this.toastService.showError(messages);
+      } else {
+        this.toastService.showError(error?.error?.message || 'Something went wrong!');
+      }
+    }
+  );
+}
+
 }

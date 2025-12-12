@@ -23,9 +23,17 @@ export class EmployeeRegistrationService {
   getEmployeeRegistrationDetails(): Observable<any> {
     return this.http.get(this.emsApiUrl+"SalesTrax/GetEmployeeRegistration"); // Adjust the endpoint as needed
   }
- postEmployeeRegistration(moduleModel: any): Observable<any> {
-    return this.http.post(`${this.local_apiUrl}Vertical/add-employee`, moduleModel, this.authService.getAuthHeaders());
-  }
+postEmployeeRegistration(moduleModel: any): Observable<any> {
+  const headers = new HttpHeaders({
+    Authorization: `Bearer ${this.authService.getToken()}`
+  });
+
+  return this.http.post(
+    `${this.local_apiUrl}Vertical/add-employee`,
+    moduleModel,
+    { headers }
+  );
+}
 
   getTenantDetails(): Observable<any> {
     return this.http.get(`${this.local_apiUrl}Vertical/fetch-tenant`, this.authService.getAuthHeaders());

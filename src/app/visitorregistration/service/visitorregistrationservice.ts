@@ -7,25 +7,30 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { debug } from 'console';
 import Hls from 'hls.js';
- // Adjust the path as needed
-
+// Adjust the path as needed
+import { AuthService } from '../../service/auth.service';
 @Injectable({
   providedIn: 'root'
 })
 export class VisitorRegistrationService {
-    private apiUrl = environment.apiUrl;           
-    private local_apiUrl = environment.localApiUrl;
+  private apiUrl = environment.apiUrl;
+  private local_apiUrl = environment.localApiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) { }
 
-  
+
   getVisitorRegistrationDetails(): Observable<any> {
-    return this.http.get(this.apiUrl+"SalesTrax/GetVisitorRegistration"); // Adjust the endpoint as needed
+    return this.http.get(this.apiUrl + "SalesTrax/GetVisitorRegistration"); // Adjust the endpoint as needed
   }
-  postVisitorRegistration(moduleModel:any): Observable<any> {
-    return this.http.post(this.local_apiUrl+"Vertical/add-visitor",moduleModel); // Adjust the endpoint as needed
+  postVisitorRegistration(visitor: any): Observable<any> {
+    return this.http.post(
+      this.local_apiUrl + "Vertical/add-visitor",
+      visitor,
+      this.authService.getAuthHeaders() // includes 'Authorization' header
+    );
   }
+
   getTenantDetails(): Observable<any> {
-    return this.http.get(this.local_apiUrl+"Vertical/fetch-tenant"); // Adjust the endpoint as needed
+    return this.http.get(this.local_apiUrl + "Vertical/fetch-tenant", this.authService.getAuthHeaders()); // unchanged
   }
 }
