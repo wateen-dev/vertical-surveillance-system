@@ -75,20 +75,22 @@
               <mat-form-field appearance="fill" class="w-100">
                 <mat-label>Password</mat-label>
                 <input matInput type="password" formControlName="Password" required minlength="6" />
-                <mat-error *ngIf="registrationForm.get('Password')?.invalid && registrationForm.get('Password')?.touched">
+                <mat-error
+                  *ngIf="registrationForm.get('Password')?.invalid && registrationForm.get('Password')?.touched">
                   Password is required (min 6 characters)
                 </mat-error>
               </mat-form-field>
             </div>
             <div class="col-md-4 mb-3">
               <mat-form-field class="w-100">
-                <mat-label>Role Rights</mat-label>
-                <mat-select formControlName="RoleRights">
-                  <mat-option value="Admin">Admin</mat-option>
-                  <mat-option value="Receptionist">Receptionist</mat-option>
+                <mat-label>Role</mat-label>
+                <mat-select formControlName="RoleID" (selectionChange)="onRoleChange($event.value)">
+                  <mat-option *ngFor="let role of roles" [value]="role.roleId">
+                    {{ role.roleName }}
+                  </mat-option>
                 </mat-select>
-                <mat-error *ngIf="registrationForm.get('RoleRights')?.hasError('required')">
-                  Role Rights are required.
+                <mat-error *ngIf="registrationForm.get('RoleID')?.hasError('required')">
+                  Role is required.
                 </mat-error>
               </mat-form-field>
             </div>

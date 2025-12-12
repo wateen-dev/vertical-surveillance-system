@@ -96,6 +96,8 @@ import { AddCompanyComponent } from './add-company/add-company.component';
 import { CompanyListComponent } from './company-list/company-list.component';
 import { AddViolationComponent } from './add-violation/add-violation.component';
 import { ViolationListComponent } from './violation-list/violation-list.component';
+import { AddRolesComponent } from './add-roles/add-roles.component';
+import { RolesListComponent } from './roles-list/roles-list.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -159,7 +161,9 @@ import { ViolationListComponent } from './violation-list/violation-list.componen
         AddCompanyComponent,
         CompanyListComponent,
         AddViolationComponent,
-        ViolationListComponent
+        ViolationListComponent,
+        AddRolesComponent,
+        RolesListComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,

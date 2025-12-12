@@ -127,6 +127,14 @@ const routes: Routes = [
     path: 'violation-list',
     loadChildren: () => import('./violation-list/violation-list.module').then(m => m.ViolationListModule)
   },
+  {
+    path: 'add-roles',
+    loadChildren: () => import('./add-roles/add-roles.module').then(m => m.AddRolesModule)
+  },
+  {
+    path: 'roles-list',
+    loadChildren: () => import('./roles-list/roles-list.module').then(m => m.RolesListModule)
+  },
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
  
