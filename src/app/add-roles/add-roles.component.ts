@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from './service/role-service';
+import { CompanyService } from '../add-company/service/company-service';
 import { ToastService } from '../service/toast.service';
 import { Router } from '@angular/router';
 
 interface Role {
   roleId: number;
   roleName: string;
+  companyId: number;
   isDeleted: boolean;
   createdOn: string;
   createdBy: string;
@@ -22,15 +24,17 @@ export class AddRolesComponent implements OnInit {
   roleForm: FormGroup;
   isEditMode = false;
   roleIdToEdit: number | null = null;
-
+  companies: any[] = [];
   constructor(
     private fb: FormBuilder,
     private roleService: RoleService,
+    private companyService: CompanyService,
     private toastService: ToastService,
     private router: Router
   ) {
     this.roleForm = this.fb.group({
       roleName: ['', Validators.required],
+      companyId: [null, Validators.required],
       isDeleted: [false]
     });
   }
@@ -38,10 +42,10 @@ export class AddRolesComponent implements OnInit {
   ngOnInit(): void {
     const editRole = history.state.role as Role;
     if (editRole) this.loadRoleForEdit(editRole);
+    this.loadCompanies();
   }
 
   saveRole() {
-    debugger
     if (this.roleForm.invalid) return;
 
     const payload = {
@@ -80,8 +84,15 @@ export class AddRolesComponent implements OnInit {
 
     this.roleForm.patchValue({
       roleName: role.roleName,
+      companyId: role.companyId,
       isDeleted: role.isDeleted
     });
   }
-
+  loadCompanies() {
+    this.companyService.getAllCompanies().subscribe((res: any) => {
+    if (res.success) {
+      this.companies = res.data;
+    }
+  });
+  }
 }

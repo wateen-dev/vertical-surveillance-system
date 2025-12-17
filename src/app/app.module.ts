@@ -98,6 +98,7 @@ import { AddViolationComponent } from './add-violation/add-violation.component';
 import { ViolationListComponent } from './violation-list/violation-list.component';
 import { AddRolesComponent } from './add-roles/add-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
+import { InterfaceFormsComponent } from './interface-forms/interface-forms.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -163,7 +164,8 @@ import { RolesListComponent } from './roles-list/roles-list.component';
         AddViolationComponent,
         ViolationListComponent,
         AddRolesComponent,
-        RolesListComponent
+        RolesListComponent,
+        InterfaceFormsComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,

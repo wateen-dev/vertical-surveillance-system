@@ -135,6 +135,10 @@ const routes: Routes = [
     path: 'roles-list',
     loadChildren: () => import('./roles-list/roles-list.module').then(m => m.RolesListModule)
   },
+  {
+    path: 'interface-forms',
+    loadChildren: () => import('./interface-forms/interface-forms.module').then(m => m.InterfaceFormsModule)
+  },
   // You can add other routes here
   { path: '', redirectTo: '/home', pathMatch: 'full' }, // Optional redirect,
  
