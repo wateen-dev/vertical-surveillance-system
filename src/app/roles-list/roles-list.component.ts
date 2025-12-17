@@ -11,6 +11,8 @@ import * as XLSX from 'xlsx';
 interface Role {
   roleId: number;
   roleName: string;
+  companyId: number;
+  companyName: string;
   isDeleted: boolean;
   createdOn: string;
   createdBy: string;
@@ -34,6 +36,7 @@ export class RolesListComponent implements OnInit {
   displayedColumns: string[] = [
     'roleId',
     'roleName',
+    'companyName',
     'status',
     'createdOn',
     'createdBy',

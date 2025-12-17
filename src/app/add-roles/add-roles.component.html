@@ -15,7 +15,7 @@
           <div class="row">
 
             <!-- Role Name -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <mat-form-field class="w-100">
                 <mat-label>Role Name</mat-label>
                 <input matInput formControlName="roleName" />
@@ -25,9 +25,21 @@
                 </mat-error>
               </mat-form-field>
             </div>
-
+            <div class="col-md-4 mb-3">
+              <mat-form-field class="w-100">
+                <mat-label>Company</mat-label>
+                <mat-select formControlName="companyId">
+                  <mat-option *ngFor="let company of companies" [value]="company.companyId">
+                    {{ company.companyName }}
+                  </mat-option>
+                </mat-select>
+                <mat-error *ngIf="roleForm.get('companyId')?.hasError('required')">
+                  Company is required.
+                </mat-error>
+              </mat-form-field>
+            </div>
             <!-- Status -->
-            <div class="col-md-6 mb-3">
+            <div class="col-md-4 mb-3">
               <mat-form-field class="w-100">
                 <mat-label>Status</mat-label>
                 <mat-select formControlName="isDeleted">
