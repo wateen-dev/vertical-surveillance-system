@@ -140,6 +140,15 @@ export class ViolationService {
   getPlaceReviews(placeId: string): Observable<any> {
     return this.http.get(`${this.local_apiUrl}Vertical/GetPlaceReviews?placeId=${placeId}`, this.getHeaders());
   }
+  getCompetitorOutlets(query: string): Observable<any> {
+    return this.http.get(
+      `${this.local_apiUrl}SalesTrax/competitors?query=${encodeURIComponent(query)}`,
+      this.getHeaders()
+    );
+  }
+  getCompetitorOutletsByLocation(latitude: number, longitude: number, radiusInMeters: number): Observable<any[]> {
+  return this.http.get<any[]>(`${this.local_apiUrl}SalesTrax/competitors?latitude=${latitude}&longitude=${longitude}&radiusInMeters=${radiusInMeters}`, this.getHeaders());
+}
 
   getReceiptCount(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetReceiptCount`, this.getHeaders());

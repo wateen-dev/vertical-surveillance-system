@@ -99,6 +99,7 @@ import { ViolationListComponent } from './violation-list/violation-list.componen
 import { AddRolesComponent } from './add-roles/add-roles.component';
 import { RolesListComponent } from './roles-list/roles-list.component';
 import { InterfaceFormsComponent } from './interface-forms/interface-forms.component';
+import { CompetitorOutletsComponent } from './dashboard-templates/competitor-outlets/competitor-outlets.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -165,7 +166,8 @@ import { InterfaceFormsComponent } from './interface-forms/interface-forms.compo
         ViolationListComponent,
         AddRolesComponent,
         RolesListComponent,
-        InterfaceFormsComponent
+        InterfaceFormsComponent,
+        CompetitorOutletsComponent
     ],
     bootstrap: [AppComponent],
     imports: [BrowserModule,
