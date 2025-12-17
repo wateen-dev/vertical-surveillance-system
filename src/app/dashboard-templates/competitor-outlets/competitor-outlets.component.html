@@ -1,0 +1,70 @@
+<div class="container-fluid py-4">
+    <div class="scroll-container">
+        <div class="loading-overlay" *ngIf="isLoading">
+            <div class="spinner"></div>
+        </div>
+        <div class="row g-3">
+            <div *ngFor="let outlet of competitorOutlets" class="col-sm-3 col-12">
+
+                <div class="outlet-card position-relative cursor-pointer" (click)="openCompetitorDialog(outlet)">
+
+                    <!-- Rank Badge -->
+                    <div class="rank-badge" [ngClass]="{
+            'rank-1': outlet.rank === 1,
+            'rank-2': outlet.rank === 2,
+            'rank-3': outlet.rank === 3
+           }">
+                        #{{ outlet.rank }}
+                    </div>
+
+                    <!-- Header -->
+                    <div class="card-header text-center">
+                        <h6 class="outlet-name mb-0">{{ outlet.name }}</h6>
+                        <p class="outlet-location text-muted mb-0">
+                            <i class="bi bi-geo-alt me-1"></i>
+                            {{ outlet.address }}
+                        </p>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="outlet-stats mt-3">
+                        <div class="stat-row stat-green">
+                            <div class="stat-left">
+                                <mat-icon class="icon-green">star</mat-icon>
+                                <span>Rating</span>
+                            </div>
+                            <div class="stat-value text-success">
+                                {{ outlet.rating }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stat-row stat-green">
+                        <div class="stat-left">
+                            <mat-icon class="icon-green">people</mat-icon>
+                            <span>User Ratings</span>
+                        </div>
+                        <div class="stat-value text-success">{{ outlet.userRatingCount }}</div>
+                    </div>
+                    <div class="stat-row stat-yellow">
+                        <div class="stat-left">
+                            <mat-icon class="icon-yellow">attach_money</mat-icon>
+                            <span>Price Range</span>
+                        </div>
+                        <div class="stat-value text-warning">
+                            {{ getPriceAndCuisine(outlet) }}
+                        </div>
+                    </div>
+                    <!-- Status -->
+                    <div class="d-flex justify-content-center mt-3">
+                        <div class="status-badge" [ngClass]="outlet.statusClass">
+                            {{ outlet.status }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

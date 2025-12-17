@@ -19,6 +19,7 @@ export class OutletDialogComponent {
     public dialogRef: MatDialogRef<OutletDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any, private sanitizer: DomSanitizer
   ) {
+    debugger
     if (data?.reviews) {
       this.reviewsDataSource = new MatTableDataSource(data.reviews);
     }

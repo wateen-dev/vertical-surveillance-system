@@ -59,7 +59,9 @@
                             <mat-icon class="info-icon">phone</mat-icon>
                             <div class="info-content">
                                 <label>Phone</label>
-                                <span>{{ data.selectedOutlet.phone || 'Not available' }}</span>
+                                <span>{{ data.selectedOutlet.phone
+                                    || data.selectedOutlet.internationalPhoneNumber
+                                    || 'Not available' }}</span>
                             </div>
                         </div>
 
