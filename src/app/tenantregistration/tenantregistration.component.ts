@@ -78,7 +78,7 @@ export class TenantregistrationComponent {
         CNIC: form.value.cnic,
         PermanentAddress: form.value.permanentAddress
       };
-      debugger
+   
 
       this.tenantService.postTenantRegistration(formData).subscribe(
         (response) => {

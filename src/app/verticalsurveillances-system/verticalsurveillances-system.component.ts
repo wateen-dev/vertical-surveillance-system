@@ -36,13 +36,13 @@ export class VerticalsurveillancesSystemComponent {
       private local_apiUrl = environment.localApiUrl;
       imagePath1Base64:any;
   constructor(private verticalService: EmployeeRegistrationService,private route: ActivatedRoute,private toastService: ToastService,private http: HttpClient) {
-    debugger;
+
     this.updateLastSyncedTime();
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   ngOnInit(): void {
-    debugger;
+
     this.route.queryParams.subscribe((params) => {
       this.selectedCard = params['card'];
       if(this.selectedCard=='Employees')
@@ -89,7 +89,7 @@ refreshLogs(){
   }
   loadData(): void {
     this.verticalService.fetchAllData().subscribe((data: any) => {
-      debugger;
+      
       // Filter data where company name is 'UBM'
       this.dataSource.data = data.result
       this.filterTable(); // Apply default filter
@@ -110,7 +110,7 @@ refreshLogs(){
     );
   }
   onRowClick(row: any) {
-    debugger;
+
     if(this.selectedCategory!='visitor'){
     this.fetchImages(row.profilePicture)
     this.selectedEmployee = row;
@@ -118,7 +118,7 @@ refreshLogs(){
     // this.filteredLogs = this.checkInLogs.filter(log => log.name.split('-')[1] === row.name);
     this.verticalService.fetchCheckInLogs(row.id).subscribe(
       (logs: any[]) => {
-        debugger
+   
         this.filteredLogs = logs; // Assign API response to filteredLogs
         this.fetchtimestamplogs(row.id)
       },
@@ -136,7 +136,7 @@ refreshLogs(){
     this.accessStatus = 'Allowed';
     this.verticalService.fetchCheckInLogsVisitors(row.id).subscribe(
       (logs: any[]) => {
-        debugger
+     
         this.filteredLogs = logs; // Assign API response to filteredLogs
       },
       (error) => {
@@ -150,7 +150,7 @@ refreshLogs(){
   fetchtimestamplogs(id:any){
     this.verticalService.fetchTimestampLogs(id).subscribe(
       (logs: any[]) => {
-        debugger
+     
         this.filteredTimeLogs = logs; // Assign API response to filteredLogs
       },
       (error) => {

@@ -128,6 +128,9 @@ export class ViolationService {
   getHeatMap(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMap`, this.getHeaders());
   }
+  getHeatMapDetails() {
+    return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetHeatMapDetails`, this.getHeaders());
+  }
 
   getRealViolations(): Observable<any[]> {
     return this.http.get<any[]>(`${this.local_apiUrl}Vertical/GetViolations`, this.getHeaders());

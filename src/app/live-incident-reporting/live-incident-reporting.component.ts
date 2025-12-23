@@ -87,8 +87,9 @@ export class LiveIncidentReportingComponent implements OnInit {
   ];
 
   // list of real violationIds that have matching images
-  realViolationIds = ['79016544', '41920645', '83460247', '24942603', '78255929', '95822412'];
-
+  realViolationIds = ['79016544', '41920645', '83460247', '24942603', '78255929', '95822412','740290507','734069387','420035560','105840119','627812095'
+];
+ 
   // violation info
   violation = {
     type: 'Shoplifting Attempt',
@@ -127,7 +128,7 @@ export class LiveIncidentReportingComponent implements OnInit {
 
     this.route.queryParams.subscribe({
       next: (params) => {
-        debugger;
+
 
         this.violationId = params['violationId'] || null;
         this.isRealData = this.violationId
@@ -170,7 +171,6 @@ export class LiveIncidentReportingComponent implements OnInit {
             },
           ];
         }
-
         // 🔹 Stop spinner after processing
         this.isLoading = false;
       },
@@ -289,7 +289,19 @@ export class LiveIncidentReportingComponent implements OnInit {
           description:
             'Transaction completed but receipt was not generated within the expected timeframe. This may suggest a delay in POS operation or manual intervention bypassing standard billing flow.',
         };
+         case 'receipt not cut':
+        return {
+          title: 'Receipt Delay Alert',
+          description:
+            'Transaction completed but receipt was not generated within the expected timeframe. This may suggest a delay in POS operation or manual intervention bypassing standard billing flow.',
+        };
 
+      case 'counter crowdy':
+        return {
+          title: 'Counter Congestion Alert',
+          description:
+            'A high number of customers were detected at the counter within a short time window. This may indicate understaffing, slow POS processing, or operational inefficiencies causing customer congestion.',
+        };
       case 'warehouse not clean':
         return {
           title: 'Warehouse Cleanliness Issue',

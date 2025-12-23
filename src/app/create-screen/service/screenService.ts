@@ -23,11 +23,11 @@ export class ScreenService {
 
 
   getScreenDetails(): Observable<any> {
-    debugger
+
     return this.http.get(this.local_apiUrl + "Vertical/GetMiscCodes",this.authService.getAuthHeaders()); // Adjust the endpoint as needed
   }
   getAppDetails(): Observable<any> {
-    debugger
+  
     return this.http.get(this.local_apiUrl + "SalesTrax/GetApps"); // Adjust the endpoint as needed
   }
 

@@ -31,7 +31,7 @@ export class StatisticsService {
   }
   // Fetch base64 image using filename from path
   getImageBase64(path: string): Observable<{ thumbnailBase64: string }> {
-    debugger
+  
     const fileName = path.split('\\').pop(); // handle Windows-style path
     return this.http.get<{ thumbnailBase64: string }>(
       this.local_apiUrl + `Vertical/GetImagesBase64?fileName=${fileName}`

@@ -25,7 +25,7 @@ export class RoleService {
   }
 
   updateRole(role: any): Observable<any> {
-    debugger
+    
     return this.http.put(
       `${this.local_apiUrl}Roles/update`,
       role,

@@ -59,7 +59,7 @@ formatCnic() {
   onSubmit(customerForm: NgForm) {
     if (customerForm.valid) {
       this.isLoading = true;
-      debugger
+   
       const customerData = new CreateCustomer(
         customerForm.value.name,
         customerForm.value.ntn,

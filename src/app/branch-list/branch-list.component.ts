@@ -84,7 +84,7 @@ export class BranchListComponent implements OnInit {
   }
 
   editBranch(branch: Branch) {
-    debugger
+
     this.router.navigate(['/add-branch'], { state: { branch } });
   }
   openDeleteDialog(branch: Branch) {

@@ -1,4 +1,4 @@
-import { Component, OnInit,NgZone } from "@angular/core";
+import { Component, OnInit, NgZone } from "@angular/core";
 import {
   ApexChart,
   ApexAxisChartSeries,
@@ -10,6 +10,7 @@ import {
 import { ViolationService } from "../services/violation.service";
 import { SectionHourlyDialogComponent } from "../section-hourly-dialog/section-hourly-dialog.component";
 import { MatDialog } from "@angular/material/dialog";
+import {DataService} from '../../service/DataService'
 export type ChartOptions = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -29,63 +30,83 @@ export class HeatmapChartComponent implements OnInit {
   public chartOptions!: Partial<ChartOptions>;
   isLoading: boolean = false; // 🔹 Loading state
 
-  constructor(private ngZone: NgZone,private violationService: ViolationService, private dialog: MatDialog) { }
+  constructor(private ngZone: NgZone, private violationService: ViolationService, private dialog: MatDialog,private dataService: DataService) { }
 
   ngOnInit(): void {
     this.loadHeatMapData();
   }
- loadHeatMapData() {
-  this.violationService.getHeatMap().subscribe({
-    next: (data) => {
-      try {
-        const realData = data.map((item: any) => ({
-          ...item,
-          type: "real",
-        }));
+  loadHeatMapData() {
+    const companyName = this.getCompanyName(); // "Namak Mandi", etc.
 
-        // ✅ Sort descending: biggest first
-        const sorted = [...realData].sort((a, b) => b.visitorCount - a.visitorCount);
+    const api$ =
+      companyName?.toLowerCase() === 'namakmandi'
+        ? this.violationService.getHeatMapDetails()
+        : this.violationService.getHeatMap();
 
-        const largest = sorted[0];
-        const others = sorted.slice(1);
+    api$.subscribe({
+      next: (data) => {
+        debugger
+        try {
+          const realData = data.map((item: any) => ({
+            ...item,
+            type: 'real',
+          }));
 
-        const visitorCounts = realData.map(d => d.visitorCount);
-        const min = Math.min(...visitorCounts);
-        const max = Math.max(...visitorCounts);
+          // ✅ Sort descending
+          const sorted = [...realData].sort(
+            (a, b) => b.visitorCount - a.visitorCount
+          );
 
-        // ✅ Scaling function for treemap area
-        const scale = (value: number, min: number, max: number, newMin: number, newMax: number) => {
-          if (max === min) return (newMin + newMax) / 2;
-          return ((value - min) / (max - min)) * (newMax - newMin) + newMin;
-        };
+          const largest = sorted[0];
+          const others = sorted.slice(1);
 
-        // ✅ Largest section gets bigger dominant square (area value 60–100)
-        const largestMapped = {
-          ...largest,
-          weightedY: scale(largest.visitorCount, min, max, 60, 100),
-        };
+          const visitorCounts = realData.map(d => d.visitorCount);
+          const min = Math.min(...visitorCounts);
+          const max = Math.max(...visitorCounts);
 
-        // ✅ Others get smaller squares (area value 20–60)
-        const othersMapped = others.map((item) => ({
-          ...item,
-          weightedY: scale(item.visitorCount, min, max, 20, 60),
-        }));
+          const scale = (
+            value: number,
+            min: number,
+            max: number,
+            newMin: number,
+            newMax: number
+          ) => {
+            if (max === min) return (newMin + newMax) / 2;
+            return ((value - min) / (max - min)) * (newMax - newMin) + newMin;
+          };
 
-        const finalData = [largestMapped, ...othersMapped];
+          const largestMapped = {
+            ...largest,
+            weightedY: scale(largest.visitorCount, min, max, 60, 100),
+          };
 
-        this.initializeTreemap(finalData);
-      } catch (err) {
-        console.error("🔥 Error processing heatmap data:", err);
+          const othersMapped = others.map(item => ({
+            ...item,
+            weightedY: scale(item.visitorCount, min, max, 20, 60),
+          }));
+
+          const finalData = [largestMapped, ...othersMapped];
+
+          this.initializeTreemap(finalData);
+        } catch (err) {
+          console.error('🔥 Error processing heatmap data:', err);
+          this.loadFallbackChart();
+        }
+      },
+      error: (err) => {
+        console.error('❌ API error fetching heatmap data:', err);
         this.loadFallbackChart();
-      }
-    },
-    error: (err) => {
-      console.error("❌ API error fetching heatmap data:", err);
-      this.loadFallbackChart();
-    },
-  });
-}
+      },
+    });
+  }
+  getCompanyName(): string {
+  const companyCode = this.dataService.getCompanyCode();
+  if (!companyCode) {
+    return '';
+  }
 
+  return companyCode.toString().toLowerCase();
+}
 
   private loadFallbackChart() {
     const dummyData = [
@@ -213,25 +234,25 @@ export class HeatmapChartComponent implements OnInit {
     };
   }
   openSectionDialog(sectionName: string) {
-  this.isLoading = true;
+    this.isLoading = true;
 
-  this.violationService.getHourlyFootfallAllAreas().subscribe((data) => {
-    setTimeout(() => { this.isLoading = false; }, 100); // ensures repaint
+    this.violationService.getHourlyFootfallAllAreas().subscribe((data) => {
+      setTimeout(() => { this.isLoading = false; }, 100); // ensures repaint
 
-    const dialogRef = this.dialog.open(SectionHourlyDialogComponent, {
-      width: "1200px",
-      maxHeight: "90vh",
-      autoFocus: false,
-      panelClass: "hourly-dialog-panel",
-      backdropClass: "blur-background",
-      data: { section: sectionName, allAreas: data }
+      const dialogRef = this.dialog.open(SectionHourlyDialogComponent, {
+        width: "1200px",
+        maxHeight: "90vh",
+        autoFocus: false,
+        panelClass: "hourly-dialog-panel",
+        backdropClass: "blur-background",
+        data: { section: sectionName, allAreas: data }
+      });
+
+      dialogRef.afterClosed().subscribe(() => {
+        document.body.classList.remove("dialog-open-blur");
+      });
     });
-
-    dialogRef.afterClosed().subscribe(() => {
-      document.body.classList.remove("dialog-open-blur");
-    });
-  });
-}
+  }
 
   private generateDummyData(realData: any[]) {
     const avg = realData.reduce((sum, x) => sum + x.visitorCount, 0) / realData.length;

@@ -68,14 +68,14 @@ export class LovManagerComponent implements OnInit {
   // Handle form dropdown selection for LOV
   onLovSelectionChange(event: any) {
     if (event.value === 'Other') {
-      debugger
+  
       this.showLovNameInput = true; // Show input for new LOV name
       this.lovData.name = ''; // Clear name for new entry
       this.lovData.id = 0;
       this.lovData.value = '';
       
     } else {
-      debugger
+ 
       this.showLovNameInput = false; // Hide input for existing LOV selection
       this.lovData = { ...event.value };
       this.lovData.id = 0; // Populate form with selected LOV

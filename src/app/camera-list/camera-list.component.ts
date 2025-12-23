@@ -64,7 +64,7 @@ export class CameraListComponent implements OnInit {
     this.isLoading = true;
     this.cameraService.getAllCameras().subscribe({
       next: (res) => {
-        debugger
+
         this.dataSource.data = res.data;
         this.cameras = res.data;
         this.dataSource.paginator = this.paginator;

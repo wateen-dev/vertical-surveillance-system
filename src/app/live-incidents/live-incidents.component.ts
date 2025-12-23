@@ -25,7 +25,7 @@ interface Incident {
   styleUrls: ['./live-incidents.component.css'],
 })
 export class LiveIncidentsComponent implements OnInit, AfterViewInit {
-  constructor(private router: Router, private violationService: ViolationService) {}
+  constructor(private router: Router, private violationService: ViolationService) { }
   isLoading: boolean = false; // 🔹 Loading state
   displayedColumns: string[] = [
     // 'violationId',
@@ -45,7 +45,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
   originalData: Incident[] = [];
 
   // Filters
-  cityList = ['All Cities', 'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi','Y Block Lahore'];
+  cityList = ['All Cities', 'Karachi', 'Lahore', 'Islamabad', 'Rawalpindi', 'Y Block Lahore'];
   violationList = [
     'All Violations',
     'Shoplifting Detection',
@@ -77,82 +77,90 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
 
   // ✅ Load real + dummy violations
   loadViolations() {
-  // 🔹 Start spinner
-  this.isLoading = true;
+    // 🔹 Start spinner
+    this.isLoading = true;
 
-  this.violationService.getRealViolations().subscribe({
-    next: (apiData: any[]) => {
-      const formattedLiveData: Incident[] = apiData.map((v) => ({
-        time: this.formatTime(v.violationTime),
-        violationId: v.violationId,
-        cameraId: v.cameraId,
-        violationDuration: Number(v.violationDuration),
-        violationDate: v.violationDate,
-        outlet: this.mapCameraToOutlet(v.cameraId),
-        type: this.mapViolationName(v.violationName),
-        confidence: this.randomConfidence(),
-        status: this.randomStatus(),
-        severity: this.randomSeverity(),
-        isReal: true,
-      }));
+    this.violationService.getRealViolations().subscribe({
+      next: (apiData: any[]) => {
+        const formattedLiveData: Incident[] = apiData.map((v) => ({
+          time: this.formatTime(v.violationTime),
+          violationId: v.violationId,
+          cameraId: v.cameraId,
+          violationDuration: Number(v.violationDuration),
+          violationDate: v.violationDate,
+          outlet: this.mapCameraToOutlet(v.cameraId),
+          type: this.mapViolationName(v.violationName),
+          confidence: this.randomConfidence(),
+          status: this.randomStatus(),
+          severity: this.randomSeverity(),
+          isReal: true,
+        }));
 
-      // Dummy fallback data
-      const dummyData: Incident[] = [
-        {
-          time: '2:32:15 PM',
-          violationId: 1001,
-          cameraId: 'cam-1',
-          violationDuration: 45.6,
-          violationDate: '2025-09-28',
-          outlet: 'Karachi',
-          type: 'Shoplifting Detection',
-          confidence: 96,
-          status: 'Active',
-          severity: 'High',
-        },
-        {
-          time: '2:28:42 PM',
-          violationId: 1002,
-          cameraId: 'cam-2',
-          violationDuration: 75.8,
-          violationDate: '2025-09-28',
-          outlet: 'Lahore',
-          type: 'POS Anomaly',
-          confidence: 89,
-          status: 'Investigating',
-          severity: 'High',
-        },
-        {
-          time: '2:15:18 PM',
-          violationId: 1003,
-          cameraId: 'cam-3',
-          violationDuration: 55.3,
-          violationDate: '2025-09-28',
-          outlet: 'Islamabad',
-          type: 'Loitering Alert',
-          confidence: 82,
-          status: 'Monitoring',
-          severity: 'Medium',
-        },
-      ];
+        // Dummy fallback data
+        const dummyData: Incident[] = [
+          {
+            time: '2:32:15 PM',
+            violationId: 1001,
+            cameraId: 'cam-1',
+            violationDuration: 45.6,
+            violationDate: '2025-09-28',
+            outlet: 'Karachi',
+            type: 'Shoplifting Detection',
+            confidence: 96,
+            status: 'Active',
+            severity: 'High',
+          },
+          {
+            time: '2:28:42 PM',
+            violationId: 1002,
+            cameraId: 'cam-2',
+            violationDuration: 75.8,
+            violationDate: '2025-09-28',
+            outlet: 'Lahore',
+            type: 'POS Anomaly',
+            confidence: 89,
+            status: 'Investigating',
+            severity: 'High',
+          },
+          {
+            time: '2:15:18 PM',
+            violationId: 1003,
+            cameraId: 'cam-3',
+            violationDuration: 55.3,
+            violationDate: '2025-09-28',
+            outlet: 'Islamabad',
+            type: 'Loitering Alert',
+            confidence: 82,
+            status: 'Monitoring',
+            severity: 'Medium',
+          },
+        ];
 
-      this.originalData = [...formattedLiveData, ...dummyData];
-      this.dataSource.data = this.originalData;
+        this.originalData = [...formattedLiveData, ...dummyData];
+        // this.dataSource.data = this.originalData;
+        const topIds = ['740290507', '734069387', '420035560', '105840119', '627812095'];
 
-      // 🔹 Stop spinner when data loads successfully
-      this.isLoading = false;
-    },
-    error: (err) => {
-      console.error('Error fetching live violations:', err);
-      // 🔹 Stop spinner on error
-      this.isLoading = false;
-    },
-    complete: () => {
-      // (Optional) ensures loading stops even if the stream completes early
-      this.isLoading = false;
-    }
-  });
-}
+        // Sort data: top IDs first, then rest
+        this.dataSource.data = this.originalData.sort((a, b) => {
+          const aTop = topIds.includes(a.violationId.toString()) ? 0 : 1;
+          const bTop = topIds.includes(b.violationId.toString()) ? 0 : 1;
+          return aTop - bTop;
+        });
+
+        // 🔹 Stop spinner when data loads successfully
+        this.isLoading = false;
+      },
+      error: (err) => {
+        console.error('Error fetching live violations:', err);
+        // 🔹 Stop spinner on error
+        this.isLoading = false;
+      },
+      complete: () => {
+        // (Optional) ensures loading stops even if the stream completes early
+        this.isLoading = false;
+      }
+    });
+  }
 
 
   // ✅ Helpers
@@ -171,6 +179,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
   private mapCameraToOutlet(cameraId: string): string {
     const map: Record<string, string> = {
       'cam-1': 'Lahore',
+      'cam1': 'Abu Dhabi',
       'cam-2': 'Karachi',
       'cam-3': 'Y Block Lahore',
       'cam-8': 'Y Block Lahore',
@@ -248,8 +257,8 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
         status: element.status,
         severity: element.severity,
         violationId: element.violationId,
-        time:element.time,
-        violationDate:element.violationDate,
+        time: element.time,
+        violationDate: element.violationDate,
       },
     });
   }

@@ -58,11 +58,13 @@ export class AppViolationsComponent implements OnInit, AfterViewInit, OnDestroy 
     if (t.includes('billing')) return 'Billing Irregularity';
     if (t.includes('unauthorized')) return 'Unauthorized Entry';
     if (t.includes('safety')) return 'Safety Violation';
-
     // New types based on your data
     if (t.includes('counter_is_empty')) return 'POS Anomaly';
     if (t.includes('receipt_not_cut_in_time')) return 'Billing Irregularity';
+    if (t.includes('receipt_not_cut')) return 'Billing Irregularity';
     if (t.includes('warehouse_not_clean')) return 'Safety/Housekeeping Violation';
+    if (t.includes('counter_crowdy')) return 'Crowd Management Violation'; // <-- new case
+
 
     return 'General Surveillance Event';
   }
@@ -123,7 +125,9 @@ export class AppViolationsComponent implements OnInit, AfterViewInit, OnDestroy 
     const t = (type || '').toLowerCase();
     if (t.includes('shoplift')) return 'linear-gradient(180deg,#ff7b7b,#ff5252)';
     if (t.includes('pos')) return 'linear-gradient(180deg,#ffcc80,#ff8a65)';
-    if (t.includes('billing')) return 'linear-gradient(180deg,#fdd835,#fbc02d)'; // yellow-gold tone
+    if (t.includes('billing')) return 'linear-gradient(180deg,#fdd835,#fbc02d)';
+    if (t.includes('crowd management violation')) return 'linear-gradient(180deg,#ff7b7b,#ff7b7b)'; // <-- fixed
+
     if (t.includes('unauthorized')) return 'linear-gradient(180deg,#ab47bc,#8e24aa)';
     if (t.includes('safety') || t.includes('ppe')) return 'linear-gradient(180deg,#90caf9,#42a5f5)';
     if (t.includes('suspicious')) return 'linear-gradient(180deg,#ffd54f,#ffb74d)';
@@ -135,6 +139,7 @@ export class AppViolationsComponent implements OnInit, AfterViewInit, OnDestroy 
     if (t.includes('shoplift')) return '#ff5252';
     if (t.includes('pos')) return '#ff8a65';
     if (t.includes('billing')) return '#fbc02d'; // gold tone
+  if (t.includes('crowd management violation')) return '#577e19ff'; // <-- fixed
     if (t.includes('unauthorized')) return '#ab47bc';
     if (t.includes('safety') || t.includes('ppe')) return '#42a5f5';
     if (t.includes('suspicious')) return '#ffb74d';

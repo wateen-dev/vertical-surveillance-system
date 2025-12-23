@@ -1,218 +1,66 @@
 <div class="admin-content admin-background">
-    <div class="container-fluid">
-        <div class="row admin-styling">
-            <div class="col-sm-12">
-                <!-- <div #analyticsSection class="admin-dashboard fade-in"> -->
-                <div class="admin-dashboard">
-                    <div class="analytics-header">
-                        <h2 class="analytics-title">Outlet Analytics Filters</h2>
-                        <!-- <p class="analytics-subtitle">Refine insights by country, city, and area in real time</p> -->
-                    </div>
-                    <app-dashboard-filters></app-dashboard-filters>
-                </div>
-            </div>
-        </div>
-        <div class="row admin-styling">
-            <div class="col-sm-12">
-                <!-- <div #analyticsSection class="admin-dashboard fade-in"> -->
-                <div class="admin-dashboard">
-                    <div class="analytics-header analyticsdetails">
-                        <div class="header-left">
-                            <h2 class="analytics-title">Retail AI Analytics Overview</h2>
-                            <p class="analytics-subtitle">Real-time insights across retail outlets</p>
-                        </div>
+  <div class="container-fluid">
 
-                        <div class="header-right">
-                            <div class="time-card">
-                                <div class="time-row">
-                                    <span class="label">Opening Time:</span>
-                                    <span class="value">{{ openTime }}</span>
-                                </div>
-                                <div class="time-row">
-                                    <span class="label">Closing Time:</span>
-                                    <span class="value">{{ closeTime }}</span>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Iterate over rows -->
+    <div class="row admin-styling" *ngFor="let row of sections">
+  <ng-container *ngFor="let section of row">
+    <div *ngIf="section.show" [ngClass]="section.colSize">
+      <div class="admin-dashboard">
+        <!-- Section Header -->
+        <div class="analytics-header" [ngClass]="{ 'analyticsdetails': section.key === 'overview' }">
+          
+          <ng-container *ngIf="section.key === 'overview'">
+            <div class="header-left">
+              <h2 class="analytics-title">{{ section.title }}</h2>
+              <p class="analytics-subtitle">{{ section.subtitle }}</p>
+            </div>
+            <div class="header-right">
+              <div class="time-card">
+                <div class="time-row">
+                  <span class="label">Opening Time:</span>
+                  <span class="value">{{ section.extraData.openTime }}</span>
+                </div>
+                <div class="time-row">
+                  <span class="label">Closing Time:</span>
+                  <span class="value">{{ section.extraData.closeTime }}</span>
+                </div>
+              </div>
+            </div>
+          </ng-container>
 
+          <ng-container *ngIf="section.key !== 'overview'">
+            <h2 class="analytics-title">{{ section.title }}</h2>
+            <p class="analytics-subtitle" *ngIf="section.subtitle">{{ section.subtitle }}</p>
+          </ng-container>
 
-                    </div>
+        </div>
 
-                    <app-analytics-overview></app-analytics-overview>
-                </div>
-            </div>
+        <!-- Button -->
+        <div class="live-feed-container" *ngIf="section.button">
+          <a class="text-primary outlet-btn small fw-semibold" [class.disabled]="!section.button.enabled"
+             (click)="section.button.enabled && section.button.action()">
+            {{ section.button.label }}
+          </a>
         </div>
-        <div class="row">
-            <div class="col-sm-8">
-                <div class="admin-dashboard">
-                    <div class="analytics-header">
-                        <h2 class="analytics-title">Footfall & Revenue Tracking</h2>
-                        <p class="analytics-subtitle">Real-time data from all outlets</p>
-                    </div>
-                    <!-- <app-floor-heatmap></app-floor-heatmap> -->
-                    <app-live-footfall-chart></app-live-footfall-chart>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="admin-dashboard">
-                    <div class="violations-header">
-                        <div class="violations-title">
-                            <span>Alerts & Notifications</span>
-                            <span class="status-dot" title="Live"></span>
-                        </div>
-                        <!-- <div class="cameras-count">258 Cameras</div> -->
-                    </div>
-                    <app-app-violations></app-app-violations>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="row salescharts">
-            <div class="col-sm-12">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Real Time Violation Detection</h2>
-                            <p class="analytics-subtitle">Live Monitoring across all 50 outlets</p>
-                        </div>
-                        <div class="live-feed-container-styling">
-                            <span class="status-dot" title="Live"></span>
-                            <span class="cameras-count-live">Live Feed</span>
-                        </div>
-                    </div>
-                    <app-real-time-violation></app-real-time-violation>
-                </div>
-            </div>
-        </div> -->
-        <div class="row salescharts">
-            <div class="col-sm-6">
-                <div class="admin-dashboard">
-                    <div class="analytics-header">
-                        <h2 class="analytics-title">Sales by Category</h2>
-                        <p class="analytics-subtitle">Today's distribution</p>
-                    </div>
-                    <app-sales-category-chart></app-sales-category-chart>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="admin-dashboard">
-                    <div class="analytics-header">
-                        <h2 class="analytics-title">Daily Footfall Heatmap</h2>
-                        <p class="analytics-subtitle">Sales perfomance & Security monitoring</p>
-                    </div>
-                    <!-- <app-sales-category-weekly-chart></app-sales-category-weekly-chart> -->
-                    <app-heatmap-chart></app-heatmap-chart>
-                </div>
-            </div>
-        </div>
-        <div class="row salescharts">
-            <div class="col-sm-4">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">System Health Overview</h2>
-                            <p class="analytics-subtitle">Network & Infrastructure status</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <span class="status-dot-green" title="Live"></span>
-                            <span class="cameras-count-status">Online</span>
-                        </div>
-                    </div>
-                    <app-system-health></app-system-health>
-                </div>
-            </div>
-            <div class="col-sm-8">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Business Insights</h2>
-                            <p class="analytics-subtitle">Real-time recommenations from advanced analytics</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <span class="status-dot-green" title="Live"></span>
-                            <span class="cameras-count-status">AI Active</span>
-                        </div>
-                    </div>
-                    <app-business-insights></app-business-insights>
-                </div>
-            </div>
-        </div>
-        <!-- <div #performanceSection class="admin-dashboard fade-in-left"> -->
-        <!-- <div class="row salescharts">
-            <div class="col-sm-12">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Perfomance Metrics</h2>
-                            <p class="analytics-subtitle">System accuracy scores across all modules</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <span class="status-dot-green" title="Live"></span>
-                            <span class="cameras-count-status">Live Monitoring</span>
-                        </div>
-                    </div>
-                    <app-performance-metrics></app-performance-metrics>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div #performanceOverviewSection class="admin-dashboard fade-in-left"> -->
-        <!-- <div class="row salescharts">
-            <div class="col-sm-12">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Perfomance Overview</h2>
-                            <p class="analytics-subtitle">Perfomance across major cities</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <a class="text-primary small fw-semibold">View Detailed Analytics →</a>
-                        </div>
-                    </div>
-                    <app-performance-overview></app-performance-overview>
-                </div>
-            </div>
-        </div> -->
-        <div class="row salescharts">
-            <div class="col-sm-12">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Top Perfoming Outlets</h2>
-                            <p class="analytics-subtitle">Employee efficiency and customer satisfaction leaders</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <p class="analytics-subtitle">Ranked by Overall Perfomance</p>
-                            <a class="text-primary outlet-btn small fw-semibold">View Detailed Analytics →</a>
-                        </div>
-                    </div>
-                    <app-top-performing-outlets></app-top-performing-outlets>
-                </div>
-            </div>
-        </div>
-          <div class="row salescharts">
-            <div class="col-sm-12">
-                <div class="admin-dashboard">
-                    <div class="real-time-detection">
-                        <div class="analytics-header">
-                            <h2 class="analytics-title">Competitor Outlets</h2>
-                            <p class="analytics-subtitle">Top competing restaurants identified from location, ratings, and customer activity</p>
-                        </div>
-                        <div class="live-feed-container">
-                            <p class="analytics-subtitle">Ranked by Google rating and overall market presence</p>
-                            <a class="text-primary outlet-btn small fw-semibold">View Competitor Insights →</a>
-                        </div>
-                    </div>
-                    <app-competitor-outlets></app-competitor-outlets>
-                </div>
-            </div>
-        </div>
-        <!-- <div class="row">
-            <div class="col-sm-6">
-                <div class="admin-dashboard">
-                    <h2>Live Footfall and Revenue Tracking</h2>
-                    <app-graph-heatmap></app-graph-heatmap>
-                </div>
-            </div>
-            <div class="col-sm-6"> </div>
-        </div> -->
+
+        <!-- Dynamic Component -->
+        <ng-container [ngSwitch]="section.component">
+          <app-dashboard-filters *ngSwitchCase="'app-dashboard-filters'"></app-dashboard-filters>
+          <app-analytics-overview *ngSwitchCase="'app-analytics-overview'"></app-analytics-overview>
+          <app-live-footfall-chart *ngSwitchCase="'app-live-footfall-chart'"></app-live-footfall-chart>
+          <app-app-violations *ngSwitchCase="'app-app-violations'"></app-app-violations>
+          <app-sales-category-chart *ngSwitchCase="'app-sales-category-chart'"></app-sales-category-chart>
+          <app-heatmap-chart *ngSwitchCase="'app-heatmap-chart'"></app-heatmap-chart>
+          <app-system-health *ngSwitchCase="'app-system-health'"></app-system-health>
+          <app-business-insights *ngSwitchCase="'app-business-insights'"></app-business-insights>
+          <app-top-performing-outlets *ngSwitchCase="'app-top-performing-outlets'"></app-top-performing-outlets>
+          <app-competitor-outlets *ngSwitchCase="'app-competitor-outlets'"></app-competitor-outlets>
+        </ng-container>
+
+      </div>
     </div>
+  </ng-container>
+</div>
+
+  </div>
 </div>

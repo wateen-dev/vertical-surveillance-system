@@ -71,7 +71,7 @@ export class CompetitorOutletsComponent implements OnInit {
     // Call the new API
     this.violationService.getCompetitorOutletsByLocation(latitude, longitude, radiusInMeters).subscribe({
       next: (res: any[]) => {
-        debugger
+      
         if (!res || res.length === 0) {
           this.competitorOutlets = [];
           this.isLoading = false;
@@ -145,7 +145,7 @@ export class CompetitorOutletsComponent implements OnInit {
 
   getPriceAndCuisine(outlet: any): string {
     let priceRange = '';
-debugger
+
     switch (outlet.priceLevel) {
       case 'PRICE_LEVEL_INEXPENSIVE':
         priceRange = 'AED 1–100';

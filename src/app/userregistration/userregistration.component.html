@@ -22,7 +22,20 @@
                 </mat-error>
               </mat-form-field>
             </div>
+<div class="col-md-4 mb-3">
+  <mat-form-field class="w-100">
+    <mat-label>Branch</mat-label>
+    <mat-select formControlName="branchId" [disabled]="branches.length === 0">
+      <mat-option *ngFor="let branch of branches" [value]="branch.branchId">
+        {{ branch.branchName }} ({{ branch.city }})
+      </mat-option>
+    </mat-select>
 
+    <mat-error *ngIf="registrationForm.get('branchId')?.hasError('required')">
+      Branch is required.
+    </mat-error>
+  </mat-form-field>
+</div>
             <div class="col-md-4 mb-3">
               <mat-form-field class="w-100">
                 <mat-label>Username</mat-label>
