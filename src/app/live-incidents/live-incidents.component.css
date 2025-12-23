@@ -171,7 +171,7 @@ mat-chip.chip-prevented {
 
 mat-chip.chip-resolved {
   background-color: #f3f4f6 !important;
-  color: #4b5563 !important;
+  color: rgb(11, 44, 90) !important;
 }
 
 /* ✅ Severity colors */
