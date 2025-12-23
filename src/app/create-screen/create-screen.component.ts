@@ -39,7 +39,7 @@ export class CreateScreenComponent {
     this.isLoading = true;
     // this.GetSharePointItems();
     // this.GetVideoSharePoint();
-    debugger
+ 
     this.LoadContentInfo();
     this.GetScreenDetails();  
     this.GetAppNames();
@@ -48,7 +48,7 @@ export class CreateScreenComponent {
   }
 
   onSubmit(form: any) {
-    debugger
+
     let module_id = form.value.module.module_id;
     let module_name = form.value.module.module_name;
     let module_icon = "";
@@ -124,7 +124,7 @@ export class CreateScreenComponent {
   //     (response) => {
   //       if(response != null || response != undefined){
   //         let responseData: SharePointItem[] = response;
-  //         debugger
+
   //         let mp4Data = responseData.filter((item: SharePointItem) => {
   //           return item.webUrl && item.webUrl.endsWith('.mp4');
   //         });
@@ -195,7 +195,7 @@ onModuleChange(event: any): void {
   LoadContentInfo() {
     this.employeeContent = this.dataService.getContent();
     if (this.employeeContent != null) {
-      debugger
+   
       this.createdBy = this.employeeContent.userId;
     }
   }

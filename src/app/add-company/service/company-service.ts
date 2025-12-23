@@ -51,4 +51,10 @@ export class CompanyService {
       this.authService.getAuthHeaders()
     );
   }
+  getBranchesByCompany(companyId: number) {
+  return this.http.get(
+    `${this.local_apiUrl}Branch/get-branches-by-company/${companyId}`,
+      this.authService.getAuthHeaders()
+  );
+}
 }

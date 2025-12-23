@@ -12,7 +12,12 @@ interface Role {
   roleName: string;
   isDeleted: boolean;
 }
-
+interface Branch {
+  branchId: number;
+  branchName: string;
+  city: string;
+  companyId: number;
+}
 @Component({
   selector: 'app-userregistration',
   templateUrl: './userregistration.component.html',
@@ -21,6 +26,7 @@ interface Role {
 export class UserRegistrationComponent {
   registrationForm: FormGroup;
   companies: any[] = [];
+  branches: Branch[] = [];
   roles: Role[] = [];
   isLoading: boolean = false;
   constructor(
@@ -38,7 +44,8 @@ export class UserRegistrationComponent {
       Phone: ['', Validators.pattern(/^\d{11}$/)],
       RoleID: [null, Validators.required],       // store roleId
       RoleRights: [''],                           // store roleName
-      companyId: [null, Validators.required],   // <── ADD THIS
+      companyId: [null, Validators.required],
+      branchId: [null, Validators.required],
       Password: ['', [Validators.required, Validators.minLength(6)]] // <-- Add this
     });
   }
@@ -52,13 +59,37 @@ export class UserRegistrationComponent {
 
     this.roleService.getAllRoles().subscribe((res: any) => {
       if (res.success) {
-        this.roles = res.data.filter((r: Role) => !r.isDeleted); // Optional: only active roles
+        this.roles = res.data.filter((r: Role) => !r.isDeleted);
+      }
+    });
+
+    // 👇 LOAD BRANCHES WHEN COMPANY CHANGES
+    this.registrationForm.get('companyId')?.valueChanges.subscribe(companyId => {
+      if (companyId) {
+     
+        this.loadBranchesByCompany(companyId);
+      } else {
+        this.branches = [];
+        this.registrationForm.patchValue({ branchId: null });
       }
     });
   }
+  loadBranchesByCompany(companyId: number) {
+    this.branches = [];
+    this.registrationForm.patchValue({ branchId: null });
 
+    this.companyService.getBranchesByCompany(companyId).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.branches = res.data;
+        }
+      },
+      () => {
+        this.toastService.showError('Failed to load branches');
+      }
+    );
+  }
   registerUser() {
-    debugger
     if (this.registrationForm.valid) {
       this.isLoading = true;
 
@@ -73,7 +104,8 @@ export class UserRegistrationComponent {
         roleID: this.registrationForm.value.RoleID,         // role id
         passwordHash: this.registrationForm.value.Password,
         createdAt: new Date().toISOString(),
-        companyID: this.registrationForm.value.companyId
+        companyID: this.registrationForm.value.companyId,
+        branchID: this.registrationForm.value.branchId
       };
 
       this.userService.registerUser(payload).subscribe(

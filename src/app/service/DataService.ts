@@ -27,7 +27,7 @@ export class DataService {
     if (typeof window !== 'undefined') {
       const content = sessionStorage.getItem(this.storageKey);
       const expiryTime = sessionStorage.getItem(this.expiryKey);
-      
+
       // Check if session is still valid
       if (content && expiryTime && Date.now() < parseInt(expiryTime, 10)) {
         return JSON.parse(content);
@@ -59,5 +59,13 @@ export class DataService {
   isLoggedIn(): boolean {
     const content = this.getContent();
     return content !== null; // Return true if user content exists
+  }
+  getCompanyId(): number | null {
+    const content = this.getContent();
+    return content?.companyID ?? null;
+  }
+  getCompanyCode(): number | null {
+    const content = this.getContent();
+    return content?.companyCode ?? null;
   }
 }

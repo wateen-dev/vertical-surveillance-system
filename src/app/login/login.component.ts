@@ -6,6 +6,7 @@ import { AuthService } from '../service/auth.service';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { DataService } from '../service/DataService'; // Adjust path as necessary
+import { COMPANY_CODE_MAP } from '../config/company-configuration';
 
 @Component({
   selector: 'app-login',
@@ -36,11 +37,12 @@ export class LoginComponent {
 
           if (response && response.message === 'Login successful.') {
             this.toastService.showSuccess('Login Successful');
-
+             const companyCode = COMPANY_CODE_MAP[response.user.companyID] || 'unknown';
             // Save user data and token in DataService
             const userContent = {
               ...response.user,
-              token: response.token // Save JWT token here
+              token: response.token,
+              companyCode 
             };
             this.dataService.setContent(userContent);
 

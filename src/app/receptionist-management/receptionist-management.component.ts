@@ -25,7 +25,7 @@ constructor(private toastService: ToastService, private employeeService: Employe
         if (response) {
           // Map the response to your component properties or local variables as needed
           this.employee = response;
-          debugger
+   
           this.fetchImages(this.employee.employeePath)
           console.log('Employee details:', this.employee);
         }
@@ -43,11 +43,11 @@ constructor(private toastService: ToastService, private employeeService: Employe
 
   fetchImages(path:any): void {
  
-    debugger
+   
         const fileName = path.split("\\").pop();
         
             this.http.get(this.local_apiUrl+`Vertical/GetImagesBase64?fileName=${fileName}`).subscribe((data:any) => {
-           debugger;
+       
               this.imagePath1Base64 = data.thumbnailBase64;
            
             },

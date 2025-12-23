@@ -43,7 +43,7 @@ export class AttendanceLogsComponent {
   logs: any[] = [];   // <-- Add this at the top of your component
   chartRef: Highcharts.Chart | null = null;
   constructor(private verticalService: EmployeeRegistrationService, private route: ActivatedRoute, private toastService: ToastService, private http: HttpClient) {
-    debugger;
+    
     this.updateLastSyncedTime();
   }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -53,7 +53,7 @@ export class AttendanceLogsComponent {
   attendanceDataSource = new MatTableDataSource<any>([]);
   aiLogsDataSource = new MatTableDataSource<any>([]);
   ngOnInit(): void {
-    debugger;
+ 
     this.route.queryParams.subscribe((params) => {
       this.selectedCard = params['card'];
       if (this.selectedCard == 'Employees')
@@ -158,7 +158,7 @@ export class AttendanceLogsComponent {
     }
   }
   onRowClick(row: any) {
-    debugger
+
     if (!row) return;
     // ✅ fetch employee/visitor image if available
     if (row.profilePicture) {

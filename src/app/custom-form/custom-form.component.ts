@@ -23,7 +23,7 @@ export class CustomFormComponent {
     this.formDataChange.emit(this.formData);  // Emit updated formData
   }
   formatCnic(fieldName: string, value: string) {
-    debugger
+ 
     const input = value.replace(/\D/g, ''); // Remove non-digit characters
   
     if (input.length <= 5) {
