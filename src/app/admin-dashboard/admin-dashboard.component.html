@@ -7,8 +7,8 @@
     <div *ngIf="section.show" [ngClass]="section.colSize">
       <div class="admin-dashboard">
         <!-- Section Header -->
-        <div class="analytics-header" [ngClass]="{ 'analyticsdetails': section.key === 'overview' }">
-          
+        <div class="analytics-header d-flex align-items-center justify-content-between"
+          [ngClass]="{ 'analyticsdetails': section.key === 'overview' }">
           <ng-container *ngIf="section.key === 'overview'">
             <div class="header-left">
               <h2 class="analytics-title">{{ section.title }}</h2>
@@ -29,19 +29,26 @@
           </ng-container>
 
           <ng-container *ngIf="section.key !== 'overview'">
-            <h2 class="analytics-title">{{ section.title }}</h2>
-            <p class="analytics-subtitle" *ngIf="section.subtitle">{{ section.subtitle }}</p>
-          </ng-container>
+  <div class="header-left">
+    <h2 class="analytics-title">{{ section.title }}</h2>
+    <p class="analytics-subtitle" *ngIf="section.subtitle">
+      {{ section.subtitle }}
+    </p>
+  </div>
+
+  <!-- Button on right -->
+  <a *ngIf="section.button"
+     class="text-primary outlet-btn small fw-semibold"
+     [class.disabled]="!section.button.enabled"
+     (click)="section.button.enabled && section.button.action()">
+    {{ section.button.label }}
+  </a>
+</ng-container>
 
         </div>
 
         <!-- Button -->
-        <div class="live-feed-container" *ngIf="section.button">
-          <a class="text-primary outlet-btn small fw-semibold" [class.disabled]="!section.button.enabled"
-             (click)="section.button.enabled && section.button.action()">
-            {{ section.button.label }}
-          </a>
-        </div>
+      
 
         <!-- Dynamic Component -->
         <ng-container [ngSwitch]="section.component">

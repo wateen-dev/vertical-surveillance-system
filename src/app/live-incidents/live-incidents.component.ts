@@ -55,7 +55,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
     'Return Fraud',
     'Staff Area Breach',
   ];
-  statuses = ['Active', 'Investigating', 'Monitoring', 'Prevented', 'Resolved'];
+  statuses = ['Active', 'Investigating', 'Monitoring', 'Resolved'];
   severities = ['High', 'Medium', 'Low'];
 
   selectedCity = 'All Cities';
@@ -119,7 +119,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
             outlet: 'Lahore',
             type: 'POS Anomaly',
             confidence: 89,
-            status: 'Investigating',
+            status: 'Active',
             severity: 'High',
           },
           {
@@ -131,7 +131,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
             outlet: 'Islamabad',
             type: 'Loitering Alert',
             confidence: 82,
-            status: 'Monitoring',
+            status: 'Resolved',
             severity: 'Medium',
           },
         ];
@@ -202,7 +202,7 @@ export class LiveIncidentsComponent implements OnInit, AfterViewInit {
   }
 
   private randomStatus(): string {
-    const list = ['Active', 'Investigating', 'Monitoring', 'Prevented', 'Resolved'];
+    const list = ['Active', 'Investigating','Prevented', 'Monitoring', 'Resolved'];
     return list[Math.floor(Math.random() * list.length)];
   }
 
